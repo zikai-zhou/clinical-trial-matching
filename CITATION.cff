@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: Clinical Trial Matcher
+message: If you use this software, please cite it as below.
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/zikai-zhou/clinical-trial-matching"
+authors:
+  - given-names: Zikai
+    family-names: Zhou
+  - given-names: Yufei
+    family-names: Jin
+  - given-names: Yilin
+    family-names: Xu
+  - given-names: Chieh-Ju
+    family-names: Chao
+    name-suffix: MD
+  - given-names: Yu-Chiang
+    family-names: Wang
+    name-suffix: MD
+  - given-names: Monica
+    family-names: Lam
+    name-particle: S.
