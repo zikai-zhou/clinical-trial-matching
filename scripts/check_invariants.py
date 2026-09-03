@@ -307,15 +307,27 @@ def _():
     SHIP = ('matchers', 'verbalizer', 'counterfactual_modifier', 'smt_core')
     # Module names that are known not to resolve, with the reason. These are
     # tracked debt, not silent ignores -- shrink this set, never grow it.
+    # Verified 2026-09-03 by a full scan; file lists are exact.
     KNOWN_BROKEN = {
-        'overnight':          'no such module anywhere (matchers/systems/aegis/run.py)',
-        'run_better_nl_full': 'no such module anywhere (shahlab, trialgpt, verbalizer)',
-        'repro_headline':     'lives in experiments/, excluded from the release',
-        'cf_maxsat':          'lives in experiments/, excluded from the release',
+        'overnight':
+            'no such module anywhere -- breaks aegis/apply_soft_aux_solve.py, '
+            'aegis/apply_strict_inc_to_4o.py',
+        'run_better_nl_full':
+            'no such module anywhere -- breaks aegis/run_verbalize.py, '
+            'single_shot_llm/run.py, trialgpt/run.py, '
+            'verbalizer/run_aegis_verbalize.py',
+        'repro_headline':
+            'lives in experiments/accuracy/scripts (excluded from the release) '
+            '-- breaks aegis/aegis_arbiter.py, aegis/aegis_arbiter_eval.py, '
+            'verbalizer/run_aegis_v9_arbiter_verbalize.py',
+        'cf_maxsat':          'lives in experiments/counterfactual/utils, excluded',
         'cf_dataset':         'lives in experiments/, excluded from the release',
         'cf_blockers':        'lives in experiments/, excluded from the release',
         'build_judge_input':  'sibling script, not importable as a module',
     }
+    # 9 shipped files total. The `verdict` CLI and matchers.variants do NOT
+    # depend on any of these, which is why the CLI works; the affected files
+    # are batch entry points. Shrink this set, never grow it.
     # A declared dependency that merely is not installed here is NOT breakage.
     try:
         import tomllib
