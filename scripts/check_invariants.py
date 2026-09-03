@@ -132,6 +132,34 @@ def _():
         'CLI emitted a verdict for a nonexistent pair'
 
 
+@check('api:strict-mode-raises', needs=PAIR_DATA)
+def _():
+    """Strict mode must raise on a missing pair, and not change real verdicts."""
+    rc, out = sh('-c',
+        'from matchers import variants;'
+        'from matchers.schema import MissingPairData;'
+        'variants.strict(True);'
+        'ok=0\n'
+        'try:\n'
+        '    variants.smt_lm_evidence_arbiter("FAKE__NCT0")\n'
+        'except MissingPairData: ok=1\n'
+        'print("raised", ok);'
+        'print("real", variants.smt_lm_evidence_arbiter("sigir-20141__NCT00337116").decision)')
+    assert rc == 0, out
+    want(out, 'raised 1', 'real eligible')
+
+
+@check('api:default-mode-preserved', needs=PAIR_DATA)
+def _():
+    """Default (non-strict) behaviour must stay exactly as the paper ran it."""
+    rc, out = sh('-c',
+        'from matchers import variants;'
+        'd=variants.smt_lm_evidence_arbiter("FAKE__NCT0");'
+        'print(d.decision, "|", d.reasoning, "|", d.is_missing_data)')
+    assert rc == 0, out
+    want(out, 'ineligible | no data | True')
+
+
 # ------------------------------------------------- reproduction numbers
 @check('table2:trec-f1-matches-paper')
 def _():

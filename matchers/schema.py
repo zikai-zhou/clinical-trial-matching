@@ -19,6 +19,22 @@ class AuditStep:
     evidence: Dict[str, Any] = field(default_factory=dict)  # structured data
 
 
+NO_DATA = "no data"
+
+
+class MissingPairData(Exception):
+    """The pair could not be loaded, so no verdict can be given.
+
+    Raised only in strict mode (see matchers.variants.strict). By default the
+    variants return a Decision with decision="ineligible", reasoning="no data"
+    -- the behaviour the paper's numbers were produced under. That default is a
+    hazard for downstream callers: an absent file is indistinguishable from a
+    real INELIGIBLE unless `reasoning` is checked, and for a trial matcher that
+    is the harmful direction (a patient is silently not surfaced). Prefer
+    strict mode in any non-benchmark use.
+    """
+
+
 @dataclass
 class Decision:
     """The output of any variant. Every variant returns this type so they can
@@ -28,6 +44,11 @@ class Decision:
     decision: str                      # "eligible" / "ineligible"
     reasoning: str                     # one-sentence explanation
     audit_trail: List[AuditStep] = field(default_factory=list)
+
+    @property
+    def is_missing_data(self) -> bool:
+        """True when no pair data was found, so `decision` is not a real verdict."""
+        return self.reasoning == NO_DATA
 
     def is_auditable(self) -> bool:
         """True iff every step in the trail traces to chart-grounded atoms.

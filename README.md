@@ -42,6 +42,33 @@ for step in d.audit_trail:
     print(step)
 ```
 
+### Missing data is not a verdict
+
+By default a variant that cannot load its pair returns
+`decision="ineligible", reasoning="no data"` — the behaviour the paper's
+numbers were produced under. Downstream that is a hazard: an absent file looks
+exactly like a real INELIGIBLE, and for a trial matcher that is the harmful
+direction, since the patient is silently not surfaced. Either check the flag or
+turn on strict mode:
+
+```python
+from matchers import variants
+from matchers.schema import MissingPairData
+
+d = variants.smt_lm_evidence_arbiter(pair_id)
+if d.is_missing_data:
+    ...                      # not a verdict
+
+variants.strict(True)        # or: export VERDICT_STRICT=1
+try:
+    d = variants.smt_lm_evidence_arbiter(pair_id)
+except MissingPairData:
+    ...                      # raises instead of guessing
+```
+
+The `verdict` CLI validates the pair id up front and refuses unknown pairs, so
+it never emits a verdict for missing data.
+
 ### Scope — read this before you install
 
 `verdict` decides **pre-mined** patient--trial pairs. It reads the per-pair

@@ -12,10 +12,11 @@ Each variant returns a Decision with a structured audit_trail. Reading the
 audit_trail of any two variants side-by-side shows exactly what each does.
 """
 from __future__ import annotations
+import os
 import json, pathlib, hashlib
 from typing import Any, Dict, List, Optional
 
-from matchers.schema import Decision, AuditStep
+from matchers.schema import Decision, AuditStep, MissingPairData, NO_DATA
 from matchers.data import load_pair_data, load_judge_verdict
 from matchers.prompts import (
     ATOMS_ONLY_ARBITER_PROMPT,
@@ -26,6 +27,41 @@ from matchers.prompts import (
     CRITIC_PROMPT,
     MULTIAGENT_ARBITER_PROMPT,
 )
+
+
+# --------------------------------------------------------------------------
+# Missing-pair handling
+#
+# By default a variant that cannot load its pair returns
+# Decision(decision="ineligible", reasoning="no data"). That is what the
+# paper's numbers were computed under, so it stays the default. It is unsafe
+# downstream: an absent file then looks exactly like a real INELIGIBLE, and for
+# a trial matcher that is the harmful direction. Enable strict mode to raise:
+#
+#     from matchers import variants
+#     variants.strict(True)                  # or export VERDICT_STRICT=1
+#
+_STRICT = os.environ.get("VERDICT_STRICT", "").lower() in ("1", "true", "yes")
+
+
+def strict(enabled: bool = True) -> None:
+    """Raise MissingPairData instead of returning a 'no data' Decision."""
+    global _STRICT
+    _STRICT = bool(enabled)
+
+
+def is_strict() -> bool:
+    return _STRICT
+
+
+def _no_data(pair_id: str, variant: str) -> Decision:
+    if _STRICT:
+        raise MissingPairData(
+            f"no pair data for {pair_id!r} (variant {variant!r}). "
+            f"Check $VERDICT_PAIR_DATA; see DATA.md.")
+    return Decision(pair_id, variant, "ineligible", NO_DATA, [])
+
+
 
 ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 
@@ -124,7 +160,7 @@ def lm_only(pair_id: str, engine=None) -> Decision:
     """
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "lm_only", "ineligible", "no data", [])
+        return _no_data(pair_id, "lm_only")
     return Decision(
         pair_id=pair_id, variant="lm_only", decision=d["lm_decision"] or "ineligible",
         reasoning=(d["lm_explanation"] or d["lm_reasoning"])[:200],
@@ -148,7 +184,7 @@ def smt_raw(pair_id: str, engine=None) -> Decision:
     """
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "smt_raw", "ineligible", "no data", [])
+        return _no_data(pair_id, "smt_raw")
 
     audit = [AuditStep(
         stage="atom_mining", decision=None,
@@ -183,7 +219,7 @@ def smt_atoms_arbiter(pair_id: str, engine=None) -> Decision:
     """
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "smt_atoms_arbiter", "ineligible", "no data", [])
+        return _no_data(pair_id, "smt_atoms_arbiter")
 
     audit = [AuditStep(stage="atom_mining", evidence={"n_atoms": d["n_total_atoms"]})]
     audit.append(AuditStep(
@@ -245,7 +281,7 @@ def smt_lm_evidence_arbiter(pair_id: str, engine=None) -> Decision:
     grounding. The SMT solver still makes every decision."""
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "smt_lm_evidence_arbiter", "ineligible", "no data", [])
+        return _no_data(pair_id, "smt_lm_evidence_arbiter")
 
     audit = [AuditStep(stage="atom_mining", evidence={"n_atoms": d["n_total_atoms"]})]
     audit.append(AuditStep(stage="smt_solve", decision=d["smt_decision"],
@@ -302,7 +338,7 @@ def hybrid_loose(pair_id: str, engine=None) -> Decision:
     """
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "hybrid_loose", "ineligible", "no data", [])
+        return _no_data(pair_id, "hybrid_loose")
 
     audit = [AuditStep(stage="atom_mining", evidence={"n_atoms": d["n_total_atoms"]})]
     audit.append(AuditStep(stage="smt_solve", decision=d["smt_decision"],
@@ -362,7 +398,7 @@ def hybrid_strict(pair_id: str, engine=None) -> Decision:
     """
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "hybrid_strict", "ineligible", "no data", [])
+        return _no_data(pair_id, "hybrid_strict")
 
     audit = [AuditStep(stage="atom_mining", evidence={"n_atoms": d["n_total_atoms"]})]
     audit.append(AuditStep(stage="smt_solve", decision=d["smt_decision"],
@@ -419,7 +455,7 @@ def lm_only_prescreen(pair_id: str, engine=None) -> Decision:
     """
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "lm_only_prescreen", "ineligible", "no data", [])
+        return _no_data(pair_id, "lm_only_prescreen")
 
     # Cache key matches experiments/99_counterfactual_lm/run_better_nl_full.py
     td = f"INCLUSION CRITERIA:\n{d['inclusion_criteria']}\n\nEXCLUSION CRITERIA:\n{d['exclusion_criteria']}"
@@ -461,7 +497,7 @@ def multiagent_nl(pair_id: str, engine=None) -> Decision:
     """
     d = load_pair_data(pair_id)
     if d is None:
-        return Decision(pair_id, "multiagent_nl", "ineligible", "no data", [])
+        return _no_data(pair_id, "multiagent_nl")
 
     # Cache key matches experiments/100_multiagent_nl/run_multiagent.py
     note = d["patient_note"]; inc = d["inclusion_criteria"]; exc = d["exclusion_criteria"]
