@@ -218,6 +218,170 @@ def _():
     assert (len(g), e, len(g) - e) == (552, 278, 274), (len(g), e)
 
 
+@check('deps:declared-match-imports')
+def _():
+    """Every third-party import in shipped code must be a declared dependency.
+
+    Guards against the usual open-source failure: code grows an import, the
+    install spec never learns about it, and a fresh clone dies on ImportError.
+    """
+    import ast as _ast
+    try:
+        import tomllib
+    except ModuleNotFoundError:                       # pragma: no cover
+        raise Skip('tomllib (py<3.11)')
+
+    meta = tomllib.loads((ROOT / 'pyproject.toml').read_text())['project']
+    declared = set(meta.get('dependencies', []))
+    for extra in meta.get('optional-dependencies', {}).values():
+        declared |= set(extra)
+    # "z3-solver>=4.12" -> "z3-solver"
+    dist = {re.split(r'[<>=!\[]', d)[0].strip().lower() for d in declared}
+
+    # import name -> distribution name, where they differ
+    ALIAS = {'z3': 'z3-solver', 'dspy': 'dspy-ai', 'sentence_transformers':
+             'sentence-transformers', 'azure': 'azure-identity',
+             'yaml': 'pyyaml', 'sklearn': 'scikit-learn'}
+
+    stdlib = set(sys.stdlib_module_names)
+    local = {'matchers', 'smt_core', 'verbalizer', 'rationale_generators',
+             'counterfactual_modifier', 'scripts', 'verdict_cli'}
+    undeclared = {}
+    for d in ('matchers', 'smt_core', 'verbalizer', 'counterfactual_modifier'):
+        base = ROOT / d
+        if not base.exists():
+            continue
+        for f in base.rglob('*.py'):
+            if '.bak' in f.name:
+                continue
+            src = f.read_text(errors='ignore')
+            try:
+                tree = _ast.parse(src)
+            except SyntaxError:
+                continue
+            # imports inside try/except ImportError are optional by construction
+            guarded = set()
+            for n in _ast.walk(tree):
+                if isinstance(n, _ast.Try) and any(
+                        isinstance(h.type, _ast.Name) and
+                        h.type.id in ('ImportError', 'ModuleNotFoundError')
+                        for h in n.handlers):
+                    for sub in _ast.walk(n):
+                        if isinstance(sub, _ast.Import):
+                            guarded |= {a.name.split('.')[0] for a in sub.names}
+                        elif isinstance(sub, _ast.ImportFrom) and sub.module:
+                            guarded.add(sub.module.split('.')[0])
+            # modules made importable by an explicit sys.path.insert in this file
+            path_local = 'sys.path.insert' in src or 'sys.path.append' in src
+            for n in _ast.walk(tree):
+                mods = []
+                if isinstance(n, _ast.Import):
+                    mods = [a.name for a in n.names]
+                elif isinstance(n, _ast.ImportFrom) and n.level == 0 and n.module:
+                    mods = [n.module]
+                for m in mods:
+                    top = m.split('.')[0]
+                    if not top or top in stdlib or top in local:
+                        continue
+                    if top in guarded or path_local:
+                        continue   # optional, or resolved via sys.path (see
+                                   # imports:shipped-modules-are-importable)
+                    # sibling modules imported by filename, not packages
+                    if (f.parent / f'{top}.py').exists():
+                        continue
+                    if ALIAS.get(top, top).lower() not in dist:
+                        undeclared.setdefault(top, str(f.relative_to(ROOT)))
+    assert not undeclared, ('imported but not declared in pyproject: '
+                            + ', '.join(f'{k} ({v})' for k, v in
+                                        sorted(undeclared.items())[:8]))
+
+
+@check('imports:shipped-modules-are-importable')
+def _():
+    """Every module in the release payload must import without ImportError.
+
+    Catches sys.path hacks reaching into directories excluded from the release,
+    and imports of modules that no longer exist anywhere.
+    """
+    import ast as _ast
+    SHIP = ('matchers', 'verbalizer', 'counterfactual_modifier', 'smt_core')
+    # Module names that are known not to resolve, with the reason. These are
+    # tracked debt, not silent ignores -- shrink this set, never grow it.
+    KNOWN_BROKEN = {
+        'overnight':          'no such module anywhere (matchers/systems/aegis/run.py)',
+        'run_better_nl_full': 'no such module anywhere (shahlab, trialgpt, verbalizer)',
+        'repro_headline':     'lives in experiments/, excluded from the release',
+        'cf_maxsat':          'lives in experiments/, excluded from the release',
+        'cf_dataset':         'lives in experiments/, excluded from the release',
+        'cf_blockers':        'lives in experiments/, excluded from the release',
+        'build_judge_input':  'sibling script, not importable as a module',
+    }
+    # A declared dependency that merely is not installed here is NOT breakage.
+    try:
+        import tomllib
+        meta = tomllib.loads((ROOT / 'pyproject.toml').read_text())['project']
+        declared = set(meta.get('dependencies', []))
+        for extra in meta.get('optional-dependencies', {}).values():
+            declared |= set(extra)
+        dist = {re.split(r'[<>=!\[]', d)[0].strip().lower() for d in declared}
+    except Exception:
+        dist = set()
+    ALIAS = {'z3': 'z3-solver', 'dspy': 'dspy-ai',
+             'sentence_transformers': 'sentence-transformers',
+             'azure': 'azure-identity', 'yaml': 'pyyaml', 'sklearn': 'scikit-learn'}
+
+    # Precompute local module names ONCE (scanning per-import walks the whole
+    # tree and takes minutes).
+    localmods = set(SHIP)
+    for d in SHIP:
+        base = ROOT / d
+        if not base.exists():
+            continue
+        for f in base.rglob('*.py'):
+            if '__pycache__' in str(f):
+                continue
+            localmods.add(f.stem)
+            localmods.add(f.parent.name)
+
+    resolvable, unresolvable = set(), {}
+    for d in SHIP:
+        base = ROOT / d
+        if not base.exists():
+            continue
+        for f in sorted(base.rglob('*.py')):
+            if '.bak' in f.name or '__pycache__' in str(f):
+                continue
+            rel = str(f.relative_to(ROOT))
+            try:
+                tree = _ast.parse(f.read_text(errors='ignore'))
+            except SyntaxError:
+                continue
+            for n in tree.body:          # module level only; nested = lazy
+                mods = []
+                if isinstance(n, _ast.Import):
+                    mods = [a.name for a in n.names]
+                elif isinstance(n, _ast.ImportFrom) and n.level == 0 and n.module:
+                    mods = [n.module]
+                for m in mods:
+                    top = m.split('.')[0]
+                    if (top in sys.stdlib_module_names or top in localmods
+                            or top in resolvable or top in KNOWN_BROKEN
+                            or ALIAS.get(top, top).lower() in dist):
+                        continue
+                    if top in unresolvable.values():
+                        unresolvable.setdefault(rel, top)
+                        continue
+                    try:
+                        __import__(top)
+                        resolvable.add(top)
+                    except Exception:
+                        unresolvable.setdefault(rel, top)
+
+    assert not unresolvable, (
+        'modules that will not import (not declared, not local, not known debt):'
+        '\n  ' + '\n  '.join(f'{k}: {v}' for k, v in unresolvable.items()))
+
+
 # ---------------------------------------------------------------- hygiene
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',
            'counterfactual_modifier', 'verdict_cli.py']

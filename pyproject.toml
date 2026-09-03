@@ -4,6 +4,35 @@ version = "0.2.0"
 description = "SatIR: Scalable High-Recall Constraint-Satisfaction-Based Clinical Trial Retrieval"
 requires-python = ">=3.12"
 
+# Runtime deps, derived from the actual imports (see scripts/check_invariants.py
+# :: deps:declared-match-imports). requirements.txt is a pinned lock of one
+# working environment -- these are the real constraints.
+dependencies = [
+    "z3-solver>=4.12",        # the solver every SMT variant calls
+    "requests>=2.31",         # HTTP inference engines
+]
+
+[project.optional-dependencies]
+llm = [                        # hosted-model backends
+    "openai>=1.30",
+    "azure-identity>=1.19",
+    "azure-ai-inference>=1.0.0b9",
+    "dspy-ai>=2.5",
+]
+local = [                      # running an open-weight model on your own GPU
+    "torch>=2.2",
+    "transformers>=4.44",
+    "sentence-transformers>=3.0",
+]
+search = ["elasticsearch>=8.13"]
+analysis = ["pandas>=2.2", "tqdm>=4.66", "psutil>=5.9"]
+all = [
+    "openai>=1.30", "azure-identity>=1.19", "azure-ai-inference>=1.0.0b9",
+    "dspy-ai>=2.5", "torch>=2.2", "transformers>=4.44",
+    "sentence-transformers>=3.0", "elasticsearch>=8.13",
+    "pandas>=2.2", "tqdm>=4.66", "psutil>=5.9",
+]
+
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"

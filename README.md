@@ -42,6 +42,19 @@ for step in d.audit_trail:
     print(step)
 ```
 
+### Checks
+
+```bash
+python scripts/check_invariants.py        # ~1s, 20 checks
+```
+
+Run this after every change. It covers the CLI, the Python API, the
+reproduction numbers (asserted against the values printed in the paper, not
+merely "exits 0"), dependency/import health, and secret and machine-path
+hygiene. Checks whose local-only data is absent SKIP with the reason rather
+than failing, so it is also meaningful in a fresh clone. CI runs it on 3.12
+and 3.13.
+
 ### Missing data is not a verdict
 
 By default a variant that cannot load its pair returns
