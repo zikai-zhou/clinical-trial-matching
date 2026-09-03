@@ -1,0 +1,38 @@
+[project]
+name = "satir"
+version = "0.2.0"
+description = "SatIR: Scalable High-Recall Constraint-Satisfaction-Based Clinical Trial Retrieval"
+requires-python = ">=3.12"
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["verdict_cli"]
+
+[tool.setuptools.packages.find]
+include = [
+    "matchers*",
+    "smt_core*",
+    "trial_compiler*",
+    "patient_compiler*",
+    "db_indexer*",
+    "sql_retrieval*",
+    "smt_matcher*",
+]
+exclude = [
+    "*.prompts*",
+    "*.prompt*",
+    "*.mbench*",
+    "*.checkpoints*",
+    "*.run_logs*",
+]
+
+[project.scripts]
+verdict = "verdict_cli:main"
+satir = "satir_cli:main"
+compile-trial = "trial_compiler.cli:main"
+compile-patient = "patient_compiler.cli:main"
+index-db = "db_indexer.cli:main"
+match-trial = "smt_matcher.cli:main"
