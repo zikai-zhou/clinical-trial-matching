@@ -156,13 +156,52 @@ Three invariants from the paper are asserted in the test suite:
 `delta_E = {}` iff ELIGIBLE, `delta_I = {}` iff INELIGIBLE, and `delta` is
 never empty.
 
-### Terminology: assumptions, not residual constraints
+### Two published formulations
 
-`rho` was called **residual constraints** in the submitted version and held
-unresolved conditions *as constraints* (`{crcl >= 60}`). It is now
-**assumptions** and holds the value the MaxSMT solver *assigns*
-(`{crcl = 72}`). These are not interchangeable — one is a requirement, the
-other one satisfying value of it. `MaxSAT` is likewise now `MaxSMT`.
+Both are implemented and selectable; neither is a rename of the other.
+
+```python
+from smt_core.maxsmt import solve, RESIDUAL, MAXSMT
+
+solve(phi, conds, version=RESIDUAL)   # submitted paper
+solve(phi, conds, version=MAXSMT)     # updated paper (default)
+```
+
+| | `RESIDUAL` (submitted) | `MAXSMT` (update) |
+|---|---|---|
+| `rho` | **residual constraints** — the UNRESOLVED conditions, as requirements: `{crcl: '>= 60'}` | **assumptions** — the value the solver assigns: `{crcl: 60.0}` |
+| `delta` | one MaxSAT call, formula depends on `d` (Step 4) | `delta_I` if ELIGIBLE else `delta_E` (Step 6) |
+| `delta_E`/`delta_I` | not computed | Steps 3 and 5 |
+| status vocabulary | OBSERVED / **ASSUMED** / UNRESOLVED | OBSERVED / **IMPUTED** / UNRESOLVED |
+| solver | MaxSAT | MaxSMT |
+
+`ASSUMED` is accepted as an alias for `IMPUTED` so records written under
+either paper load unchanged.
+
+### Mapping artifacts to the paper
+
+`to_paper()` keys the artifacts by their symbol, with the meaning and step
+number attached, so code and paper cannot drift:
+
+```python
+a = solve(phi, conds, version=MAXSMT)
+a.to_paper()["rho"]
+# {'value': {'crcl': 60.0}, 'field': 'assumptions', 'step': 'Step 4',
+#  'meaning': 'assumptions: the value MAXSMT assigns to each UNRESOLVED
+#              condition (a witness, arbitrary within the satisfying region)'}
+
+print(a.describe())
+# VERDICT artifacts  [maxsmt = update paper]
+#   d        (Step 2 ) ineligible
+#   rho      (Step 4 ) {'crcl': 60.0}
+#   delta    (Step 6 ) ['egfr']
+#   delta_E  (Step 3 ) ['egfr']
+#   delta_I  (Step 5 ) []
+```
+
+Symbols absent from a version (`delta_E`/`delta_I` under `RESIDUAL`) are
+**omitted** rather than exported empty, so a consumer cannot mistake
+"not computed" for "computed and found empty".
 
 ### A witness is not a finding
 

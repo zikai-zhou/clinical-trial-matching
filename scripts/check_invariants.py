@@ -204,7 +204,7 @@ def _():
 
 @check('maxsmt:paper-invariants-hold')
 def _():
-    """Steps 2-6 must satisfy the three invariants the paper states.
+    """Both published formulations, their invariants, and the paper export.
 
         delta_E = {} iff d = ELIGIBLE
         delta_I = {} iff d = INELIGIBLE
@@ -245,6 +245,33 @@ assert 'crcl' in a.assumptions
 v = a.for_verbalizer(phi)
 assert v['assumptions']['crcl']['requirement'] == '>= 60', v
 assert 'witness' in v['assumptions']['crcl'], v
+
+# --- both published versions must be runnable and must differ ----------
+from smt_core.maxsmt import RESIDUAL, MAXSMT, PAPER_OF, SYMBOLS
+r = solve(phi, cases[0], version=RESIDUAL)
+u = solve(phi, cases[0], version=MAXSMT)
+assert r.version == RESIDUAL and u.version == MAXSMT
+assert r.decision == u.decision == INELIGIBLE
+# rho differs in KIND: submitted holds a requirement, update holds a witness
+assert r.assumptions['crcl'] == '>= 60', r.assumptions
+assert isinstance(u.assumptions['crcl'], float), u.assumptions
+# delta_E / delta_I exist only in the updated formulation
+assert r.delta_e == [] and r.delta_i == []
+assert u.delta_e == ['egfr']
+
+# --- paper export ------------------------------------------------------
+er, eu = r.to_paper(), u.to_paper()
+assert er['paper'] == 'submitted' and eu['paper'] == 'update'
+for k in ('d', 'gamma', 'rho', 'delta'):
+    assert k in er and k in eu, k
+# omitted, not emitted empty, under the submitted formulation
+assert 'delta_E' not in er and 'delta_I' not in er, er.keys()
+assert 'delta_E' in eu and 'delta_I' in eu, eu.keys()
+assert eu['rho']['step'] == 'Step 4' and er['rho']['step'] == 'Step 3'
+assert 'witness' in eu['rho']['meaning']
+assert 'residual constraints' in er['rho']['meaning']
+assert set(SYMBOLS) >= {'d', 'gamma', 'rho', 'delta', 'delta_E', 'delta_I'}
+assert r.describe() and u.describe()
 print('MAXSMT_OK')
 """)
     assert rc == 0, out

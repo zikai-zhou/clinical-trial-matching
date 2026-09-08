@@ -1,4 +1,4 @@
-"""MaxSMT accountability artifacts — Steps 2-6 of the VERDICT algorithm.
+r"""MaxSMT accountability artifacts — Steps 2-6 of the VERDICT algorithm.
 
 Implements the published formulation (VERDICT, EMNLP update):
 
@@ -33,7 +33,60 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 OBSERVED, IMPUTED, UNRESOLVED = "OBSERVED", "IMPUTED", "UNRESOLVED"
+#: the submitted paper called IMPUTED conditions ASSUMED; accepted as an alias
+ASSUMED = "ASSUMED"
 ELIGIBLE, INELIGIBLE = "eligible", "ineligible"
+
+#: Which published formulation to run.
+RESIDUAL = "residual"   # submitted: rho = the UNRESOLVED conditions themselves
+MAXSMT = "maxsmt"       # update:    rho = the values MAXSMT assigns to them
+VERSIONS = (RESIDUAL, MAXSMT)
+
+
+# --------------------------------------------------------------------------
+# Paper mapping
+#
+# Every artifact this module produces maps to a symbol in the paper. Keep this
+# table next to the code so the two cannot drift.
+#
+SYMBOLS = {
+    "d": {
+        "symbol": "d", "field": "decision",
+        "meaning": "eligibility decision, ELIGIBLE iff SMT(phi_t /\\ S) is SAT",
+        "step": "Step 2", "versions": (RESIDUAL, MAXSMT)},
+    "gamma": {
+        "symbol": "gamma", "field": "trace",
+        "meaning": "decision trace: the derivation of d from the inputs",
+        "step": "Step 2", "versions": (RESIDUAL, MAXSMT)},
+    "rho": {
+        "symbol": "rho", "field": "assumptions",
+        "meaning": {
+            RESIDUAL: "residual constraints: the conditions of phi_t that remain "
+                      "UNRESOLVED after evidence and policy (a requirement)",
+            MAXSMT:   "assumptions: the value MAXSMT assigns to each UNRESOLVED "
+                      "condition (a witness, arbitrary within the satisfying region)",
+        },
+        "step": {RESIDUAL: "Step 3", MAXSMT: "Step 4"},
+        "versions": (RESIDUAL, MAXSMT)},
+    "delta": {
+        "symbol": "delta", "field": "pivotal",
+        "meaning": "pivotal conditions: what would have to change to flip d",
+        "step": {RESIDUAL: "Step 4", MAXSMT: "Step 6"},
+        "versions": (RESIDUAL, MAXSMT)},
+    "delta_E": {
+        "symbol": "delta_E", "field": "delta_e",
+        "meaning": "conditions to change to render the decision ELIGIBLE; "
+                   "empty iff d = ELIGIBLE",
+        "step": "Step 3", "versions": (MAXSMT,)},
+    "delta_I": {
+        "symbol": "delta_I", "field": "delta_i",
+        "meaning": "conditions to change to render the decision INELIGIBLE; "
+                   "empty iff d = INELIGIBLE",
+        "step": "Step 5", "versions": (MAXSMT,)},
+}
+
+#: which published PDF each version corresponds to
+PAPER_OF = {RESIDUAL: "submitted", MAXSMT: "update"}
 
 
 @dataclass
@@ -46,7 +99,7 @@ class Condition:
 
     @property
     def resolved(self) -> bool:
-        return self.status in (OBSERVED, IMPUTED)
+        return self.status in (OBSERVED, IMPUTED, ASSUMED)
 
 
 @dataclass
@@ -59,6 +112,48 @@ class Artifacts:
     delta_e: List[str] = field(default_factory=list)
     delta_i: List[str] = field(default_factory=list)
     status: str = "ok"
+    version: str = MAXSMT           # which formulation produced these
+
+
+    def to_paper(self, *, include_glossary: bool = True) -> Dict[str, Any]:
+        """Export the artifacts keyed by their symbol in the paper.
+
+            >>> a.to_paper()["rho"]["value"]
+            {'crcl': 60.0}
+
+        Symbols that do not exist in this version (delta_E / delta_I under
+        RESIDUAL) are omitted rather than emitted empty, so the export cannot
+        be mistaken for "computed and found empty".
+        """
+        out: Dict[str, Any] = {
+            "version": self.version,
+            "paper": PAPER_OF[self.version],
+            "status": self.status,
+        }
+        for sym, spec in SYMBOLS.items():
+            if self.version not in spec["versions"]:
+                continue
+            entry: Dict[str, Any] = {"value": getattr(self, spec["field"]),
+                                     "field": spec["field"]}
+            if include_glossary:
+                meaning = spec["meaning"]
+                step = spec["step"]
+                entry["meaning"] = (meaning[self.version]
+                                    if isinstance(meaning, dict) else meaning)
+                entry["step"] = (step[self.version]
+                                 if isinstance(step, dict) else step)
+            out[sym] = entry
+        return out
+
+    def describe(self) -> str:
+        """One-screen human summary with the paper symbols attached."""
+        d = self.to_paper()
+        lines = [f"VERDICT artifacts  [{d['version']} = {d['paper']} paper]"]
+        for sym in ("d", "gamma", "rho", "delta", "delta_E", "delta_I"):
+            if sym not in d:
+                continue
+            lines.append(f"  {sym:<8s} ({d[sym]['step']:<7s}) {d[sym]['value']}")
+        return "\n".join(lines)
 
     def for_verbalizer(self, phi_lines: Sequence[str]) -> Dict[str, Any]:
         """Step 7 view: numeric conditions reported as requirements, not witnesses.
@@ -145,13 +240,30 @@ def _lit(c: Condition) -> str:
     return f"(= |{c.name}| {c.value})"
 
 
-def solve(phi_lines: Sequence[str], conditions: Sequence[Condition]) -> Artifacts:
-    """Run Steps 2-6 and return the artifacts.
+def solve(phi_lines: Sequence[str], conditions: Sequence[Condition],
+          version: str = MAXSMT) -> Artifacts:
+    r"""Run the accountability computation and return the artifacts.
 
     Args:
         phi_lines:  the trial program phi_t, as SMT-LIB lines (hard constraints).
         conditions: every c_i with its status; resolved ones form S.
+        version:    MAXSMT (updated paper, default) or RESIDUAL (submitted).
+
+    The two versions differ in what rho means and how delta is found:
+
+    RESIDUAL (submitted, Steps 3-4)
+        rho   = {c_i | q_i = UNRESOLVED}                  the conditions themselves
+        delta = MAXSAT(phi /\ S, W)  .s = FALSE          if INELIGIBLE
+                MAXSAT(-(phi /\ S), W).s = FALSE          if ELIGIBLE
+
+    MAXSMT (update, Steps 3-6)
+        delta_E = MAXSMT(phi /\ S, W).s = FALSE
+        rho     = {c_i = MAXSMT(phi /\ S, W).c_i | q_i = UNRESOLVED}
+        delta_I = MAXSMT(-phi /\ S /\ rho, W').x = FALSE
+        delta   = delta_I if ELIGIBLE else delta_E
     """
+    if version not in VERSIONS:
+        raise ValueError(f"version must be one of {VERSIONS}, got {version!r}")
     z3 = _z3()
     phi_lines = list(phi_lines)
     resolved = [c for c in conditions if c.resolved]
@@ -175,10 +287,14 @@ def solve(phi_lines: Sequence[str], conditions: Sequence[Condition]) -> Artifact
     z = s.check()
     if z == z3.unknown:
         return Artifacts(decision=INELIGIBLE, trace="solver returned unknown",
-                         status="unknown")
+                         status="unknown", version=version)
     decision = ELIGIBLE if z == z3.sat else INELIGIBLE
     trace = "SAT under the asserted patient constraints" if z == z3.sat \
         else "UNSAT under the asserted patient constraints"
+
+    if version == RESIDUAL:
+        return _solve_residual(z3, hard, S_exprs, resolved, unresolved,
+                               decision, trace, phi_lines)
 
     # ---- Steps 3-4: MAXSMT(phi /\ S, W) ----------------------------------
     opt = z3.Optimize()
@@ -224,7 +340,40 @@ def solve(phi_lines: Sequence[str], conditions: Sequence[Condition]) -> Artifact
     # ---- Step 6 ----------------------------------------------------------
     pivotal = delta_i if decision == ELIGIBLE else delta_e
     return Artifacts(decision=decision, trace=trace, assumptions=assumptions,
-                     pivotal=pivotal, delta_e=delta_e, delta_i=delta_i)
+                     pivotal=pivotal, delta_e=delta_e, delta_i=delta_i,
+                     version=MAXSMT)
+
+
+def _solve_residual(z3, hard, S_exprs, resolved, unresolved, decision, trace,
+                    phi_lines) -> Artifacts:
+    r"""The submitted formulation (Steps 3-4).
+
+    rho is the *set of unresolved conditions*, not values assigned to them, so
+    it is reported with the requirement phi imposes where one exists. delta is
+    a single MAXSAT call whose formula depends on the decision.
+    """
+    rho = {c.name: requirement_for(c.name, phi_lines) for c in unresolved}
+
+    opt = z3.Optimize()
+    if decision == INELIGIBLE:                       # MAXSAT(phi /\ S, W)
+        opt.add(*hard)
+    else:                                            # MAXSAT(-(phi /\ S), W)
+        conj = z3.And(*hard, *S_exprs) if (hard or S_exprs) else z3.BoolVal(True)
+        opt.add(z3.Not(conj))
+    for e in S_exprs:
+        opt.add_soft(e, 1, "S")
+
+    pivotal: List[str] = []
+    if opt.check() == z3.sat:
+        m = opt.model()
+        for c, e in zip(resolved, S_exprs):
+            if not z3.is_true(m.eval(e, model_completion=True)):
+                pivotal.append(c.name)
+    else:
+        trace += "; MAXSAT infeasible"
+    return Artifacts(decision=decision, trace=trace, assumptions=rho,
+                     pivotal=pivotal, delta_e=[], delta_i=[],
+                     version=RESIDUAL)
 
 
 def _py(v) -> Any:
