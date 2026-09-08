@@ -10,8 +10,16 @@ from __future__ import annotations
 import argparse, json, pathlib, re, sys
 from collections import defaultdict
 sys.path.insert(0, str(pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/backup')))
-from overnight.repro_headline import is_silence, quote_smt, smt_number, thresh_binding_lines
-import z3
+try:
+    from overnight.repro_headline import is_silence, quote_smt, smt_number, thresh_binding_lines
+    import z3
+except ModuleNotFoundError as _e:  # pragma: no cover
+    raise ModuleNotFoundError(
+        "overnight is not part of this repository -- this batch driver "
+        "depends on an internal module that was not released. The "
+        "supported entry points are the `verdict` command and the "
+        "`verdict` Python package; see README."
+    ) from _e
 
 ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 

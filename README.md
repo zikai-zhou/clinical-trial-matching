@@ -4,6 +4,13 @@ Software that finds clinical trials a patient might qualify for, decides
 whether they actually meet the criteria, and shows its reasoning so a
 clinician can check it.
 
+**Status.** Actively developed. The reproduction path, both CLIs, both Python
+APIs and the accountability artifacts are tested and covered by CI. Some areas
+are known to be incomplete — see [Known gaps](#known-gaps). **Issues and
+questions are welcome**, especially reproduction failures, unclear
+documentation, and any place where the code and the paper disagree. Single
+maintainer on an academic timeline, so replies may be slow.
+
 It comes in two parts, which run in order:
 
 | | what it does | command |
@@ -363,6 +370,20 @@ gap between this repository and something you could point at a new patient.
 To reproduce the numbers in the paper, see
 [docs/REPRODUCE_TABLES.md](docs/REPRODUCE_TABLES.md). For where the data comes
 from and what may be redistributed, see [docs/DATA.md](docs/DATA.md).
+
+## Known gaps
+
+Documented so you do not have to rediscover them.
+
+| | |
+|---|---|
+| **No end-to-end run from a raw chart** | `verdict` decides pairs that stage-1 mining already processed. That step lives in the separate `cmsrc` codebase. See [What this does not do yet](#what-this-does-not-do-yet). |
+| **TrialGPT's verdict-balance row does not reproduce** | Every TrialGPT artifact here gives 13.2% eligible against the paper's 44.4%; that run is not in this repository. The script prints `DOES NOT MATCH` on the row. See [docs/REPRODUCE_TABLES.md](docs/REPRODUCE_TABLES.md). |
+| **Claude Haiku, ZSPM and Xu rows of the TREC table** | Separate API runs whose outputs were not retained. GPT-5-mini and Qwen rows do reproduce exactly. |
+| **Batch drivers under `matchers/systems/`** | Several depend on internal modules that were not released. They raise a clear error saying so. The supported entry points are the `verdict` command and the `verdict` package. |
+| **Test coverage is uneven** | `smt_core.maxsmt` is at 92% and the APIs are covered; `trial_compiler`, `patient_compiler`, `db_indexer` and `sql_retrieval` have no unit tests yet. |
+| **The evaluation corpora are not redistributed** | Licensing is unresolved for the SIGIR corpus. See [docs/DATA.md](docs/DATA.md). |
+| **`experiments/`** | Research scratch — exploratory scripts and dead ends kept for the record. Not held to library standards. The scripts that produced published numbers are listed in [docs/REPRODUCE_TABLES.md](docs/REPRODUCE_TABLES.md). |
 
 ## License
 

@@ -9,7 +9,15 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'experiments/99_counterfactual_lm'))
-from run_better_nl_full import get_pair_inputs, collect_pairs
+try:
+    from run_better_nl_full import get_pair_inputs, collect_pairs
+except ModuleNotFoundError as _e:  # pragma: no cover
+    raise ModuleNotFoundError(
+        "run_better_nl_full is not part of this repository -- this batch driver "
+        "depends on an internal module that was not released. The "
+        "supported entry points are the `verdict` command and the "
+        "`verdict` Python package; see README."
+    ) from _e
 
 
 def build_prompt(note: str, inc_text: str, exc_text: str) -> str:

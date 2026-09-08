@@ -17,7 +17,15 @@ import z3
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'backup'))
-from overnight.repro_headline import is_silence, quote_smt, smt_number, thresh_binding_lines
+try:
+    from overnight.repro_headline import is_silence, quote_smt, smt_number, thresh_binding_lines
+except ModuleNotFoundError as _e:  # pragma: no cover
+    raise ModuleNotFoundError(
+        "overnight is not part of this repository -- this batch driver "
+        "depends on an internal module that was not released. The "
+        "supported entry points are the `verdict` command and the "
+        "`verdict` Python package; see README."
+    ) from _e
 
 
 def solve_strict_inc(prog_lines, av, side):
