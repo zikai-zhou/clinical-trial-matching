@@ -1,25 +1,32 @@
 # Stanford OVAL - Mayo Clinical Trial Matcher
 
-Constraint-satisfaction trial retrieval (SatIR) and auditable eligibility matching (VERDICT).
+Software that finds clinical trials a patient might qualify for, decides
+whether they actually meet the criteria, and shows its reasoning so a
+clinician can check it.
 
-This repository contains **two related systems** from two papers:
+It comes in two parts, which run in order:
 
-| | what it does | entry point |
+| | what it does | command |
 |---|---|---|
-| **SatIR** | constraint-satisfaction-based trial *retrieval and compilation* — trial/patient compilers, clause DB indexing, SQL retrieval | `satir` |
-| **VERDICT** | auditable patient--trial *eligibility matching* — LLM formalization + SMT/MaxSAT decision, with a per-criterion audit trail | `verdict` |
+| **SatIR** | Searches a large trial corpus and narrows it to the handful worth a closer look. To do that it first turns each trial's eligibility criteria, and each patient note, into structured facts a computer can compare. | `satir` |
+| **VERDICT** | Takes one patient and one trial and answers *does this patient qualify?* — along with which criterion decided it, what it had to assume because the chart was silent, and what would change the answer. | `verdict` |
 
-They run in that order and share `smt_core` (entity canonicalization, attribute
-extraction, inference engines). SatIR compiles trials and patients into
-constraint programs and retrieves candidates at corpus scale; VERDICT then
-decides a given patient--trial pair over those programs and shows its work.
+The two share a common core (`smt_core`) that reads clinical language and
+normalizes it: mapping "kidney failure" and "renal insufficiency" to the same
+concept, pulling out numbers and units, and so on.
+
+Why bother with the second part? A language model asked "is this patient
+eligible?" will answer, but you cannot tell whether its explanation is the
+real reason for its answer. VERDICT separates *reading* the chart from
+*deciding* the verdict: a solver makes the decision from the extracted facts,
+so the explanation is generated from the same thing that produced the answer,
+not written afterwards.
 
 ```bash
 pip install -e .
-satir --help             # SatIR: setup / compile / index / retrieve / match
-verdict systems          # VERDICT: matcher variants
+satir --help             # find candidate trials
+verdict systems          # decide a patient-trial pair
 ```
-
 
 
 ## Quickstart
@@ -135,32 +142,60 @@ verdict.match("nope__NCT0")                  # raises MissingPairData
 verdict.match("nope__NCT0", strict=False)    # Decision(reasoning='no data')
 ```
 
-## Accountability artifacts (MaxSMT)
+## What the system tells you about a decision
 
-`smt_core.maxsmt` implements Steps 2--6 of the published VERDICT algorithm.
+Every verdict comes with three things beyond yes/no. Using the paper's running
+example — a trial that needs `egfr` true and creatinine clearance of at least
+60, and a chart that records a failing eGFR but says nothing about clearance:
 
 ```python
 from smt_core.maxsmt import Condition, solve, OBSERVED, UNRESOLVED
 
 phi = ["(declare-const |egfr| Bool)", "(declare-const |crcl| Real)",
        "(assert |egfr|)", "(assert (>= |crcl| 60))"]
-a = solve(phi, [Condition("egfr", False, OBSERVED),
-                Condition("crcl", None, UNRESOLVED)])
-
-a.decision      # 'ineligible'          d
-a.trace         # why                   gamma
-a.assumptions   # {'crcl': 60.0}        rho  -- the solver's witness
-a.pivotal       # ['egfr']              delta
-a.delta_e, a.delta_i
+a = solve(phi, [Condition("egfr", False, OBSERVED),      # chart says: failing
+                Condition("crcl", None, UNRESOLVED)])    # chart is silent
 ```
 
-Three invariants from the paper are asserted in the test suite:
-`delta_E = {}` iff ELIGIBLE, `delta_I = {}` iff INELIGIBLE, and `delta` is
-never empty.
+| what you get | in the example | what it means |
+|---|---|---|
+| `a.decision` | `'ineligible'` | the answer |
+| `a.trace` | why | how the solver got there |
+| `a.assumptions` | `{'crcl': ...}` | **what it had to assume.** The chart never mentions clearance, so the system filled it in to reach an answer. Every one of these is something a clinician should check. |
+| `a.pivotal` | `['egfr']` | **what would change the answer.** The eGFR result is the one thing standing between this patient and the trial. |
 
-### Two published formulations
+`a.delta_e` and `a.delta_i` split that last one: what would have to change to
+make the patient *eligible*, and what would make them *ineligible*. Whichever
+is relevant becomes `pivotal`.
 
-Both are implemented and selectable; neither is a rename of the other.
+Three properties hold by construction, and the tests check them: a patient is
+eligible exactly when nothing needs to change to make them eligible; ineligible
+exactly when nothing needs to change to make them ineligible; and there is
+always something that would flip the answer.
+
+### An assumed value is not a measurement
+
+When the chart is silent about a number, the solver picks *some* value that
+satisfies the trial. For "clearance of at least 60" it might pick 60, 72, or
+500 — all equally valid, none a fact about this patient.
+
+So the explanation must state **the requirement, not the number the solver
+picked**. Saying "creatinine clearance 72" would invent a lab result:
+
+```python
+a.for_verbalizer(phi)["assumptions"]["crcl"]
+# {'requirement': '>= 60', 'witness': 60.0}
+#   report the requirement; the witness is just the solver's pick
+```
+
+`verbalizer/prompts/_freeform_rationale_v13_maxsmt.prompt` carries this rule.
+It is a new prompt rather than an edit to the old one, so rationales published
+with the earlier version can still be reproduced.
+
+### Two versions of the algorithm
+
+The paper changed between the submitted and updated versions, so both are
+implemented. The difference is real, not a rename.
 
 ```python
 from smt_core.maxsmt import solve, RESIDUAL, MAXSMT
@@ -169,29 +204,29 @@ solve(phi, conds, version=RESIDUAL)   # submitted paper
 solve(phi, conds, version=MAXSMT)     # updated paper (default)
 ```
 
+In the submitted version, the unanswered conditions were reported as
+*requirements still outstanding* (`crcl >= 60`). In the update they are
+reported as *assumptions the system made* (`crcl = 60`) — a requirement and a
+value satisfying it are different claims. The update also computes both
+directions of "what would change the answer" separately, where the submitted
+version computed one.
+
 | | `RESIDUAL` (submitted) | `MAXSMT` (update) |
 |---|---|---|
-| `rho` | **residual constraints** — the UNRESOLVED conditions, as requirements: `{crcl: '>= 60'}` | **assumptions** — the value the solver assigns: `{crcl: 60.0}` |
-| `delta` | one MaxSAT call, formula depends on `d` (Step 4) | `delta_I` if ELIGIBLE else `delta_E` (Step 6) |
-| `delta_E`/`delta_I` | not computed | Steps 3 and 5 |
-| status vocabulary | OBSERVED / **ASSUMED** / UNRESOLVED | OBSERVED / **IMPUTED** / UNRESOLVED |
-| solver | MaxSAT | MaxSMT |
+| unanswered conditions | requirements outstanding: `{crcl: '>= 60'}` | assumptions made: `{crcl: 60.0}` |
+| what would flip it | one calculation | both directions, separately |
+| chart-silent value supplied by policy | called `ASSUMED` | called `IMPUTED` |
 
-`ASSUMED` is accepted as an alias for `IMPUTED` so records written under
-either paper load unchanged.
+`ASSUMED` is still accepted, so records written under either version load
+unchanged.
 
-### Mapping artifacts to the paper
+### Tying the output back to the paper
 
-`to_paper()` keys the artifacts by their symbol, with the meaning and step
-number attached, so code and paper cannot drift:
+If you are reading alongside the paper, `to_paper()` labels every field with
+its symbol and the step that produces it, so the code and the paper cannot
+drift apart:
 
 ```python
-a = solve(phi, conds, version=MAXSMT)
-a.to_paper()["rho"]
-# {'value': {'crcl': 60.0}, 'field': 'assumptions', 'step': 'Step 4',
-#  'meaning': 'assumptions: the value MAXSMT assigns to each UNRESOLVED
-#              condition (a witness, arbitrary within the satisfying region)'}
-
 print(a.describe())
 # VERDICT artifacts  [maxsmt = update paper]
 #   d        (Step 2 ) ineligible
@@ -201,25 +236,9 @@ print(a.describe())
 #   delta_I  (Step 5 ) []
 ```
 
-Symbols absent from a version (`delta_E`/`delta_I` under `RESIDUAL`) are
-**omitted** rather than exported empty, so a consumer cannot mistake
-"not computed" for "computed and found empty".
-
-### A witness is not a finding
-
-The witness for an unresolved numeric condition is arbitrary within the
-satisfying region: for `crcl >= 60` the solver may return 60, 72, or 500, and
-none is a fact about the patient. So a rationale must report **the requirement,
-never the witness**:
-
-```python
-a.for_verbalizer(phi)["assumptions"]["crcl"]
-# {'requirement': '>= 60', 'witness': 60.0}
-```
-
-`verbalizer/prompts/_freeform_rationale_v13_maxsmt.prompt` carries this rule.
-It is a new version rather than an edit to v12, so previously published
-rationales stay reproducible.
+Fields that a version does not compute are left out of the export rather than
+returned empty, so "we did not calculate this" cannot be misread as "we
+calculated it and found nothing".
 
 ### Tests and checks
 
@@ -235,14 +254,16 @@ hygiene. Checks whose local-only data is absent SKIP with the reason rather
 than failing, so it is also meaningful in a fresh clone. CI runs it on 3.12
 and 3.13.
 
-### Missing data is not a verdict
+### Missing data must not look like a "no"
 
-By default a variant that cannot load its pair returns
-`decision="ineligible", reasoning="no data"` — the behaviour the paper's
-numbers were produced under. Downstream that is a hazard: an absent file looks
-exactly like a real INELIGIBLE, and for a trial matcher that is the harmful
-direction, since the patient is silently not surfaced. Either check the flag or
-turn on strict mode:
+If the system cannot find the data for a pair, the underlying matcher returns
+`ineligible` with the note `"no data"`. That is how the paper's numbers were
+produced, so it stays the default — but it is a trap for anything built on
+top: a missing file then looks exactly like a patient who genuinely does not
+qualify. For a trial matcher that is the dangerous direction, because the
+patient quietly never gets surfaced.
+
+So either check for it, or ask to be told loudly:
 
 ```python
 from matchers import variants
@@ -250,7 +271,7 @@ from matchers.schema import MissingPairData
 
 d = variants.smt_lm_evidence_arbiter(pair_id)
 if d.is_missing_data:
-    ...                      # not a verdict
+    ...                      # this is not a verdict
 
 variants.strict(True)        # or: export VERDICT_STRICT=1
 try:
@@ -259,21 +280,23 @@ except MissingPairData:
     ...                      # raises instead of guessing
 ```
 
-The `verdict` CLI validates the pair id up front and refuses unknown pairs, so
-it never emits a verdict for missing data.
+The `verdict` command and the `verdict` Python package both do this for you:
+they refuse an unknown pair rather than returning an answer.
 
-### Scope — read this before you install
+### What this does not do yet
 
-`verdict` decides **pre-mined** patient--trial pairs. It reads the per-pair
-artifacts produced by the stage-1 atom miner from `$VERDICT_PAIR_DATA`
-(default `experiments/53_v2_full`). It does **not** yet accept a free-text
-chart and trial and run the pipeline end to end: stage-1 mining lives in the
-separate `cmsrc` codebase (set `$CMSRC_DIR`; see `docs/DATA.md`). Wiring that into a
-single `verdict match --chart c.txt --trial NCT...` call is the main piece of
-work between this repository and a general-purpose tool.
+`verdict` works on pairs that have already been processed — it reads
+per-pair files from `$VERDICT_PAIR_DATA` (default `experiments/53_v2_full`).
 
-Reproduction of the paper's tables is documented in `docs/REPRODUCE_TABLES.md`;
-data provenance and redistribution status in `docs/DATA.md`.
+**You cannot yet hand it a raw chart and a trial and get an answer.** That
+first processing step lives in a separate codebase (`cmsrc`; set `$CMSRC_DIR`,
+see [docs/DATA.md](docs/DATA.md)). Connecting it so that
+`verdict match --chart chart.txt --trial NCT...` works end to end is the main
+gap between this repository and something you could point at a new patient.
+
+To reproduce the numbers in the paper, see
+[docs/REPRODUCE_TABLES.md](docs/REPRODUCE_TABLES.md). For where the data comes
+from and what may be redistributed, see [docs/DATA.md](docs/DATA.md).
 
 ## License
 
