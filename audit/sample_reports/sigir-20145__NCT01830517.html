@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AEGIS Audit — sigir-20145__NCT01830517</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+             max-width: 900px; margin: 20px auto; padding: 0 20px; color: #111827; line-height: 1.5; }
+    h1 { border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 4px; }
+    table { font-size: 0.95em; }
+    .decision-banner { padding: 16px; border-radius: 8px; color: white;
+                        font-weight: 700; font-size: 1.4em; margin: 16px 0; }
+    .meta { color: #6b7280; font-size: 0.9em; }
+    .chart { background:#f9fafb; border-left: 4px solid #9ca3af;
+              padding: 12px 16px; margin: 12px 0; font-family: Georgia, serif; }
+    .other-systems { display: flex; gap: 16px; margin: 12px 0; }
+    .other-systems .card { flex: 1; border: 1px solid #e5e7eb; padding: 12px; border-radius: 6px; }
+    @media print {
+      body { max-width: none; margin: 0; padding: 0; font-size: 10pt; }
+      .decision-banner { page-break-after: avoid; }
+      section { page-break-inside: avoid; }
+      .filter-controls { display: none; }
+      details { display: block; }
+      details[open] summary { display: none; }
+      summary { display: none; }
+      details > div:not([style*="display"]) { display: block; }
+    }
+    .filter-controls { background:#f3f4f6;padding:10px 14px;border-radius:6px;margin:16px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap }
+    .filter-controls label { cursor:pointer;user-select:none;font-size:0.9em }
+    .filter-controls input[type=text] { padding:4px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:0.9em;width:200px }
+    tr[data-status].hidden-by-filter { display:none }
+    tr[data-status].hidden-by-search { display:none }
+    @media (max-width: 700px) {
+      body { padding: 0 12px; font-size: 0.95em; }
+      .other-systems { flex-direction: column; }
+      table td { padding: 6px 4px !important; font-size: 0.9em; }
+      [style*="grid-template-columns:1fr 1fr 1fr"] { display:block !important; }
+      [style*="grid-template-columns:1fr 1fr 1fr"] > div { margin-bottom: 8px !important; }
+    }
+  </style>
+  <script>
+    function applyFilter() {
+      const showOnlyViolations = document.getElementById('only-violations').checked;
+      const search = (document.getElementById('search-box')?.value || '').toLowerCase();
+      document.querySelectorAll('tr[data-status]').forEach(row => {
+        // Status filter
+        if (showOnlyViolations && row.dataset.status !== 'unsat') {
+          row.classList.add('hidden-by-filter');
+        } else {
+          row.classList.remove('hidden-by-filter');
+        }
+        // Search filter
+        if (search && !row.textContent.toLowerCase().includes(search)) {
+          row.classList.add('hidden-by-search');
+        } else {
+          row.classList.remove('hidden-by-search');
+        }
+      });
+    }
+    function expandAll(open) {
+      document.querySelectorAll('details').forEach(d => d.open = open);
+    }
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'v') {
+        const cb = document.getElementById('only-violations');
+        cb.checked = !cb.checked; applyFilter();
+      } else if (e.key === 'e') {
+        expandAll(true);
+      } else if (e.key === 'c') {
+        expandAll(false);
+      } else if (e.key === 'p') {
+        window.print();
+      } else if (e.key === '/') {
+        e.preventDefault();
+        document.getElementById('search-box')?.focus();
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>AEGIS Audit Report</h1>
+  <div class="meta">Patient: sigir-20145 &nbsp;•&nbsp; Trial: NCT01830517</div>
+
+  
+  <div style="padding:6px 0;margin:8px 0 14px 0;border-bottom:1px solid #e5e7eb">
+    <div style="font-size:1.05em;font-weight:600;color:#111827">Diurnal Variation in Hypertensive Stroke Patients</div>
+    <div style="color:#6b7280;font-size:0.85em;margin-top:2px">
+      <a href="https://clinicaltrials.gov/study/NCT01830517" style="color:#3730a3">NCT01830517</a>
+       · Phase 4
+    </div>
+    <details style="margin-top:8px"><summary style="cursor:pointer;color:#6b7280;font-size:0.9em">Show trial summary & official criteria</summary><div style="padding:10px 0;color:#374151;font-size:0.9em"><div style="margin-bottom:8px"><b style="color:#374151">Summary.</b> This study was conducted to evaluate and compare the effectiveness of Amodipin® (amlodipine camsylate) with that of Cozaar® (losartan potassium) in hypertensive patients with an acute ischemic stroke by measuring their 24-hour ambulatory BP (ABP).</div><div style="margin-bottom:8px"><b style="color:#374151">Inclusion criteria.</b><pre style="margin:4px 0;padding:8px;background:#fafafa;border:1px solid #e5e7eb;border-radius:4px;white-space:pre-wrap;font-size:0.85em">inclusion criteria: 
+
+ aged 35 to 85 years 
+
+ hypertensive patients who had an ischemic stroke 
+
+ </pre></div><div><b style="color:#374151">Exclusion criteria.</b><pre style="margin:4px 0;padding:8px;background:#fafafa;border:1px solid #e5e7eb;border-radius:4px;white-space:pre-wrap;font-size:0.85em">: 
+
+ patients aged below 35 years or above 86 years; 
+
+ patients who had a hemorrhagic stroke; 
+
+ patients whose systolic BP (SBP) was over 220 mmHg or whose diastolic BP (DBP) was above 120 mmHg during an acute phase, or whose SBP was over 180 mmHg or whose DBP was over 110 mmHg one week after their hospital visit; 
+
+ patients with secondary hypertension related to renovascular, endocrinologic, or pregnant conditions 
+
+ patients who went to bed in the middle of the day or very late at night; (6) patients who were using intravenous antico-agulants or thrombolytics; 
+
+ (7) patients with a severe stroke (NIH stroke scale &gt; 20); (8) patients who could not give their consent to investigators; (9) patients with severely impaired liver function (AST or ALT ≥ 100); (10) patients with severely impaired renal function (serum creatinine ≥ 2.0 mg/dL); (11) patients with cancer; (12) patients who were pregnant or lactating; (13) patients with other grave diseases such as hypertensive encephalopathy, aortic dissection, acute myocardial infarction, or severe congestive heart failure; and (14) patients who were allergic to the test or control drugs</pre></div></div></details>
+  </div>
+
+  
+    <div id="aegis-live-decision" title="Click any value in a rule below to explore what-if scenarios."
+         style="padding:12px 18px;border-radius:8px;margin:16px 0 6px 0;
+                border:1px solid #dc2626;background:#fef2f2;
+                position:sticky;top:0;z-index:10;
+                box-shadow:0 1px 3px rgba(0,0,0,0.05);
+                display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div id="aegis-decision-text" style="font-size:1.15em;font-weight:600;color:#dc2626">
+        <span style="font-size:1.2em;margin-right:6px">✗</span>
+        AEGIS: Ineligible · 27 exclusion violations
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;font-size:0.85em;color:#6b7280;flex-wrap:wrap">
+        <span id="aegis-counts" style="font-family:'SF Mono',Menlo,monospace;font-size:0.88em;
+              background:white;padding:3px 8px;border-radius:4px;border:1px solid #e5e7eb">
+          <span style="color:#dc2626">0 ✗</span> ·
+          <span style="color:#f59e0b">0 ?</span> ·
+          <span style="color:#16a34a">0 ✓</span>
+        </span>
+        <span id="aegis-edit-status"></span>
+        <button id="aegis-fix-all" title="Apply one quick-fix per remaining violation"
+                style="display:none;padding:3px 10px;border:1px solid #7c3aed;
+                       background:#ede9fe;color:#5b21b6;border-radius:4px;cursor:pointer;
+                       font-size:0.85em;font-weight:600">
+          Fix all remaining
+        </button>
+        <button id="aegis-reset"
+                style="display:none;padding:3px 10px;border:1px solid #d1d5db;
+                       background:white;border-radius:4px;cursor:pointer;font-size:0.85em">
+          Reset to chart
+        </button>
+      </div>
+    </div>
+    <div id="aegis-edit-diff" style="display:none;margin:0 0 14px 0;padding:8px 12px;
+         background:#faf5ff;border-left:3px solid #7c3aed;border-radius:4px;
+         font-size:0.86em;color:#5b21b6"></div>
+    <script id="aegis-payload" type="application/json">{&quot;inclusion&quot;: [{&quot;name&quot;: &quot;REQ0_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;&gt;=&quot;, &quot;patient_age_value_recorded_now_in_years&quot;, &quot;35.0&quot;], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_years&quot;]}, {&quot;name&quot;: &quot;REQ0_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;&lt;=&quot;, &quot;patient_age_value_recorded_now_in_years&quot;, &quot;85.0&quot;], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_years&quot;]}, {&quot;name&quot;: &quot;REQ1_COMPONENT0_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE&quot;, &quot;ast&quot;: &quot;patient_has_diagnosis_of_hypertensive_disorder_now&quot;, &quot;vars&quot;: [&quot;patient_has_diagnosis_of_hypertensive_disorder_now&quot;]}, {&quot;name&quot;: &quot;REQ1_COMPONENT1_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE&quot;, &quot;ast&quot;: &quot;patient_has_diagnosis_of_ischemic_stroke_inthehistory@@current_episode&quot;, &quot;vars&quot;: [&quot;patient_has_diagnosis_of_ischemic_stroke_inthehistory@@current_episode&quot;]}], &quot;exclusion&quot;: [{&quot;name&quot;: &quot;REQ0_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, [&quot;&lt;&quot;, &quot;patient_age_value_recorded_now_in_years&quot;, &quot;35&quot;]], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_years&quot;]}, {&quot;name&quot;: &quot;REQ0_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, [&quot;&gt;&quot;, &quot;patient_age_value_recorded_now_in_years&quot;, &quot;86&quot;]], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_years&quot;]}, {&quot;name&quot;: &quot;REQ1_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_diagnosis_of_hemorrhagic_cerebral_infarction_now&quot;], &quot;vars&quot;: [&quot;patient_has_diagnosis_of_hemorrhagic_cerebral_infarction_now&quot;]}, {&quot;name&quot;: &quot;REQ2_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, [&quot;and&quot;, &quot;patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase&quot;, [&quot;&gt;&quot;, &quot;patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg&quot;, &quot;220&quot;]]], &quot;vars&quot;: [&quot;patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg&quot;, &quot;patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase&quot;]}, {&quot;name&quot;: &quot;REQ2_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, [&quot;and&quot;, &quot;patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase&quot;, [&quot;&gt;&quot;, &quot;patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg&quot;, &quot;120&quot;]]], &quot;vars&quot;: [&quot;patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg&quot;, &quot;patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase&quot;]}, {&quot;name&quot;: &quot;REQ2_COMPONENT2_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, [&quot;&gt;&quot;, &quot;patient_systolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg&quot;, &quot;180&quot;]], &quot;vars&quot;: [&quot;patient_systolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg&quot;]}, {&quot;name&quot;: &quot;REQ2_COMPONENT3_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, [&quot;&gt;&quot;, &quot;patient_diastolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg&quot;, &quot;110&quot;]], &quot;vars&quot;: [&quot;patient_diastolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg&quot;]}, {&quot;name&quot;: &quot;REQ3_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_secondary_hypertension_now@@caused_by_renovascular_conditions&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_secondary_hypertension_now@@caused_by_renovascular_conditions&quot;]}, {&quot;name&quot;: &quot;REQ3_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_hypertension_secondary_to_endocrine_disorder_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_hypertension_secondary_to_endocrine_disorder_now&quot;]}, {&quot;name&quot;: &quot;REQ3_COMPONENT2_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_secondary_hypertension_now@@caused_by_pregnant_conditions&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_secondary_hypertension_now@@caused_by_pregnant_conditions&quot;]}, {&quot;name&quot;: &quot;REQ4_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_goes_to_bed_in_the_middle_of_the_day_now&quot;], &quot;vars&quot;: [&quot;patient_goes_to_bed_in_the_middle_of_the_day_now&quot;]}, {&quot;name&quot;: &quot;REQ4_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_goes_to_bed_very_late_at_night_now&quot;], &quot;vars&quot;: [&quot;patient_goes_to_bed_very_late_at_night_now&quot;]}, {&quot;name&quot;: &quot;REQ5_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_is_exposed_to_anticoagulant_now@@administered_intravenously&quot;], &quot;vars&quot;: [&quot;patient_is_exposed_to_anticoagulant_now@@administered_intravenously&quot;]}, {&quot;name&quot;: &quot;REQ5_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_is_undergoing_intravenous_infusion_of_thrombolytic_now&quot;], &quot;vars&quot;: [&quot;patient_is_undergoing_intravenous_infusion_of_thrombolytic_now&quot;]}, {&quot;name&quot;: &quot;REQ6_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_diagnosis_of_cerebrovascular_accident_now@@severe&quot;], &quot;vars&quot;: [&quot;patient_has_diagnosis_of_cerebrovascular_accident_now@@severe&quot;]}, {&quot;name&quot;: &quot;REQ7_COMPONENT0_CAN_ALWAYS_GO_FROM_SATISFIED_TO_NOTSATISFIED&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_cannot_give_consent_to_investigators&quot;], &quot;vars&quot;: [&quot;patient_cannot_give_consent_to_investigators&quot;]}, {&quot;name&quot;: &quot;REQ8_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_hepatic_failure_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_hepatic_failure_now&quot;]}, {&quot;name&quot;: &quot;REQ9_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, [&quot;and&quot;, [&quot;not&quot;, [&quot;=&quot;, &quot;patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl&quot;, &quot;0.0&quot;]], [&quot;&gt;=&quot;, &quot;patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl&quot;, &quot;2.0&quot;]]], &quot;vars&quot;: [&quot;patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl&quot;]}, {&quot;name&quot;: &quot;REQ10_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_diagnosis_of_malignant_neoplastic_disease_now&quot;], &quot;vars&quot;: [&quot;patient_has_diagnosis_of_malignant_neoplastic_disease_now&quot;]}, {&quot;name&quot;: &quot;REQ11_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_is_pregnant_now&quot;], &quot;vars&quot;: [&quot;patient_is_pregnant_now&quot;]}, {&quot;name&quot;: &quot;REQ11_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_is_lactating_now&quot;], &quot;vars&quot;: [&quot;patient_is_lactating_now&quot;]}, {&quot;name&quot;: &quot;REQ12_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_other_grave_disease_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_other_grave_disease_now&quot;]}, {&quot;name&quot;: &quot;REQ12_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_other_grave_disease_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_other_grave_disease_now&quot;]}, {&quot;name&quot;: &quot;REQ12_COMPONENT2_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_other_grave_disease_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_other_grave_disease_now&quot;]}, {&quot;name&quot;: &quot;REQ12_COMPONENT3_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_other_grave_disease_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_other_grave_disease_now&quot;]}, {&quot;name&quot;: &quot;REQ13_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_allergy_to_test_drug_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_allergy_to_test_drug_now&quot;]}, {&quot;name&quot;: &quot;REQ13_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;not&quot;, &quot;patient_has_finding_of_allergy_to_control_drug_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_allergy_to_control_drug_now&quot;]}], &quot;values&quot;: {&quot;patient_age_value_recorded_now_in_years&quot;: {&quot;value&quot;: 56.0, &quot;type&quot;: &quot;num&quot;}, &quot;patient_has_diagnosis_of_hypertensive_disorder_now&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_has_diagnosis_of_ischemic_stroke_inthehistory&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_has_diagnosis_of_ischemic_stroke_inthehistory@@current_episode&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_has_diagnosis_of_hemorrhagic_cerebral_infarction_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_diagnosis_of_malignant_neoplastic_disease_now&quot;: {&quot;value&quot;: true, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_acute_myocardial_infarction_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_hepatic_failure_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_hypertension_secondary_to_endocrine_disorder_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_secondary_hypertension_now@@caused_by_renovascular_conditions&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_is_exposed_to_anticoagulant_now@@administered_intravenously&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_is_pregnant_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_national_institutes_of_health_stroke_scale_score_value_recorded_now_withunit_none&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_aspartate_aminotransferase_value_recorded_now_withunit_unit&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_cannot_give_consent_to_investigators&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_allergy_to_control_drug_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_congestive_heart_failure_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_other_grave_disease_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_other_grave_disease_now@@other&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_secondary_hypertension_now@@caused_by_pregnant_conditions&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_is_undergoing_intravenous_infusion_of_thrombolytic_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_alanine_aminotransferase_value_recorded_now_withunit_unit&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_diastolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_goes_to_bed_very_late_at_night_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_diagnosis_of_cerebrovascular_accident_now@@severe&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_allergy_to_drug_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_dissection_of_aorta_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_secondary_hypertension_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_is_lactating_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_systolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_goes_to_bed_in_the_middle_of_the_day_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_diagnosis_of_cerebrovascular_accident_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_allergy_to_test_drug_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_congestive_heart_failure_now@@severe&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_hypertensive_encephalopathy_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_is_exposed_to_anticoagulant_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}}}</script>
+    <script>window.__AEGIS_PAYLOAD__ = JSON.parse(document.getElementById('aegis-payload').textContent);</script>
+    
+<script>
+(function () {
+  const P = window.__AEGIS_PAYLOAD__;
+  if (!P) return;
+  const V = P.values;  // var -> {value, type}
+
+  // --- 3-valued logic evaluator ---
+  function ev(e) {
+    if (typeof e === "string") {
+      if (e in V) {
+        const x = V[e].value;
+        return x === null ? null : x;
+      }
+      // literal number
+      const n = parseFloat(e);
+      if (!isNaN(n)) return n;
+      if (e === "true") return true;
+      if (e === "false") return false;
+      return null;
+    }
+    if (!Array.isArray(e) || e.length === 0) return null;
+    const op = e[0];
+    const args = e.slice(1).map(ev);
+    switch (op) {
+      case "and": {
+        if (args.includes(false)) return false;
+        if (args.includes(null)) return null;
+        return true;
+      }
+      case "or": {
+        if (args.includes(true)) return true;
+        if (args.includes(null)) return null;
+        return false;
+      }
+      case "not": {
+        const a = args[0];
+        return a === null ? null : !a;
+      }
+      case "=>":
+      case "implies": {
+        const [a, b] = args;
+        if (a === false) return true;
+        if (a === null) return null;
+        return b;
+      }
+      case "=": {
+        const [a, b] = args;
+        if (a === null || b === null) return null;
+        return a === b;
+      }
+      case ">=": { const [a,b]=args; return (a===null||b===null)?null:(a>=b); }
+      case "<=": { const [a,b]=args; return (a===null||b===null)?null:(a<=b); }
+      case ">":  { const [a,b]=args; return (a===null||b===null)?null:(a>b); }
+      case "<":  { const [a,b]=args; return (a===null||b===null)?null:(a<b); }
+      case "distinct": {
+        if (args.some(x=>x===null)) return null;
+        const s = new Set(args.map(JSON.stringify));
+        return s.size === args.length;
+      }
+      default: return null;
+    }
+  }
+
+  function status(v) {
+    if (v === true)  return "sat";
+    if (v === false) return "unsat";
+    return "unknown";
+  }
+
+  // For a violated REQ, compute minimal patient-value edits that would satisfy it.
+  // Returns [{var, newVal, desc}] suggestions; first one is the quickest fix.
+  function suggestFixes(ast) {
+    const fixes = [];
+    function suggestForVar(v, target, desc) {
+      if (!(v in V)) return;
+      fixes.push({ var: v, newVal: target, desc });
+    }
+    function atomName(v) { return v.replace(/^patient_/, "").replace(/_/g, " ").replace(/@@/g, " / "); }
+    function walk(e, polarity) {
+      // polarity: +1 if we need this subexpr true, -1 if false (for solving)
+      if (typeof e === "string") {
+        if (!(e in V)) return;
+        if (polarity > 0) suggestForVar(e, true,  `assume ${atomName(e)}`);
+        else              suggestForVar(e, false, `assume ${atomName(e)} is not the case`);
+        return;
+      }
+      if (!Array.isArray(e)) return;
+      const op = e[0];
+      if (op === "not") { walk(e[1], -polarity); return; }
+      if ((op === "and" && polarity > 0) || (op === "or" && polarity < 0)) {
+        // need all children to have this polarity
+        for (const c of e.slice(1)) {
+          if (status(ev(c)) !== (polarity > 0 ? "sat" : "unsat")) walk(c, polarity);
+        }
+        return;
+      }
+      if ((op === "or" && polarity > 0) || (op === "and" && polarity < 0)) {
+        // Need just one child to flip; pick the cheapest option (atom that is null/false)
+        for (const c of e.slice(1)) {
+          walk(c, polarity);
+          // One suggestion per or-branch is enough
+        }
+        return;
+      }
+      // Comparisons: figure out what value would satisfy
+      if ([">=","<=",">","<","="].includes(op) && polarity > 0 && typeof e[1] === "string") {
+        const v = e[1]; const nRaw = e[2]; const n = parseFloat(nRaw);
+        if (isNaN(n) || !(v in V)) return;
+        const cur = V[v].value;
+        const nm = atomName(v);
+        if (op === ">=") suggestForVar(v, cur !== null && cur >= n ? cur : n,
+                                        `set ${nm} to ${n} (≥ ${n})`);
+        else if (op === "<=") suggestForVar(v, cur !== null && cur <= n ? cur : n,
+                                        `set ${nm} to ${n} (≤ ${n})`);
+        else if (op === ">")  suggestForVar(v, cur !== null && cur > n ? cur : n + 1,
+                                        `set ${nm} to ${n+1} (> ${n})`);
+        else if (op === "<")  suggestForVar(v, cur !== null && cur < n ? cur : n - 1,
+                                        `set ${nm} to ${n-1} (< ${n})`);
+        else if (op === "=")  suggestForVar(v, n, `set ${nm} to ${n}`);
+      }
+    }
+    walk(ast, 1);
+    // Dedupe by var; keep first
+    const seen = new Set(); const out = [];
+    for (const f of fixes) {
+      if (seen.has(f.var)) continue;
+      seen.add(f.var); out.push(f);
+    }
+    return out;
+  }
+
+  function badgeStyle(st) {
+    if (st === "sat")     return {txt:"SATISFIED",color:"#16a34a",bg:"#ecfdf5"};
+    if (st === "unsat")   return {txt:"VIOLATED", color:"#dc2626",bg:"#fef2f2"};
+    return                       {txt:"UNKNOWN", color:"#f59e0b",bg:"#fffbeb"};
+  }
+
+  // Recompute: mark each req card with new status; recompute top decision
+  function recompute() {
+    let anyUnsatInc = false, anyUnsatExc = false;
+    let anyUnkInc = false, anyUnkExc = false;
+    let totSat = 0, totAll = 0;
+
+    function updateSide(reqs, sideKey) {
+      for (const r of reqs) {
+        const v = ev(r.ast);
+        const st = status(v);
+        totAll++;
+        if (st === "sat") totSat++;
+        if (sideKey === "inclusion") {
+          if (st === "unsat") anyUnsatInc = true;
+          if (st === "unknown") anyUnkInc = true;
+        } else {
+          if (st === "unsat") anyUnsatExc = true;
+          if (st === "unknown") anyUnkExc = true;
+        }
+        const card = document.querySelector(`[data-req="${r.name}"]`);
+        if (card) {
+          const b = badgeStyle(st);
+          card.style.borderLeftColor = b.color;
+          const badge = card.querySelector(".aegis-badge");
+          if (badge) {
+            badge.textContent = b.txt;
+            badge.style.color = b.color;
+            badge.style.background = b.bg;
+          }
+          const conflict = card.querySelector(".aegis-conflict");
+          if (conflict) conflict.style.display = (st === "unsat") ? "" : "none";
+          // Quick-fix strip: shown only when unsat
+          let fix = card.querySelector(".aegis-fixes");
+          if (!fix) {
+            fix = document.createElement("div");
+            fix.className = "aegis-fixes";
+            fix.style.cssText = "margin-top:8px;padding-left:calc(1.2em + 10px);"
+              + "font-size:0.85em;display:none";
+            const body = card.querySelector(".aegis-req-title")?.parentElement;
+            if (body) body.appendChild(fix);
+          }
+          if (st === "unsat") {
+            const sugs = suggestFixes(r.ast).slice(0, 4);
+            if (sugs.length) {
+              fix.style.display = "";
+              fix.innerHTML = '<span style="color:#9ca3af;margin-right:6px">What would fix this →</span>'
+                + sugs.map((s, i) =>
+                    `<button data-fvar="${s.var}" data-fval='${JSON.stringify(s.newVal)}'
+                       style="margin:0 4px 4px 0;padding:2px 10px;border:1px solid #fca5a5;
+                              background:white;color:#dc2626;border-radius:12px;cursor:pointer;
+                              font-size:0.85em">${s.desc}</button>`
+                  ).join("");
+            } else {
+              fix.style.display = "none";
+            }
+          } else {
+            fix.style.display = "none";
+          }
+        }
+      }
+    }
+    updateSide(P.inclusion, "inclusion");
+    updateSide(P.exclusion, "exclusion");
+
+    // Overall decision (mirror AEGIS rule)
+    let decision, color, bg, icon, text;
+    const unsatInc = P.inclusion.filter(r => status(ev(r.ast)) === "unsat").length;
+    const unsatExc = P.exclusion.filter(r => status(ev(r.ast)) === "unsat").length;
+    const unkInc  = P.inclusion.filter(r => status(ev(r.ast)) === "unknown").length;
+    const unkExc  = P.exclusion.filter(r => status(ev(r.ast)) === "unknown").length;
+    if (!anyUnsatInc && !anyUnsatExc && !anyUnkInc && !anyUnkExc) {
+      decision="eligible"; color="#16a34a"; bg="#ecfdf5"; icon="✓";
+      text="Eligible · all "+totAll+" requirements satisfied";
+    } else if (anyUnsatInc || anyUnsatExc) {
+      decision="ineligible"; color="#dc2626"; bg="#fef2f2"; icon="✗";
+      const bits = [];
+      if (unsatInc) bits.push(unsatInc+" inclusion violation"+(unsatInc>1?"s":""));
+      if (unsatExc) bits.push(unsatExc+" exclusion violation"+(unsatExc>1?"s":""));
+      text="Ineligible · " + bits.join(", ");
+    } else {
+      decision="defer"; color="#f59e0b"; bg="#fffbeb"; icon="?";
+      text="Defer · " + (unkInc+unkExc) + " requirement"+((unkInc+unkExc)>1?"s":"") + " with unknown values";
+    }
+    const totUnsat = unsatInc + unsatExc;
+    const totUnk = unkInc + unkExc;
+    const countsEl = document.getElementById("aegis-counts");
+    if (countsEl) {
+      countsEl.innerHTML =
+        `<a href="#section-unsat" title="Jump to violations" style="color:#dc2626;text-decoration:none;cursor:pointer">${totUnsat} ✗</a> · ` +
+        `<a href="#section-unknown" title="Jump to unknown" style="color:#f59e0b;text-decoration:none;cursor:pointer">${totUnk} ?</a> · ` +
+        `<a href="#section-sat" title="Jump to satisfied" style="color:#16a34a;text-decoration:none;cursor:pointer">${totSat} ✓</a>`;
+    }
+    const banner = document.getElementById("aegis-live-decision");
+    const dtext = document.getElementById("aegis-decision-text");
+    if (banner) {
+      banner.style.background = bg;
+      banner.style.borderColor = color;
+    }
+    if (dtext) {
+      dtext.innerHTML = `<span style="color:${color};font-size:1.3em;margin-right:6px">${icon}</span>`
+        + `<span style="color:${color}">AEGIS: ${text}</span>`;
+    }
+    // Update all .aegis-val spans whose variable changed
+    document.querySelectorAll(".aegis-val").forEach(el => {
+      const vr = el.dataset.var;
+      if (!(vr in V)) return;
+      const x = V[vr].value;
+      const fmt = el.dataset.format || "pill";
+      let txt, color, bg;
+      if (x === null)       { txt="unknown"; color="#6b7280"; bg="#f3f4f6"; }
+      else if (x === true)  { txt="yes";     color="#065f46"; bg="#d1fae5"; }
+      else if (x === false) { txt="no";      color="#7f1d1d"; bg="#fee2e2"; }
+      else                  { txt=String(x); color="#1e3a8a"; bg="#dbeafe"; }
+      if (fmt === "pill") {
+        el.textContent = txt;
+        el.style.color = color;
+        el.style.background = bg;
+      } else {
+        // fact format: larger text
+        el.innerHTML = `<span style="color:${color};font-weight:600">${txt}</span>`;
+      }
+    });
+  }
+
+  // Bind click handlers: click .aegis-val to cycle bool; numeric opens prompt
+  // Fix-button handler
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-fvar]");
+    if (!btn) return;
+    const v = btn.dataset.fvar;
+    const val = JSON.parse(btn.dataset.fval);
+    if (!(v in V)) return;
+    V[v].value = val;
+    if (val === true || val === false) V[v].type = "bool";
+    else if (typeof val === "number") V[v].type = "num";
+    recompute();
+    // brief highlight on banner
+    const banner = document.getElementById("aegis-live-decision");
+    if (banner) {
+      banner.style.transition = "box-shadow 0.3s";
+      banner.style.boxShadow = "0 0 0 3px rgba(124,58,237,0.3)";
+      setTimeout(() => banner.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)", 400);
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest(".aegis-val");
+    if (!el) return;
+    const vr = el.dataset.var;
+    if (!(vr in V)) return;
+    const meta = V[vr];
+    if (meta.type === "bool" || meta.type === "unknown") {
+      // cycle: null -> true -> false -> null
+      const cur = meta.value;
+      meta.value = (cur === null) ? true : (cur === true ? false : null);
+      meta.type = "bool";
+    } else if (meta.type === "num") {
+      const s = prompt(`Set ${vr} (current = ${meta.value}). Blank = unknown.`,
+                       meta.value === null ? "" : meta.value);
+      if (s === null) return;  // cancelled
+      const f = parseFloat(s);
+      meta.value = (s === "" || isNaN(f)) ? null : f;
+    }
+    recompute();
+  });
+
+  // Clicking a count anchor should auto-open that collapsed section
+  function openHashSection() {
+    const h = window.location.hash;
+    if (!h) return;
+    const el = document.querySelector(h);
+    if (el && el.tagName === "DETAILS") el.open = true;
+  }
+  window.addEventListener("hashchange", openHashSection);
+  openHashSection();
+
+  // Snapshot initial values for edit-tracking & reset
+  const initial = JSON.parse(JSON.stringify(V));
+
+  function fmtVal(x) {
+    if (x === null) return "unknown";
+    if (x === true) return "yes";
+    if (x === false) return "no";
+    return String(x);
+  }
+  function atomName(v) {
+    return v.replace(/^patient_/, "").replace(/_/g, " ").replace(/@@/g, " / ");
+  }
+  function editStatus() {
+    const edits = [];
+    for (const k of Object.keys(V)) {
+      if (JSON.stringify(V[k].value) !== JSON.stringify(initial[k].value)) edits.push(k);
+    }
+    const n = edits.length;
+    const el = document.getElementById("aegis-edit-status");
+    const reset = document.getElementById("aegis-reset");
+    const fixAll = document.getElementById("aegis-fix-all");
+    const diff = document.getElementById("aegis-edit-diff");
+    if (el) {
+      el.innerHTML = n === 0
+        ? '<span style="color:#9ca3af">unchanged from chart</span>'
+        : `<b style="color:#7c3aed">what-if · ${n} edit${n>1?"s":""}</b>`;
+    }
+    if (reset) reset.style.display = n > 0 ? "" : "none";
+    // Fix-all visible whenever there is at least one violation
+    const anyViolation = [...P.inclusion, ...P.exclusion]
+      .some(r => status(ev(r.ast)) === "unsat");
+    if (fixAll) fixAll.style.display = anyViolation ? "" : "none";
+    // Edit-diff summary
+    if (diff) {
+      if (n === 0) {
+        diff.style.display = "none";
+      } else {
+        diff.style.display = "";
+        const rows = edits.slice(0, 8).map(k => {
+          const before = fmtVal(initial[k].value);
+          const after  = fmtVal(V[k].value);
+          return `<li style="margin:2px 0"><code style="color:#374151;font-size:0.95em">${atomName(k)}</code>: <span style="color:#9ca3af">${before}</span> → <b>${after}</b></li>`;
+        }).join("");
+        const more = n > 8 ? `<li style="color:#9ca3af">(+${n-8} more)</li>` : "";
+        diff.innerHTML = '<b>Assumptions you\'ve applied:</b><ul style="margin:4px 0;padding-left:20px">'
+          + rows + more + '</ul>';
+      }
+    }
+  }
+
+  // Run edit-status after every recompute
+  const _origRecompute = recompute;
+  recompute = function() { _origRecompute(); editStatus(); };
+  recompute();
+
+  const resetBtn = document.getElementById("aegis-reset");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      for (const k of Object.keys(V)) {
+        V[k].value = initial[k].value;
+        V[k].type  = initial[k].type;
+      }
+      recompute();
+    });
+  }
+
+  const fixAllBtn = document.getElementById("aegis-fix-all");
+  if (fixAllBtn) {
+    fixAllBtn.addEventListener("click", () => {
+      // Iterate up to a few passes — applying one REQ's fix may satisfy others
+      for (let pass = 0; pass < 4; pass++) {
+        let changed = false;
+        for (const r of [...P.inclusion, ...P.exclusion]) {
+          if (status(ev(r.ast)) !== "unsat") continue;
+          const sugs = suggestFixes(r.ast);
+          if (!sugs.length) continue;
+          const s = sugs[0];
+          if (JSON.stringify(V[s.var].value) === JSON.stringify(s.newVal)) continue;
+          V[s.var].value = s.newVal;
+          if (s.newVal === true || s.newVal === false) V[s.var].type = "bool";
+          else if (typeof s.newVal === "number") V[s.var].type = "num";
+          changed = true;
+        }
+        if (!changed) break;
+      }
+      recompute();
+    });
+  }
+})();
+</script>
+
+    
+
+  <div style="color:#6b7280;font-size:0.85em;margin:-6px 0 14px 0">
+    Peer systems — GPT-4.1 Direct: <b style="color:#374151">Ineligible</b>
+    · TrialGPT: <b style="color:#374151">Ineligible</b>
+     · <span style='color:#16a34a'>all three agree</span>
+  </div>
+
+  
+    <section style="margin:20px 0">
+      
+        <details id="section-unsat" open style="margin:14px 0;scroll-margin-top:80px">
+          <summary style="cursor:pointer;font-weight:600;color:#dc2626;font-size:1.05em;
+                          padding:6px 0;border-bottom:1px solid #e5e7eb;margin-bottom:10px;
+                          list-style:none">
+            <span style="display:inline-block;transition:transform 0.15s">▾</span>
+            ✗ Blocking eligibility <span style='color:#9ca3af;font-weight:400'>(27)</span>
+          </summary>
+          <div>
+    <div data-req="REQ0_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>age (years) ≥ 35</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age (years)</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_years" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">56</span> <b style="color:#9ca3af;font-weight:500">at least</b> 35</div>
+          <div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 56-year-old female”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ0_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>age (years) ≤ 86</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age (years)</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_years" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">56</span> <b style="color:#9ca3af;font-weight:500">at most</b> 86</div>
+          <div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 56-year-old female”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ1_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have diagnosis of hemorrhagic cerebral infarction</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has diagnosis of hemorrhagic cerebral infarction</code><span class="aegis-val" data-var="patient_has_diagnosis_of_hemorrhagic_cerebral_infarction_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ2_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Exclusion: Systolic blood pressure &gt; 220 mmHg during an acute phase</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> (∧ <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">systolic blood pressure (mmHg) — measured during acute phase</code><span class="aegis-val" data-var="patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span>
+             <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">systolic blood pressure (mmHg)</code><span class="aegis-val" data-var="patient_systolic_blood_pressure_value_recorded_now_withunit_mmhg" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">more than</b> 220)</div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ2_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Exclusion: Diastolic blood pressure &gt; 120 mmHg during an acute phase</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> (∧ <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">diastolic blood pressure (mmHg) — measured during acute phase</code><span class="aegis-val" data-var="patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg@@measured_during_acute_phase" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span>
+             <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">diastolic blood pressure (mmHg)</code><span class="aegis-val" data-var="patient_diastolic_blood_pressure_value_recorded_now_withunit_mmhg" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">more than</b> 120)</div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ2_COMPONENT2_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Exclusion: Systolic blood pressure &gt; 180 mmHg one week after the patient&#x27;s hospital visit</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">systolic blood pressure value recorded inthepast1weeks (mmHg)</code><span class="aegis-val" data-var="patient_systolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">at most</b> 180</div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ2_COMPONENT3_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Exclusion: Diastolic blood pressure &gt; 110 mmHg one week after the patient&#x27;s hospital visit</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">diastolic blood pressure value recorded inthepast1weeks (mmHg)</code><span class="aegis-val" data-var="patient_diastolic_blood_pressure_value_recorded_inthepast1weeks_withunit_mmhg" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">at most</b> 110</div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ3_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Exclusion: patient must NOT have secondary hypertension related to renovascular conditions</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of secondary hypertension now — caused by renovascular conditions</code><span class="aegis-val" data-var="patient_has_finding_of_secondary_hypertension_now@@caused_by_renovascular_conditions" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ3_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Exclusion: patient must NOT have secondary hypertension related to endocrinologic conditions</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of hypertension secondary to endocrine disorder</code><span class="aegis-val" data-var="patient_has_finding_of_hypertension_secondary_to_endocrine_disorder_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ3_COMPONENT2_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Exclusion: patient must NOT have secondary hypertension related to pregnant conditions</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of secondary hypertension now — caused by pregnant conditions</code><span class="aegis-val" data-var="patient_has_finding_of_secondary_hypertension_now@@caused_by_pregnant_conditions" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ4_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have goes to bed in the middle of the day</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">goes to bed in the middle of the day</code><span class="aegis-val" data-var="patient_goes_to_bed_in_the_middle_of_the_day_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ4_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have goes to bed very late at night</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">goes to bed very late at night</code><span class="aegis-val" data-var="patient_goes_to_bed_very_late_at_night_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ5_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have exposed to anticoagulant now — administered intravenously</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">is exposed to anticoagulant now — administered intravenously</code><span class="aegis-val" data-var="patient_is_exposed_to_anticoagulant_now@@administered_intravenously" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ5_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have undergoing intravenous infusion of thrombolytic</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">is undergoing intravenous infusion of thrombolytic</code><span class="aegis-val" data-var="patient_is_undergoing_intravenous_infusion_of_thrombolytic_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ6_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have diagnosis of cerebrovascular accident now — severe</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has diagnosis of cerebrovascular accident now — severe</code><span class="aegis-val" data-var="patient_has_diagnosis_of_cerebrovascular_accident_now@@severe" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ7_COMPONENT0_CAN_ALWAYS_GO_FROM_SATISFIED_TO_NOTSATISFIED" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have cannot give consent to investigators</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">cannot give consent to investigators</code><span class="aegis-val" data-var="patient_cannot_give_consent_to_investigators" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ8_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have finding of hepatic failure</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of hepatic failure</code><span class="aegis-val" data-var="patient_has_finding_of_hepatic_failure_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ9_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not: (and (not (= patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl 0.0))
+             (&gt;= patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl 2.0))</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> (∧ (<b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">creatinine measurement serum value recorded now withunit mg per dl</code><span class="aegis-val" data-var="patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> = 0)
+             <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">creatinine measurement serum value recorded now withunit mg per dl</code><span class="aegis-val" data-var="patient_creatinine_measurement_serum_value_recorded_now_withunit_mg_per_dl" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">at least</b> 2)</div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ10_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have diagnosis of malignant neoplastic disease</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has diagnosis of malignant neoplastic disease</code><span class="aegis-val" data-var="patient_has_diagnosis_of_malignant_neoplastic_disease_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#d1fae5;color:#065f46;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">yes</span></div>
+          <div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 56-year-old female on 20th day post-left mastectomy”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ11_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have pregnant</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">is pregnant</code><span class="aegis-val" data-var="patient_is_pregnant_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ11_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have lactating</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">is lactating</code><span class="aegis-val" data-var="patient_is_lactating_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ12_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have finding of other grave disease</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of other grave disease</code><span class="aegis-val" data-var="patient_has_finding_of_other_grave_disease_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ12_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have finding of other grave disease</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of other grave disease</code><span class="aegis-val" data-var="patient_has_finding_of_other_grave_disease_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ12_COMPONENT2_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have finding of other grave disease</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of other grave disease</code><span class="aegis-val" data-var="patient_has_finding_of_other_grave_disease_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ12_COMPONENT3_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have finding of other grave disease</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of other grave disease</code><span class="aegis-val" data-var="patient_has_finding_of_other_grave_disease_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ13_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have finding of allergy to test drug</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of allergy to test drug</code><span class="aegis-val" data-var="patient_has_finding_of_allergy_to_test_drug_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ13_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>Must not have finding of allergy to control drug</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><b style="color:#9ca3af;font-weight:500">NOT</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of allergy to control drug</code><span class="aegis-val" data-var="patient_has_finding_of_allergy_to_control_drug_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div></div>
+        </details>
+      
+      
+        <details id="section-sat"  style="margin:14px 0;scroll-margin-top:80px">
+          <summary style="cursor:pointer;font-weight:600;color:#16a34a;font-size:1.05em;
+                          padding:6px 0;border-bottom:1px solid #e5e7eb;margin-bottom:10px;
+                          list-style:none">
+            <span style="display:inline-block;transition:transform 0.15s">▾</span>
+            ✓ Satisfied <span style='color:#9ca3af;font-weight:400'>(4)</span>
+          </summary>
+          <div>
+        <details data-req="REQ0_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+            style="border:1px solid #e5e7eb;border-left:3px solid #16a34a;
+                   border-radius:4px;padding:8px 12px;margin:4px 0;background:white">
+          <summary style="cursor:pointer;list-style:none;display:flex;gap:10px;align-items:center"><span class="aegis-icon" style="color:#16a34a;font-weight:700;width:1.2em;text-align:center">✓</span><span style="flex:1;color:#6b7280;font-size:0.9em"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must be aged at least 35 years</span><span style="color:#9ca3af;font-size:0.8em">▸</span></summary>
+          <div style="margin-top:8px;padding-left:calc(1.3em + 10px)">
+            <div style="margin:0;padding:2px 0;font-size:0.88em;color:#6b7280;line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age (years)</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_years" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">56</span> <b style="color:#9ca3af;font-weight:500">at least</b> 35</div><div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 56-year-old female”</div>
+          </div>
+        </details>
+
+        <details data-req="REQ0_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+            style="border:1px solid #e5e7eb;border-left:3px solid #16a34a;
+                   border-radius:4px;padding:8px 12px;margin:4px 0;background:white">
+          <summary style="cursor:pointer;list-style:none;display:flex;gap:10px;align-items:center"><span class="aegis-icon" style="color:#16a34a;font-weight:700;width:1.2em;text-align:center">✓</span><span style="flex:1;color:#6b7280;font-size:0.9em"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must be aged at most 85 years</span><span style="color:#9ca3af;font-size:0.8em">▸</span></summary>
+          <div style="margin-top:8px;padding-left:calc(1.3em + 10px)">
+            <div style="margin:0;padding:2px 0;font-size:0.88em;color:#6b7280;line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age (years)</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_years" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">56</span> <b style="color:#9ca3af;font-weight:500">at most</b> 85</div><div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 56-year-old female”</div>
+          </div>
+        </details>
+
+        <details data-req="REQ1_COMPONENT0_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE" class="aegis-card"
+            style="border:1px solid #e5e7eb;border-left:3px solid #16a34a;
+                   border-radius:4px;padding:8px 12px;margin:4px 0;background:white">
+          <summary style="cursor:pointer;list-style:none;display:flex;gap:10px;align-items:center"><span class="aegis-icon" style="color:#16a34a;font-weight:700;width:1.2em;text-align:center">✓</span><span style="flex:1;color:#6b7280;font-size:0.9em"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must be a patient with hypertension</span><span style="color:#9ca3af;font-size:0.8em">▸</span></summary>
+          <div style="margin-top:8px;padding-left:calc(1.3em + 10px)">
+            <div style="margin:0;padding:2px 0;font-size:0.88em;color:#6b7280;line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has diagnosis of hypertensive disorder</code><span class="aegis-val" data-var="patient_has_diagnosis_of_hypertensive_disorder_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span></div>
+          </div>
+        </details>
+
+        <details data-req="REQ1_COMPONENT1_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE" class="aegis-card"
+            style="border:1px solid #e5e7eb;border-left:3px solid #16a34a;
+                   border-radius:4px;padding:8px 12px;margin:4px 0;background:white">
+          <summary style="cursor:pointer;list-style:none;display:flex;gap:10px;align-items:center"><span class="aegis-icon" style="color:#16a34a;font-weight:700;width:1.2em;text-align:center">✓</span><span style="flex:1;color:#6b7280;font-size:0.9em"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must be a patient who had an ischemic stroke (current acute/index event)</span><span style="color:#9ca3af;font-size:0.8em">▸</span></summary>
+          <div style="margin-top:8px;padding-left:calc(1.3em + 10px)">
+            <div style="margin:0;padding:2px 0;font-size:0.88em;color:#6b7280;line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has diagnosis of ischemic stroke (history) — current episode</code><span class="aegis-val" data-var="patient_has_diagnosis_of_ischemic_stroke_inthehistory@@current_episode" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span></div>
+          </div>
+        </details></div>
+        </details>
+    </section>
+
+  <details style="margin:20px 0">
+    <summary style="cursor:pointer;font-weight:600;color:#374151;padding:8px 0;
+                    border-top:1px solid #e5e7eb">
+      Patient chart <span style="color:#9ca3af;font-weight:400">— highlighted spans are evidence for each fact</span>
+    </summary>
+    <div style="padding-top:8px">
+      <div class="chart"><mark style="background:#bfdbfe;color:#1e3a8a;padding:1px 2px;border-radius:2px" title="patient age value recorded now in years: 56">A 56-year-old female on 20th day post-left mastectomy</mark> presents to the emergency department complaining of shortness of breath and malaise. <mark style="background:#fecaca;color:#7f1d1d;padding:1px 2px;border-radius:2px" title="patient goes to bed in the middle of the day now: False">The patient says that she has remained in bed for the last two weeks.</mark> The physical examination reveals tenderness on the left upper thoracic wall and right calf. The surgical incision shows no bleeding or signs of infection. Pulmonary auscultation is significant for bilateral decreased breath sounds, especially at the right base. Laboratory tests reveal an elevated D-dimer.</div>
+      <div class="meta" style="margin:6px 0 16px 0">
+        <span style="background:#bbf7d0;color:#065f46;padding:1px 6px;border-radius:3px">yes</span>
+        <span style="background:#fecaca;color:#7f1d1d;padding:1px 6px;border-radius:3px;margin-left:4px">no</span>
+        <span style="background:#bfdbfe;color:#1e3a8a;padding:1px 6px;border-radius:3px;margin-left:4px">numeric/other</span>
+      </div>
+    </div>
+  </details>
+
+  <details style="margin:20px 0">
+    <summary style="cursor:pointer;font-weight:600;color:#374151;padding:8px 0;
+                    border-top:1px solid #e5e7eb">
+      Compare rationales from all three systems
+    </summary>
+    <div style="padding-top:8px">
+    <section style="margin:24px 0">
+      <h2 style="margin:0 0 8px 0">Side-by-side rationales</h2>
+      <p class="meta">Each system's stated reasoning, shown blind-style so you can compare them directly.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px">
+        <div style="border:2px solid #3b82f6;padding:12px;border-radius:6px;background:#eff6ff">
+          <div style="font-weight:600;color:#1e40af;margin-bottom:6px">AEGIS (neuro-symbolic)</div>
+          <div style="font-size:0.9em;color:#1e3a8a"><b>Decision:</b> ineligible.<br><b>Exclusion violations:</b> 27 requirements not satisfied.</div>
+        </div>
+        <div style="border:1px solid #e5e7eb;padding:12px;border-radius:6px">
+          <div style="font-weight:600;color:#6b7280;margin-bottom:6px">GPT-4.1 Direct</div>
+          <div style="font-size:0.9em;color:#374151"><b>Decision:</b> ineligible<br><br>The patient is explicitly ineligible due to a history of cancer (recent left mastectomy, which is a surgical treatment for breast cancer). The exclusion criteria specifically list &#x27;patients with cancer&#x27; as ineligible. Other required information, such as age, is within the eligible range, but the explicit mention of cancer in the vignette directly contradicts the exclusion criteria.</div>
+        </div>
+        <div style="border:1px solid #e5e7eb;padding:12px;border-radius:6px">
+          <div style="font-weight:600;color:#6b7280;margin-bottom:6px">TrialGPT</div>
+          <div style="font-size:0.9em;color:#374151"><b>Decision:</b> ineligible<br>1 inclusion criteria violated<br>1 unknown<br><br><b>Cited blockers:</b><br>• hypertensive patients who had an ischemic stroke</div>
+        </div>
+      </div>
+    </section></div>
+  </details>
+
+  <details style="margin:20px 0">
+    <summary style="cursor:pointer;font-weight:600;color:#374151;padding:8px 0;
+                    border-top:1px solid #e5e7eb">
+      Developer view — verbose per-criterion list + CF targets
+    </summary>
+    <div style="padding-top:8px">
+      
+    <section style="margin:24px 0;padding:16px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:4px">
+      <h2 style="margin:0 0 8px 0;color:#92400e">What would change this decision?</h2>
+      <p style="color:#78350f;margin:0 0 12px 0">
+        Based on the trial's requirements, 1 chart fact would need to change
+        for this patient to potentially meet the criteria. A clinician may want to confirm each
+        item during full enrollment screening.
+      </p>
+      <ol style="margin:8px 0;padding-left:24px;color:#451a03">
+        <li style="margin:6px 0">Patient would need to NOT have: <b>Boolean indicating whether the patient currently has a diagnosis of malignant neoplastic disease (cancer).</b> (chart currently says yes) <span style="font-size:0.85em;color:#6b7280">(exclusion)</span></li>
+      </ol>
+    </section>
+    
+      
+    <section style="margin:24px 0">
+      <h2 style="color:#16a34a;margin:0 0 4px 0">
+        ✓ Inclusion: SAT
+      </h2>
+      <p style="color:#4b5563;margin:0 0 12px 0">Patient satisfies all requirements on this side.</p>
+
+      <h3 style="margin:16px 0 8px 0">Trial requirements on this side</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb">
+        <thead><tr style="background:#f3f4f6">
+          <th style="width:40px;padding:8px"></th>
+          <th style="text-align:left;padding:8px">Requirement</th>
+          <th style="text-align:left;padding:8px;width:160px">Status</th>
+        </tr></thead>
+        <tbody>
+    <tr data-status="sat">
+      <td style="color:#16a34a;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✓</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">To be included, the patient must be aged ≥ 35 years.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">Numeric value indicating the patient&#x27;s current age in years. ≥ 35.0</div>
+        </details>
+      </td>
+      <td style="color:#16a34a;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">SATISFIED</td>
+    </tr>
+    
+    <tr data-status="sat">
+      <td style="color:#16a34a;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✓</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">To be included, the patient must be aged ≤ 85 years.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">Numeric value indicating the patient&#x27;s current age in years. ≤ 85.0</div>
+        </details>
+      </td>
+      <td style="color:#16a34a;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">SATISFIED</td>
+    </tr>
+    
+    <tr data-status="sat">
+      <td style="color:#16a34a;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✓</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">To be included, the patient must be a patient with hypertension.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">Boolean indicating whether the patient currently has a diagnosis of hypertensive disorder (hypertension).</div>
+        </details>
+      </td>
+      <td style="color:#16a34a;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">SATISFIED</td>
+    </tr>
+    
+    <tr data-status="sat">
+      <td style="color:#16a34a;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✓</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">To be included, the patient must be a patient who had an ischemic stroke.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient has diagnosis of ischemic stroke inthehistory — current episode</div>
+        </details>
+      </td>
+      <td style="color:#16a34a;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">SATISFIED</td>
+    </tr>
+    </tbody>
+      </table>
+
+      <h3 style="margin:16px 0 8px 0">What the chart says (mined facts)</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb"><thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value indicating the patient&#x27;s current age in years.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">56</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#f59e0b;font-size:0.85em;white-space:nowrap">weak evidence</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">A 56-year-old female</td>
+        </tr>
+        </tbody></table>
+        <details style="margin-top:8px">
+          <summary style="cursor:pointer;color:#6b7280;font-size:0.9em">3 additional variables not documented in chart</summary>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;margin-top:8px">
+            <thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has a diagnosis of hypertensive disorder (hypertension).</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient has ever had a diagnosis of ischemic stroke in the past.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">patient has diagnosis of ischemic stroke inthehistory — current episode</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        </tbody>
+          </table>
+        </details>
+    </section>
+    
+      
+    <section style="margin:24px 0">
+      <h2 style="color:#dc2626;margin:0 0 4px 0">
+        ✗ Exclusion: UNSAT
+      </h2>
+      <p style="color:#4b5563;margin:0 0 12px 0">Patient fails at least one requirement on this side (shown in red below).</p>
+
+      <h3 style="margin:16px 0 8px 0">Trial requirements on this side</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb">
+        <thead><tr style="background:#f3f4f6">
+          <th style="width:40px;padding:8px"></th>
+          <th style="text-align:left;padding:8px">Requirement</th>
+          <th style="text-align:left;padding:8px;width:160px">Status</th>
+        </tr></thead>
+        <tbody>
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is aged below 35 years.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">NOT (Numeric value indicating the patient&#x27;s current age in years. &lt; 35)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is aged above 85 years.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">NOT (Numeric value indicating the patient&#x27;s current age in years. &gt; 86)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">A patient is excluded if the patient has cancer.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has a diagnosis of malignant neoplastic disease (cancer).</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is pregnant.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient is currently pregnant.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is lactating.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient is currently lactating.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has other grave diseases with non-exhaustive examples (hypertensive encephalopathy).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has any other grave disease not otherwise specified in the enumerated examples.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has other grave diseases with non-exhaustive examples (aortic dissection).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has any other grave disease not otherwise specified in the enumerated examples.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has other grave diseases with non-exhaustive examples (acute myocardial infarction).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has any other grave disease not otherwise specified in the enumerated examples.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has other grave diseases with non-exhaustive examples (severe congestive heart failure).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has any other grave disease not otherwise specified in the enumerated examples.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is allergic to the test drugs.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has an allergy to any of the test drugs.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is allergic to the control drugs.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has an allergy to any of the control drugs.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has had a hemorrhagic stroke (current index event).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: patient has diagnosis of hemorrhagic cerebral infarction now</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has systolic blood pressure &gt; 220 mmHg during an acute phase.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">NOT ((Boolean indicating whether the systolic blood pressure measurement was taken during an acute phase.) AND (Numeric value representing the patient&#x27;s systolic blood pressure measured now (during an acute phase), in mmHg. &gt; 220))</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has diastolic blood pressure &gt; 120 mmHg during an acute phase.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">NOT ((Boolean indicating whether the diastolic blood pressure measurement was taken during an acute phase.) AND (Numeric value representing the patient&#x27;s diastolic blood pressure measured now (during an acute phase), in mmHg. &gt; 120))</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has systolic blood pressure &gt; 180 mmHg one week after the patient&#x27;s hospital visit.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">NOT (Numeric value representing the patient&#x27;s systolic blood pressure measured one week after hospital visit, in mmHg. &gt; 180)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has diastolic blood pressure &gt; 110 mmHg one week after the patient&#x27;s hospital visit.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">NOT (Numeric value representing the patient&#x27;s diastolic blood pressure measured one week after hospital visit, in mmHg. &gt; 110)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has secondary hypertension related to renovascular conditions.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient&#x27;s secondary hypertension is caused by renovascular conditions.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has secondary hypertension related to endocrinologic conditions.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has secondary hypertension caused by endocrinologic conditions.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has secondary hypertension related to pregnant conditions.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient&#x27;s secondary hypertension is caused by pregnant conditions.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient goes to bed in the middle of the day.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently goes to bed in the middle of the day.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient goes to bed very late at night.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently goes to bed very late at night.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is using intravenous anticoagulants.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient&#x27;s current exposure to anticoagulant substances is via intravenous administration.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient is using intravenous thrombolytics.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient is currently undergoing intravenous infusion of thrombolytic agents.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has a severe stroke (National Institutes of Health stroke scale &gt; 20).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has a diagnosis of stroke and the stroke is severe.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient cannot give consent to investigators.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient is unable to provide consent to investigators.</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has severely impaired liver function (aspartate aminotransferase ≥ 100 or alanine aminotransferase ≥ 100).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">patient does NOT have: Boolean indicating whether the patient currently has severely impaired liver function (hepatic failure).</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has severely impaired renal function (serum creatinine ≥ 2.0 mg/dL).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">NOT ((NOT (Numeric value for the patient&#x27;s current serum creatinine measurement in mg/dL. = 0.0)) AND (Numeric value for the patient&#x27;s current serum creatinine measurement in mg/dL. ≥ 2.0))</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    </tbody>
+      </table>
+
+      <h3 style="margin:16px 0 8px 0">What the chart says (mined facts)</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb"><thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value indicating the patient&#x27;s current age in years.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">56</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#f59e0b;font-size:0.85em;white-space:nowrap">weak evidence</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">A 56-year-old female</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient is unable to provide consent to investigators.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the diastolic blood pressure measurement was taken during an acute phase.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently goes to bed in the middle of the day.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">The patient says that she has remained in bed for the last two weeks.</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently goes to bed very late at night.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has a diagnosis of stroke.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has a diagnosis of stroke and the stroke is severe.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">patient has diagnosis of hemorrhagic cerebral infarction now</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has a diagnosis of malignant neoplastic disease (cancer).</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-weight:600;white-space:nowrap">yes</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">A 56-year-old female on 20th day post-left mastectomy</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has acute myocardial infarction.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has an allergy to any of the control drugs.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has an allergy to any drug.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has an allergy to any of the test drugs.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has congestive heart failure.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient&#x27;s congestive heart failure is severe.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has aortic dissection.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has severely impaired liver function (hepatic failure).</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has secondary hypertension caused by endocrinologic conditions.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has hypertensive encephalopathy.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has any other grave disease not otherwise specified in the enumerated examples.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient&#x27;s current grave disease is other than the enumerated examples.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has secondary hypertension.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient&#x27;s secondary hypertension is caused by pregnant conditions.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient&#x27;s secondary hypertension is caused by renovascular conditions.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient is currently exposed to anticoagulant substances.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient&#x27;s current exposure to anticoagulant substances is via intravenous administration.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient is currently lactating.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient is currently pregnant.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient is currently undergoing intravenous infusion of thrombolytic agents.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the systolic blood pressure measurement was taken during an acute phase.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        </tbody></table>
+        <details style="margin-top:8px">
+          <summary style="cursor:pointer;color:#6b7280;font-size:0.9em">8 additional variables not documented in chart</summary>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;margin-top:8px">
+            <thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value representing the patient&#x27;s current alanine aminotransferase (ALT) level.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value representing the patient&#x27;s current aspartate aminotransferase (AST) level.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value for the patient&#x27;s current serum creatinine measurement in mg/dL.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value representing the patient&#x27;s diastolic blood pressure measured one week after hospital visit, in mmHg.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value representing the patient&#x27;s diastolic blood pressure measured now (during an acute phase), in mmHg.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value representing the patient&#x27;s current National Institutes of Health stroke scale score.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value representing the patient&#x27;s systolic blood pressure measured one week after hospital visit, in mmHg.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value representing the patient&#x27;s systolic blood pressure measured now (during an acute phase), in mmHg.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        </tbody>
+          </table>
+        </details>
+    </section>
+    
+    </div>
+  </details>
+
+  <hr style="margin:32px 0;border:none;border-top:1px solid #e5e7eb">
+  <p class="meta">
+    This report was generated from AEGIS's structured rationale.
+    Every requirement status is derived from the SMT solver's evaluation of the compiled trial
+    program against patient facts extracted by the LLM miner. Review each "NOT SATISFIED" row
+    and its associated mined facts to understand why the trial was matched this way.
+  </p>
+</body>
+</html>

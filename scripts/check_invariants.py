@@ -245,9 +245,15 @@ def _():
 
     stdlib = set(sys.stdlib_module_names)
     local = {'matchers', 'smt_core', 'verbalizer', 'rationale_generators',
-             'counterfactual_modifier', 'scripts', 'verdict_cli'}
+             'counterfactual_modifier', 'scripts', 'verdict_cli',
+             # SatIR packages
+             'trial_compiler', 'patient_compiler', 'db_indexer',
+             'sql_retrieval', 'smt_matcher', 'matching_batch', 'evaluation',
+             'audit', 'satir_cli'}
     undeclared = {}
-    for d in ('matchers', 'smt_core', 'verbalizer', 'counterfactual_modifier'):
+    for d in ('matchers', 'smt_core', 'verbalizer', 'counterfactual_modifier',
+              'trial_compiler', 'patient_compiler', 'db_indexer',
+              'sql_retrieval', 'smt_matcher', 'evaluation'):
         base = ROOT / d
         if not base.exists():
             continue
@@ -304,7 +310,9 @@ def _():
     and imports of modules that no longer exist anywhere.
     """
     import ast as _ast
-    SHIP = ('matchers', 'verbalizer', 'counterfactual_modifier', 'smt_core')
+    SHIP = ('matchers', 'verbalizer', 'counterfactual_modifier', 'smt_core',
+            'trial_compiler', 'patient_compiler', 'db_indexer', 'sql_retrieval',
+            'smt_matcher', 'matching_batch', 'evaluation', 'audit')
     # Module names that are known not to resolve, with the reason. These are
     # tracked debt, not silent ignores -- shrink this set, never grow it.
     # Verified 2026-09-03 by a full scan; file lists are exact.
@@ -394,9 +402,51 @@ def _():
         '\n  ' + '\n  '.join(f'{k}: {v}' for k, v in unresolvable.items()))
 
 
+@check('packaging:declared-targets-exist')
+def _():
+    """Every package pattern and console script in pyproject must resolve.
+
+    Before the SatIR merge this repo declared five packages that did not exist
+    and two console scripts (satir, compile-trial) that installed as commands
+    which crashed on invocation -- pip does not verify either.
+    """
+    try:
+        import tomllib
+    except ModuleNotFoundError:
+        raise Skip('tomllib')
+    cfg = tomllib.loads((ROOT / 'pyproject.toml').read_text())
+
+    missing_pkg = []
+    for pat in (cfg.get('tool', {}).get('setuptools', {})
+                   .get('packages', {}).get('find', {}).get('include', [])):
+        name = pat.rstrip('*')
+        if not name:
+            continue
+        if not (ROOT / name).is_dir():
+            missing_pkg.append(pat)
+    assert not missing_pkg, f'declared packages that do not exist: {missing_pkg}'
+
+    for mod in cfg.get('tool', {}).get('setuptools', {}).get('py-modules', []):
+        assert (ROOT / f'{mod}.py').exists(), f'py-module missing: {mod}.py'
+
+    bad_scripts = []
+    for script, target in cfg.get('project', {}).get('scripts', {}).items():
+        mod = target.split(':')[0]
+        path = ROOT / (mod.replace('.', '/') + '.py')
+        pkg_init = ROOT / mod.replace('.', '/') / '__init__.py'
+        if not path.exists() and not pkg_init.exists():
+            bad_scripts.append(f'{script} -> {target}')
+    assert not bad_scripts, f'console scripts pointing at nothing: {bad_scripts}'
+
+
 # ---------------------------------------------------------------- hygiene
+# Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',
-           'counterfactual_modifier', 'verdict_cli.py']
+           'counterfactual_modifier', 'verdict_cli.py',
+           # SatIR
+           'trial_compiler', 'patient_compiler', 'db_indexer', 'sql_retrieval',
+           'smt_matcher', 'matching_batch', 'evaluation', 'audit',
+           'satir_cli.py']
 
 
 @check('hygiene:no-secrets-in-env-example')

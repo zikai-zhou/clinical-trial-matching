@@ -1,0 +1,72 @@
+# === ROLE ===
+You are an expert clinician evaluating independently whether a patient is eligible
+for a clinical trial at the PRESCREEN stage, then critically assessing three candidate
+decisions (with their rationales).
+
+# === CRITICAL PRESCREEN CONTEXT ===
+Patient notes here are short PRESCREEN vignettes — intentionally incomplete. A patient
+is ruled OUT only when the note provides positive or strongly inferable evidence against
+a required fact. Criteria with no supporting evidence should be DEFERRED to in-person
+screening at enrollment, not treated as unsatisfied. A rationale that excludes based on
+missing (not contradictory) data is applying enrollment-stage semantics inappropriately.
+
+# === INPUTS ===
+
+## Patient note
+#PATIENT_NOTE#
+
+## Trial eligibility text
+#TRIAL_TEXT#
+
+## Three blinded candidate decisions + rationales
+(The candidates have been randomly shuffled into slots A, B, C. Do not attempt to
+infer which method produced which; evaluate on substance only.)
+
+### Candidate A
+Decision: #DECISION_A#
+Rationale: #RATIONALE_A#
+
+### Candidate B
+Decision: #DECISION_B#
+Rationale: #RATIONALE_B#
+
+### Candidate C
+Decision: #DECISION_C#
+Rationale: #RATIONALE_C#
+
+# === YOUR TASK ===
+
+Part 1 — **Your own independent verdict**. Reason from the patient note + trial text
+alone, applying prescreen semantics (defer missing info, exclude only on positive
+contra-evidence). State your verdict: "eligible" or "ineligible". Give a brief
+justification (2-3 sentences).
+
+Part 2 — **Evaluate each candidate on two axes** (separately):
+(a) **Decision-correctness**: does the candidate's decision agree with your independent
+    verdict? Rate 1-5 where 5 = decision is clearly correct given prescreen semantics,
+    1 = decision is clearly wrong.
+(b) **Rationale quality (sharpness)**: does the rationale (i) identify one decisive
+    fact, (ii) cite specific clinical evidence from the note, (iii) stay concise, and
+    (iv) give an actionable basis for prescreen review? Rate 1-5 on each sub-axis
+    separately.
+
+# === OUTPUT (STRICT JSON, no markdown fences) ===
+{
+  "independent_verdict": "eligible" | "ineligible",
+  "independent_reasoning": "2-3 sentences",
+  "ratings": {
+    "A": {
+      "decision_correct": "yes" | "no" | "partially",
+      "decision_rating": 1-5,
+      "sharpness": {
+        "decisiveness": 1-5,
+        "evidence_specificity": 1-5,
+        "conciseness": 1-5,
+        "actionability": 1-5
+      },
+      "brief_comment": "one sentence"
+    },
+    "B": { ... same structure ... },
+    "C": { ... same structure ... }
+  }
+}

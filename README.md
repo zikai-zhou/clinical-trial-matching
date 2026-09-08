@@ -1,6 +1,23 @@
 # Cross-Validated Symbolic and Natural-Language Reasoning for Auditable Clinical-Trial Prescreen
 
-This repository contains the four shared clinical-trial-matching systems and the accuracy + policy-alignment experiments for the EMNLP submission.
+This repository contains **two related systems** from two papers:
+
+| | what it does | entry point |
+|---|---|---|
+| **VERDICT** | auditable patient--trial *eligibility matching* — LLM formalization + SMT/MaxSAT decision, with a per-criterion audit trail | `verdict` |
+| **SatIR** | constraint-satisfaction-based trial *retrieval and compilation* — trial/patient compilers, clause DB indexing, SQL retrieval | `satir` |
+
+They share `smt_core` (entity canonicalization, attribute extraction, inference
+engines). VERDICT decides a given pair; SatIR finds candidate trials at corpus
+scale and compiles the SMT programs VERDICT reasons over.
+
+```bash
+pip install -e .
+verdict systems          # VERDICT: matcher variants
+satir --help             # SatIR: setup / compile / index / retrieve / match
+```
+
+
 
 ## Quickstart
 

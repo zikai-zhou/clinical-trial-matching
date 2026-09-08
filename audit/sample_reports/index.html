@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>AEGIS audit reports</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;max-width:1000px;margin:20px auto;padding:0 20px;color:#111827}
+  h1{border-bottom:2px solid #e5e7eb;padding-bottom:8px}
+  h2{margin:24px 0 8px 0}
+  table{width:100%;border-collapse:collapse;border:1px solid #e5e7eb;margin-top:8px}
+  .tip{background:#fef3c7;border-left:4px solid #f59e0b;padding:10px 14px;margin:12px 0;border-radius:4px;color:#78350f}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+</style></head>
+<body>
+<h1>AEGIS Audit Reports</h1>
+
+<p>Clinician-friendly audit reports for AEGIS's trial-matching decisions. Each report shows:</p>
+<ul>
+  <li>The <b>decision</b> from AEGIS, and what GPT-4.1 Direct and TrialGPT concluded for comparison</li>
+  <li>Per-criterion evaluation with plain-English rule text</li>
+  <li>The patient chart with highlighted evidence spans</li>
+  <li>What chart facts the miner extracted (with chart excerpts)</li>
+  <li><b>What would need to change</b> for this patient to potentially flip to eligible (when ineligible)</li>
+</ul>
+
+<div class="tip">
+  <b>How to read a report:</b> open any pair link below. Use the <em>"Show only violations"</em>
+  toggle to focus on what's blocking eligibility. The <em>"What would change this decision?"</em>
+  section tells you which chart facts to re-verify during enrollment screening.
+</div>
+
+<h2>Per-patient overview</h2>
+<p style="color:#6b7280;font-size:0.9em">For clinicians: see which trials a given patient could match.</p>
+<ul style="list-style:none;padding-left:0">
+
+    <li style="margin:6px 0">
+      <a href="patient_sigir-20141.html" style="color:#2563eb;text-decoration:none;font-weight:500">sigir-20141</a>
+      <span style="color:#6b7280;font-size:0.9em">— all trials for this patient</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="patient_sigir-20142.html" style="color:#2563eb;text-decoration:none;font-weight:500">sigir-20142</a>
+      <span style="color:#6b7280;font-size:0.9em">— all trials for this patient</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="patient_sigir-20143.html" style="color:#2563eb;text-decoration:none;font-weight:500">sigir-20143</a>
+      <span style="color:#6b7280;font-size:0.9em">— all trials for this patient</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="patient_sigir-20144.html" style="color:#2563eb;text-decoration:none;font-weight:500">sigir-20144</a>
+      <span style="color:#6b7280;font-size:0.9em">— all trials for this patient</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="patient_sigir-20145.html" style="color:#2563eb;text-decoration:none;font-weight:500">sigir-20145</a>
+      <span style="color:#6b7280;font-size:0.9em">— all trials for this patient</span>
+    </li>
+</ul>
+
+<h2>Per-trial overview</h2>
+<p style="color:#6b7280;font-size:0.9em">For trial coordinators: see which patients could enroll in a given trial.</p>
+<ul style="list-style:none;padding-left:0">
+
+    <li style="margin:6px 0">
+      <a href="trial_NCT00000402.html" style="color:#2563eb;text-decoration:none;font-weight:500">NCT00000402</a>
+      <span style="color:#6b7280;font-size:0.9em">— all patients for this trial</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="trial_NCT00000520.html" style="color:#2563eb;text-decoration:none;font-weight:500">NCT00000520</a>
+      <span style="color:#6b7280;font-size:0.9em">— all patients for this trial</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="trial_NCT00058942.html" style="color:#2563eb;text-decoration:none;font-weight:500">NCT00058942</a>
+      <span style="color:#6b7280;font-size:0.9em">— all patients for this trial</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="trial_NCT00513500.html" style="color:#2563eb;text-decoration:none;font-weight:500">NCT00513500</a>
+      <span style="color:#6b7280;font-size:0.9em">— all patients for this trial</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="trial_NCT01701453.html" style="color:#2563eb;text-decoration:none;font-weight:500">NCT01701453</a>
+      <span style="color:#6b7280;font-size:0.9em">— all patients for this trial</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="trial_NCT01830517.html" style="color:#2563eb;text-decoration:none;font-weight:500">NCT01830517</a>
+      <span style="color:#6b7280;font-size:0.9em">— all patients for this trial</span>
+    </li>
+    <li style="margin:6px 0">
+      <a href="trial_NCT02272920.html" style="color:#2563eb;text-decoration:none;font-weight:500">NCT02272920</a>
+      <span style="color:#6b7280;font-size:0.9em">— all patients for this trial</span>
+    </li>
+</ul>
+
+<h2>Per-pair audit reports (8)</h2>
+<table>
+<thead style="background:#f3f4f6"><tr>
+  <th style="text-align:left;padding:8px 12px">Pair</th>
+  <th style="text-align:left;padding:8px 12px">AEGIS</th>
+  <th style="text-align:left;padding:8px 12px">GPT-4.1 Direct</th>
+  <th style="text-align:left;padding:8px 12px">TrialGPT</th>
+</tr></thead>
+<tbody>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20141__NCT00000402.html" style="color:#2563eb;text-decoration:none">sigir-20141__NCT00000402</a></td>
+      <td style="padding:8px 12px;color:#dc2626;font-weight:600">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20141__NCT00000520.html" style="color:#2563eb;text-decoration:none">sigir-20141__NCT00000520</a></td>
+      <td style="padding:8px 12px;color:#dc2626;font-weight:600">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20141__NCT00058942.html" style="color:#2563eb;text-decoration:none">sigir-20141__NCT00058942</a></td>
+      <td style="padding:8px 12px;color:#16a34a;font-weight:600">eligible</td>
+      <td style="padding:8px 12px;color:#16a34a">eligible</td>
+      <td style="padding:8px 12px;color:#16a34a">eligible</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20142__NCT01701453.html" style="color:#2563eb;text-decoration:none">sigir-20142__NCT01701453</a></td>
+      <td style="padding:8px 12px;color:#dc2626;font-weight:600">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20142__NCT02272920.html" style="color:#2563eb;text-decoration:none">sigir-20142__NCT02272920</a></td>
+      <td style="padding:8px 12px;color:#dc2626;font-weight:600">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20143__NCT00513500.html" style="color:#2563eb;text-decoration:none">sigir-20143__NCT00513500</a></td>
+      <td style="padding:8px 12px;color:#dc2626;font-weight:600">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20145__NCT00000402.html" style="color:#2563eb;text-decoration:none">sigir-20145__NCT00000402</a></td>
+      <td style="padding:8px 12px;color:#16a34a;font-weight:600">eligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 12px"><a href="sigir-20145__NCT01830517.html" style="color:#2563eb;text-decoration:none">sigir-20145__NCT01830517</a></td>
+      <td style="padding:8px 12px;color:#dc2626;font-weight:600">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+      <td style="padding:8px 12px;color:#dc2626">ineligible</td>
+    </tr></tbody>
+</table>
+
+<h2>Generate more reports</h2>
+<pre style="background:#f3f4f6;padding:10px;border-radius:4px;overflow-x:auto">
+# Single pair
+python audit/generate_report.py sigir-20141__NCT00000520
+
+# All trials for one patient
+python audit/patient_view.py sigir-20141
+
+# All patients for one trial
+python audit/trial_view.py NCT00000402
+
+# Update index
+python audit/build_index.py
+</pre>
+</body></html>

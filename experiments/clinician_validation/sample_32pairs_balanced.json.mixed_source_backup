@@ -1,0 +1,290 @@
+[
+  {
+    "pair": "sigir-20158__NCT00393913",
+    "cell": "aegis_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-20141__NCT01653587",
+    "cell": "aegis_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201414__NCT02362321",
+    "cell": "aegis_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-20145__NCT00413374",
+    "cell": "aegis_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201423__NCT02128529",
+    "cell": "comp_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-20141__NCT01407146",
+    "cell": "comp_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-20155__NCT00814307",
+    "cell": "comp_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201418__NCT00774137",
+    "cell": "comp_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201530__NCT00551668",
+    "cell": "both_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-20156__NCT01227499",
+    "cell": "both_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201522__NCT00263315",
+    "cell": "both_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201416__NCT01827917",
+    "cell": "both_right",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201522__NCT01247142",
+    "cell": "both_wrong",
+    "comp": "v5_gpt4.1",
+    "aegis": "eligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-20149__NCT00476905",
+    "cell": "both_wrong",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201411__NCT00350766",
+    "cell": "both_wrong",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "unknown",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201410__NCT00667381",
+    "cell": "both_wrong",
+    "comp": "v5_gpt4.1",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201417__NCT00630513",
+    "cell": "aegis_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201425__NCT02064959",
+    "cell": "aegis_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201428__NCT00386022",
+    "cell": "aegis_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201524__NCT00929721",
+    "cell": "aegis_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201412__NCT00535561",
+    "cell": "comp_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-20143__NCT00771563",
+    "cell": "comp_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201528__NCT00339157",
+    "cell": "comp_right",
+    "comp": "shahlab",
+    "aegis": "eligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-20144__NCT02359643",
+    "cell": "comp_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201515__NCT00077805",
+    "cell": "both_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201524__NCT02559310",
+    "cell": "both_right",
+    "comp": "shahlab",
+    "aegis": "eligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201430__NCT01076738",
+    "cell": "both_right",
+    "comp": "shahlab",
+    "aegis": "eligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201410__NCT02241642",
+    "cell": "both_right",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-201429__NCT00860964",
+    "cell": "both_wrong",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "eligible",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-201517__NCT02561208",
+    "cell": "both_wrong",
+    "comp": "shahlab",
+    "aegis": "eligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  },
+  {
+    "pair": "sigir-20145__NCT00378027",
+    "cell": "both_wrong",
+    "comp": "shahlab",
+    "aegis": "ineligible",
+    "comp_verdict": "ineligible",
+    "gold_indep": "unknown",
+    "gold_balanced": "eligible"
+  },
+  {
+    "pair": "sigir-20155__NCT01083563",
+    "cell": "both_wrong",
+    "comp": "shahlab",
+    "aegis": "eligible",
+    "comp_verdict": "eligible",
+    "gold_indep": "ineligible",
+    "gold_balanced": "ineligible"
+  }
+]

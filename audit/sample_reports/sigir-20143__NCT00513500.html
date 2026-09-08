@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AEGIS Audit — sigir-20143__NCT00513500</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+             max-width: 900px; margin: 20px auto; padding: 0 20px; color: #111827; line-height: 1.5; }
+    h1 { border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 4px; }
+    table { font-size: 0.95em; }
+    .decision-banner { padding: 16px; border-radius: 8px; color: white;
+                        font-weight: 700; font-size: 1.4em; margin: 16px 0; }
+    .meta { color: #6b7280; font-size: 0.9em; }
+    .chart { background:#f9fafb; border-left: 4px solid #9ca3af;
+              padding: 12px 16px; margin: 12px 0; font-family: Georgia, serif; }
+    .other-systems { display: flex; gap: 16px; margin: 12px 0; }
+    .other-systems .card { flex: 1; border: 1px solid #e5e7eb; padding: 12px; border-radius: 6px; }
+    @media print {
+      body { max-width: none; margin: 0; padding: 0; font-size: 10pt; }
+      .decision-banner { page-break-after: avoid; }
+      section { page-break-inside: avoid; }
+      .filter-controls { display: none; }
+      details { display: block; }
+      details[open] summary { display: none; }
+      summary { display: none; }
+      details > div:not([style*="display"]) { display: block; }
+    }
+    .filter-controls { background:#f3f4f6;padding:10px 14px;border-radius:6px;margin:16px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap }
+    .filter-controls label { cursor:pointer;user-select:none;font-size:0.9em }
+    .filter-controls input[type=text] { padding:4px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:0.9em;width:200px }
+    tr[data-status].hidden-by-filter { display:none }
+    tr[data-status].hidden-by-search { display:none }
+    @media (max-width: 700px) {
+      body { padding: 0 12px; font-size: 0.95em; }
+      .other-systems { flex-direction: column; }
+      table td { padding: 6px 4px !important; font-size: 0.9em; }
+      [style*="grid-template-columns:1fr 1fr 1fr"] { display:block !important; }
+      [style*="grid-template-columns:1fr 1fr 1fr"] > div { margin-bottom: 8px !important; }
+    }
+  </style>
+  <script>
+    function applyFilter() {
+      const showOnlyViolations = document.getElementById('only-violations').checked;
+      const search = (document.getElementById('search-box')?.value || '').toLowerCase();
+      document.querySelectorAll('tr[data-status]').forEach(row => {
+        // Status filter
+        if (showOnlyViolations && row.dataset.status !== 'unsat') {
+          row.classList.add('hidden-by-filter');
+        } else {
+          row.classList.remove('hidden-by-filter');
+        }
+        // Search filter
+        if (search && !row.textContent.toLowerCase().includes(search)) {
+          row.classList.add('hidden-by-search');
+        } else {
+          row.classList.remove('hidden-by-search');
+        }
+      });
+    }
+    function expandAll(open) {
+      document.querySelectorAll('details').forEach(d => d.open = open);
+    }
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'v') {
+        const cb = document.getElementById('only-violations');
+        cb.checked = !cb.checked; applyFilter();
+      } else if (e.key === 'e') {
+        expandAll(true);
+      } else if (e.key === 'c') {
+        expandAll(false);
+      } else if (e.key === 'p') {
+        window.print();
+      } else if (e.key === '/') {
+        e.preventDefault();
+        document.getElementById('search-box')?.focus();
+      }
+    });
+  </script>
+</head>
+<body>
+  <h1>AEGIS Audit Report</h1>
+  <div class="meta">Patient: sigir-20143 &nbsp;•&nbsp; Trial: NCT00513500</div>
+
+  
+  <div style="padding:6px 0;margin:8px 0 14px 0;border-bottom:1px solid #e5e7eb">
+    <div style="font-size:1.05em;font-weight:600;color:#111827">Zambia Integrated Management of Malaria and Pneumonia Study</div>
+    <div style="color:#6b7280;font-size:0.85em;margin-top:2px">
+      <a href="https://clinicaltrials.gov/study/NCT00513500" style="color:#3730a3">NCT00513500</a>
+      
+    </div>
+    <details style="margin-top:8px"><summary style="cursor:pointer;color:#6b7280;font-size:0.9em">Show trial summary & official criteria</summary><div style="padding:10px 0;color:#374151;font-size:0.9em"><div style="margin-bottom:8px"><b style="color:#374151">Summary.</b> The purpose of the study is to demonstrate the effectiveness and feasibility of community-based management of pneumonia and malaria by community health workers (CHWs) in a rural district of Zambia.</div><div style="margin-bottom:8px"><b style="color:#374151">Inclusion criteria.</b><pre style="margin:4px 0;padding:8px;background:#fafafa;border:1px solid #e5e7eb;border-radius:4px;white-space:pre-wrap;font-size:0.85em">inclusion criteria: 
+
+ Age between 6 months and 5 years 
+
+ Present with history of fever or reported fever 
+
+ Present with cough or difficult breathing 
+
+ </pre></div><div><b style="color:#374151">Exclusion criteria.</b><pre style="margin:4px 0;padding:8px;background:#fafafa;border:1px solid #e5e7eb;border-radius:4px;white-space:pre-wrap;font-size:0.85em">: 
+
+ Age below 6 months and above 5 years 
+
+ Presence of signs and symptoms of severe illness</pre></div></div></details>
+  </div>
+
+  
+    <div id="aegis-live-decision" title="Click any value in a rule below to explore what-if scenarios."
+         style="padding:12px 18px;border-radius:8px;margin:16px 0 6px 0;
+                border:1px solid #dc2626;background:#fef2f2;
+                position:sticky;top:0;z-index:10;
+                box-shadow:0 1px 3px rgba(0,0,0,0.05);
+                display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div id="aegis-decision-text" style="font-size:1.15em;font-weight:600;color:#dc2626">
+        <span style="font-size:1.2em;margin-right:6px">✗</span>
+        AEGIS: Ineligible · 4 inclusion violations, 4 exclusion violations
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;font-size:0.85em;color:#6b7280;flex-wrap:wrap">
+        <span id="aegis-counts" style="font-family:'SF Mono',Menlo,monospace;font-size:0.88em;
+              background:white;padding:3px 8px;border-radius:4px;border:1px solid #e5e7eb">
+          <span style="color:#dc2626">0 ✗</span> ·
+          <span style="color:#f59e0b">0 ?</span> ·
+          <span style="color:#16a34a">0 ✓</span>
+        </span>
+        <span id="aegis-edit-status"></span>
+        <button id="aegis-fix-all" title="Apply one quick-fix per remaining violation"
+                style="display:none;padding:3px 10px;border:1px solid #7c3aed;
+                       background:#ede9fe;color:#5b21b6;border-radius:4px;cursor:pointer;
+                       font-size:0.85em;font-weight:600">
+          Fix all remaining
+        </button>
+        <button id="aegis-reset"
+                style="display:none;padding:3px 10px;border:1px solid #d1d5db;
+                       background:white;border-radius:4px;cursor:pointer;font-size:0.85em">
+          Reset to chart
+        </button>
+      </div>
+    </div>
+    <div id="aegis-edit-diff" style="display:none;margin:0 0 14px 0;padding:8px 12px;
+         background:#faf5ff;border-left:3px solid #7c3aed;border-radius:4px;
+         font-size:0.86em;color:#5b21b6"></div>
+    <script id="aegis-payload" type="application/json">{&quot;inclusion&quot;: [{&quot;name&quot;: &quot;REQ0_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;&gt;=&quot;, &quot;patient_age_value_recorded_now_in_months&quot;, &quot;6&quot;], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_months&quot;]}, {&quot;name&quot;: &quot;REQ0_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;&lt;=&quot;, &quot;patient_age_value_recorded_now_in_years&quot;, &quot;5&quot;], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_years&quot;]}, {&quot;name&quot;: &quot;REQ1_COMPONENT0_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE&quot;, &quot;ast&quot;: [&quot;or&quot;, &quot;patient_has_finding_of_fever_inthehistory@@current_illness_episode&quot;, &quot;patient_has_finding_of_reported_fever_inthehistory@@current_illness_episode&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_fever_inthehistory@@current_illness_episode&quot;, &quot;patient_has_finding_of_reported_fever_inthehistory@@current_illness_episode&quot;]}, {&quot;name&quot;: &quot;REQ2_COMPONENT0_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE&quot;, &quot;ast&quot;: [&quot;or&quot;, &quot;patient_has_finding_of_cough_now&quot;, &quot;patient_has_finding_of_difficulty_breathing_now&quot;], &quot;vars&quot;: [&quot;patient_has_finding_of_cough_now&quot;, &quot;patient_has_finding_of_difficulty_breathing_now&quot;]}], &quot;exclusion&quot;: [{&quot;name&quot;: &quot;REQ0_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;or&quot;, [&quot;&lt;&quot;, &quot;patient_age_value_recorded_now_in_months&quot;, &quot;6&quot;], [&quot;&gt;&quot;, &quot;patient_age_value_recorded_now_in_years&quot;, &quot;5&quot;]], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_months&quot;, &quot;patient_age_value_recorded_now_in_years&quot;]}, {&quot;name&quot;: &quot;REQ0_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;or&quot;, [&quot;&lt;&quot;, &quot;patient_age_value_recorded_now_in_months&quot;, &quot;6&quot;], [&quot;&gt;&quot;, &quot;patient_age_value_recorded_now_in_years&quot;, &quot;5&quot;]], &quot;vars&quot;: [&quot;patient_age_value_recorded_now_in_months&quot;, &quot;patient_age_value_recorded_now_in_years&quot;]}, {&quot;name&quot;: &quot;REQ1_COMPONENT0_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;or&quot;, &quot;patient_has_signs_of_severe_illness_now&quot;, &quot;patient_has_symptoms_of_symptom_severe_now&quot;], &quot;vars&quot;: [&quot;patient_has_signs_of_severe_illness_now&quot;, &quot;patient_has_symptoms_of_symptom_severe_now&quot;]}, {&quot;name&quot;: &quot;REQ1_COMPONENT1_OTHER_REQUIREMENTS&quot;, &quot;ast&quot;: [&quot;or&quot;, &quot;patient_has_signs_of_severe_illness_now&quot;, &quot;patient_has_symptoms_of_symptom_severe_now&quot;], &quot;vars&quot;: [&quot;patient_has_signs_of_severe_illness_now&quot;, &quot;patient_has_symptoms_of_symptom_severe_now&quot;]}], &quot;values&quot;: {&quot;patient_age_value_recorded_now_in_months&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_age_value_recorded_now_in_years&quot;: {&quot;value&quot;: 58.0, &quot;type&quot;: &quot;num&quot;}, &quot;patient_has_finding_of_cough_now&quot;: {&quot;value&quot;: true, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_difficulty_breathing_now&quot;: {&quot;value&quot;: true, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_finding_of_fever_inthehistory&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_has_finding_of_fever_inthehistory@@current_illness_episode&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_has_finding_of_reported_fever_inthehistory&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_has_finding_of_reported_fever_inthehistory@@current_illness_episode&quot;: {&quot;value&quot;: null, &quot;type&quot;: &quot;unknown&quot;}, &quot;patient_has_signs_of_severe_illness_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}, &quot;patient_has_symptoms_of_symptom_severe_now&quot;: {&quot;value&quot;: false, &quot;type&quot;: &quot;bool&quot;}}}</script>
+    <script>window.__AEGIS_PAYLOAD__ = JSON.parse(document.getElementById('aegis-payload').textContent);</script>
+    
+<script>
+(function () {
+  const P = window.__AEGIS_PAYLOAD__;
+  if (!P) return;
+  const V = P.values;  // var -> {value, type}
+
+  // --- 3-valued logic evaluator ---
+  function ev(e) {
+    if (typeof e === "string") {
+      if (e in V) {
+        const x = V[e].value;
+        return x === null ? null : x;
+      }
+      // literal number
+      const n = parseFloat(e);
+      if (!isNaN(n)) return n;
+      if (e === "true") return true;
+      if (e === "false") return false;
+      return null;
+    }
+    if (!Array.isArray(e) || e.length === 0) return null;
+    const op = e[0];
+    const args = e.slice(1).map(ev);
+    switch (op) {
+      case "and": {
+        if (args.includes(false)) return false;
+        if (args.includes(null)) return null;
+        return true;
+      }
+      case "or": {
+        if (args.includes(true)) return true;
+        if (args.includes(null)) return null;
+        return false;
+      }
+      case "not": {
+        const a = args[0];
+        return a === null ? null : !a;
+      }
+      case "=>":
+      case "implies": {
+        const [a, b] = args;
+        if (a === false) return true;
+        if (a === null) return null;
+        return b;
+      }
+      case "=": {
+        const [a, b] = args;
+        if (a === null || b === null) return null;
+        return a === b;
+      }
+      case ">=": { const [a,b]=args; return (a===null||b===null)?null:(a>=b); }
+      case "<=": { const [a,b]=args; return (a===null||b===null)?null:(a<=b); }
+      case ">":  { const [a,b]=args; return (a===null||b===null)?null:(a>b); }
+      case "<":  { const [a,b]=args; return (a===null||b===null)?null:(a<b); }
+      case "distinct": {
+        if (args.some(x=>x===null)) return null;
+        const s = new Set(args.map(JSON.stringify));
+        return s.size === args.length;
+      }
+      default: return null;
+    }
+  }
+
+  function status(v) {
+    if (v === true)  return "sat";
+    if (v === false) return "unsat";
+    return "unknown";
+  }
+
+  // For a violated REQ, compute minimal patient-value edits that would satisfy it.
+  // Returns [{var, newVal, desc}] suggestions; first one is the quickest fix.
+  function suggestFixes(ast) {
+    const fixes = [];
+    function suggestForVar(v, target, desc) {
+      if (!(v in V)) return;
+      fixes.push({ var: v, newVal: target, desc });
+    }
+    function atomName(v) { return v.replace(/^patient_/, "").replace(/_/g, " ").replace(/@@/g, " / "); }
+    function walk(e, polarity) {
+      // polarity: +1 if we need this subexpr true, -1 if false (for solving)
+      if (typeof e === "string") {
+        if (!(e in V)) return;
+        if (polarity > 0) suggestForVar(e, true,  `assume ${atomName(e)}`);
+        else              suggestForVar(e, false, `assume ${atomName(e)} is not the case`);
+        return;
+      }
+      if (!Array.isArray(e)) return;
+      const op = e[0];
+      if (op === "not") { walk(e[1], -polarity); return; }
+      if ((op === "and" && polarity > 0) || (op === "or" && polarity < 0)) {
+        // need all children to have this polarity
+        for (const c of e.slice(1)) {
+          if (status(ev(c)) !== (polarity > 0 ? "sat" : "unsat")) walk(c, polarity);
+        }
+        return;
+      }
+      if ((op === "or" && polarity > 0) || (op === "and" && polarity < 0)) {
+        // Need just one child to flip; pick the cheapest option (atom that is null/false)
+        for (const c of e.slice(1)) {
+          walk(c, polarity);
+          // One suggestion per or-branch is enough
+        }
+        return;
+      }
+      // Comparisons: figure out what value would satisfy
+      if ([">=","<=",">","<","="].includes(op) && polarity > 0 && typeof e[1] === "string") {
+        const v = e[1]; const nRaw = e[2]; const n = parseFloat(nRaw);
+        if (isNaN(n) || !(v in V)) return;
+        const cur = V[v].value;
+        const nm = atomName(v);
+        if (op === ">=") suggestForVar(v, cur !== null && cur >= n ? cur : n,
+                                        `set ${nm} to ${n} (≥ ${n})`);
+        else if (op === "<=") suggestForVar(v, cur !== null && cur <= n ? cur : n,
+                                        `set ${nm} to ${n} (≤ ${n})`);
+        else if (op === ">")  suggestForVar(v, cur !== null && cur > n ? cur : n + 1,
+                                        `set ${nm} to ${n+1} (> ${n})`);
+        else if (op === "<")  suggestForVar(v, cur !== null && cur < n ? cur : n - 1,
+                                        `set ${nm} to ${n-1} (< ${n})`);
+        else if (op === "=")  suggestForVar(v, n, `set ${nm} to ${n}`);
+      }
+    }
+    walk(ast, 1);
+    // Dedupe by var; keep first
+    const seen = new Set(); const out = [];
+    for (const f of fixes) {
+      if (seen.has(f.var)) continue;
+      seen.add(f.var); out.push(f);
+    }
+    return out;
+  }
+
+  function badgeStyle(st) {
+    if (st === "sat")     return {txt:"SATISFIED",color:"#16a34a",bg:"#ecfdf5"};
+    if (st === "unsat")   return {txt:"VIOLATED", color:"#dc2626",bg:"#fef2f2"};
+    return                       {txt:"UNKNOWN", color:"#f59e0b",bg:"#fffbeb"};
+  }
+
+  // Recompute: mark each req card with new status; recompute top decision
+  function recompute() {
+    let anyUnsatInc = false, anyUnsatExc = false;
+    let anyUnkInc = false, anyUnkExc = false;
+    let totSat = 0, totAll = 0;
+
+    function updateSide(reqs, sideKey) {
+      for (const r of reqs) {
+        const v = ev(r.ast);
+        const st = status(v);
+        totAll++;
+        if (st === "sat") totSat++;
+        if (sideKey === "inclusion") {
+          if (st === "unsat") anyUnsatInc = true;
+          if (st === "unknown") anyUnkInc = true;
+        } else {
+          if (st === "unsat") anyUnsatExc = true;
+          if (st === "unknown") anyUnkExc = true;
+        }
+        const card = document.querySelector(`[data-req="${r.name}"]`);
+        if (card) {
+          const b = badgeStyle(st);
+          card.style.borderLeftColor = b.color;
+          const badge = card.querySelector(".aegis-badge");
+          if (badge) {
+            badge.textContent = b.txt;
+            badge.style.color = b.color;
+            badge.style.background = b.bg;
+          }
+          const conflict = card.querySelector(".aegis-conflict");
+          if (conflict) conflict.style.display = (st === "unsat") ? "" : "none";
+          // Quick-fix strip: shown only when unsat
+          let fix = card.querySelector(".aegis-fixes");
+          if (!fix) {
+            fix = document.createElement("div");
+            fix.className = "aegis-fixes";
+            fix.style.cssText = "margin-top:8px;padding-left:calc(1.2em + 10px);"
+              + "font-size:0.85em;display:none";
+            const body = card.querySelector(".aegis-req-title")?.parentElement;
+            if (body) body.appendChild(fix);
+          }
+          if (st === "unsat") {
+            const sugs = suggestFixes(r.ast).slice(0, 4);
+            if (sugs.length) {
+              fix.style.display = "";
+              fix.innerHTML = '<span style="color:#9ca3af;margin-right:6px">What would fix this →</span>'
+                + sugs.map((s, i) =>
+                    `<button data-fvar="${s.var}" data-fval='${JSON.stringify(s.newVal)}'
+                       style="margin:0 4px 4px 0;padding:2px 10px;border:1px solid #fca5a5;
+                              background:white;color:#dc2626;border-radius:12px;cursor:pointer;
+                              font-size:0.85em">${s.desc}</button>`
+                  ).join("");
+            } else {
+              fix.style.display = "none";
+            }
+          } else {
+            fix.style.display = "none";
+          }
+        }
+      }
+    }
+    updateSide(P.inclusion, "inclusion");
+    updateSide(P.exclusion, "exclusion");
+
+    // Overall decision (mirror AEGIS rule)
+    let decision, color, bg, icon, text;
+    const unsatInc = P.inclusion.filter(r => status(ev(r.ast)) === "unsat").length;
+    const unsatExc = P.exclusion.filter(r => status(ev(r.ast)) === "unsat").length;
+    const unkInc  = P.inclusion.filter(r => status(ev(r.ast)) === "unknown").length;
+    const unkExc  = P.exclusion.filter(r => status(ev(r.ast)) === "unknown").length;
+    if (!anyUnsatInc && !anyUnsatExc && !anyUnkInc && !anyUnkExc) {
+      decision="eligible"; color="#16a34a"; bg="#ecfdf5"; icon="✓";
+      text="Eligible · all "+totAll+" requirements satisfied";
+    } else if (anyUnsatInc || anyUnsatExc) {
+      decision="ineligible"; color="#dc2626"; bg="#fef2f2"; icon="✗";
+      const bits = [];
+      if (unsatInc) bits.push(unsatInc+" inclusion violation"+(unsatInc>1?"s":""));
+      if (unsatExc) bits.push(unsatExc+" exclusion violation"+(unsatExc>1?"s":""));
+      text="Ineligible · " + bits.join(", ");
+    } else {
+      decision="defer"; color="#f59e0b"; bg="#fffbeb"; icon="?";
+      text="Defer · " + (unkInc+unkExc) + " requirement"+((unkInc+unkExc)>1?"s":"") + " with unknown values";
+    }
+    const totUnsat = unsatInc + unsatExc;
+    const totUnk = unkInc + unkExc;
+    const countsEl = document.getElementById("aegis-counts");
+    if (countsEl) {
+      countsEl.innerHTML =
+        `<a href="#section-unsat" title="Jump to violations" style="color:#dc2626;text-decoration:none;cursor:pointer">${totUnsat} ✗</a> · ` +
+        `<a href="#section-unknown" title="Jump to unknown" style="color:#f59e0b;text-decoration:none;cursor:pointer">${totUnk} ?</a> · ` +
+        `<a href="#section-sat" title="Jump to satisfied" style="color:#16a34a;text-decoration:none;cursor:pointer">${totSat} ✓</a>`;
+    }
+    const banner = document.getElementById("aegis-live-decision");
+    const dtext = document.getElementById("aegis-decision-text");
+    if (banner) {
+      banner.style.background = bg;
+      banner.style.borderColor = color;
+    }
+    if (dtext) {
+      dtext.innerHTML = `<span style="color:${color};font-size:1.3em;margin-right:6px">${icon}</span>`
+        + `<span style="color:${color}">AEGIS: ${text}</span>`;
+    }
+    // Update all .aegis-val spans whose variable changed
+    document.querySelectorAll(".aegis-val").forEach(el => {
+      const vr = el.dataset.var;
+      if (!(vr in V)) return;
+      const x = V[vr].value;
+      const fmt = el.dataset.format || "pill";
+      let txt, color, bg;
+      if (x === null)       { txt="unknown"; color="#6b7280"; bg="#f3f4f6"; }
+      else if (x === true)  { txt="yes";     color="#065f46"; bg="#d1fae5"; }
+      else if (x === false) { txt="no";      color="#7f1d1d"; bg="#fee2e2"; }
+      else                  { txt=String(x); color="#1e3a8a"; bg="#dbeafe"; }
+      if (fmt === "pill") {
+        el.textContent = txt;
+        el.style.color = color;
+        el.style.background = bg;
+      } else {
+        // fact format: larger text
+        el.innerHTML = `<span style="color:${color};font-weight:600">${txt}</span>`;
+      }
+    });
+  }
+
+  // Bind click handlers: click .aegis-val to cycle bool; numeric opens prompt
+  // Fix-button handler
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-fvar]");
+    if (!btn) return;
+    const v = btn.dataset.fvar;
+    const val = JSON.parse(btn.dataset.fval);
+    if (!(v in V)) return;
+    V[v].value = val;
+    if (val === true || val === false) V[v].type = "bool";
+    else if (typeof val === "number") V[v].type = "num";
+    recompute();
+    // brief highlight on banner
+    const banner = document.getElementById("aegis-live-decision");
+    if (banner) {
+      banner.style.transition = "box-shadow 0.3s";
+      banner.style.boxShadow = "0 0 0 3px rgba(124,58,237,0.3)";
+      setTimeout(() => banner.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)", 400);
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest(".aegis-val");
+    if (!el) return;
+    const vr = el.dataset.var;
+    if (!(vr in V)) return;
+    const meta = V[vr];
+    if (meta.type === "bool" || meta.type === "unknown") {
+      // cycle: null -> true -> false -> null
+      const cur = meta.value;
+      meta.value = (cur === null) ? true : (cur === true ? false : null);
+      meta.type = "bool";
+    } else if (meta.type === "num") {
+      const s = prompt(`Set ${vr} (current = ${meta.value}). Blank = unknown.`,
+                       meta.value === null ? "" : meta.value);
+      if (s === null) return;  // cancelled
+      const f = parseFloat(s);
+      meta.value = (s === "" || isNaN(f)) ? null : f;
+    }
+    recompute();
+  });
+
+  // Clicking a count anchor should auto-open that collapsed section
+  function openHashSection() {
+    const h = window.location.hash;
+    if (!h) return;
+    const el = document.querySelector(h);
+    if (el && el.tagName === "DETAILS") el.open = true;
+  }
+  window.addEventListener("hashchange", openHashSection);
+  openHashSection();
+
+  // Snapshot initial values for edit-tracking & reset
+  const initial = JSON.parse(JSON.stringify(V));
+
+  function fmtVal(x) {
+    if (x === null) return "unknown";
+    if (x === true) return "yes";
+    if (x === false) return "no";
+    return String(x);
+  }
+  function atomName(v) {
+    return v.replace(/^patient_/, "").replace(/_/g, " ").replace(/@@/g, " / ");
+  }
+  function editStatus() {
+    const edits = [];
+    for (const k of Object.keys(V)) {
+      if (JSON.stringify(V[k].value) !== JSON.stringify(initial[k].value)) edits.push(k);
+    }
+    const n = edits.length;
+    const el = document.getElementById("aegis-edit-status");
+    const reset = document.getElementById("aegis-reset");
+    const fixAll = document.getElementById("aegis-fix-all");
+    const diff = document.getElementById("aegis-edit-diff");
+    if (el) {
+      el.innerHTML = n === 0
+        ? '<span style="color:#9ca3af">unchanged from chart</span>'
+        : `<b style="color:#7c3aed">what-if · ${n} edit${n>1?"s":""}</b>`;
+    }
+    if (reset) reset.style.display = n > 0 ? "" : "none";
+    // Fix-all visible whenever there is at least one violation
+    const anyViolation = [...P.inclusion, ...P.exclusion]
+      .some(r => status(ev(r.ast)) === "unsat");
+    if (fixAll) fixAll.style.display = anyViolation ? "" : "none";
+    // Edit-diff summary
+    if (diff) {
+      if (n === 0) {
+        diff.style.display = "none";
+      } else {
+        diff.style.display = "";
+        const rows = edits.slice(0, 8).map(k => {
+          const before = fmtVal(initial[k].value);
+          const after  = fmtVal(V[k].value);
+          return `<li style="margin:2px 0"><code style="color:#374151;font-size:0.95em">${atomName(k)}</code>: <span style="color:#9ca3af">${before}</span> → <b>${after}</b></li>`;
+        }).join("");
+        const more = n > 8 ? `<li style="color:#9ca3af">(+${n-8} more)</li>` : "";
+        diff.innerHTML = '<b>Assumptions you\'ve applied:</b><ul style="margin:4px 0;padding-left:20px">'
+          + rows + more + '</ul>';
+      }
+    }
+  }
+
+  // Run edit-status after every recompute
+  const _origRecompute = recompute;
+  recompute = function() { _origRecompute(); editStatus(); };
+  recompute();
+
+  const resetBtn = document.getElementById("aegis-reset");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      for (const k of Object.keys(V)) {
+        V[k].value = initial[k].value;
+        V[k].type  = initial[k].type;
+      }
+      recompute();
+    });
+  }
+
+  const fixAllBtn = document.getElementById("aegis-fix-all");
+  if (fixAllBtn) {
+    fixAllBtn.addEventListener("click", () => {
+      // Iterate up to a few passes — applying one REQ's fix may satisfy others
+      for (let pass = 0; pass < 4; pass++) {
+        let changed = false;
+        for (const r of [...P.inclusion, ...P.exclusion]) {
+          if (status(ev(r.ast)) !== "unsat") continue;
+          const sugs = suggestFixes(r.ast);
+          if (!sugs.length) continue;
+          const s = sugs[0];
+          if (JSON.stringify(V[s.var].value) === JSON.stringify(s.newVal)) continue;
+          V[s.var].value = s.newVal;
+          if (s.newVal === true || s.newVal === false) V[s.var].type = "bool";
+          else if (typeof s.newVal === "number") V[s.var].type = "num";
+          changed = true;
+        }
+        if (!changed) break;
+      }
+      recompute();
+    });
+  }
+})();
+</script>
+
+    
+
+  <div style="color:#6b7280;font-size:0.85em;margin:-6px 0 14px 0">
+    Peer systems — GPT-4.1 Direct: <b style="color:#374151">Ineligible</b>
+    · TrialGPT: <b style="color:#374151">Ineligible</b>
+     · <span style='color:#16a34a'>all three agree</span>
+  </div>
+
+  
+    <section style="margin:20px 0">
+      
+        <details id="section-unsat" open style="margin:14px 0;scroll-margin-top:80px">
+          <summary style="cursor:pointer;font-weight:600;color:#dc2626;font-size:1.05em;
+                          padding:6px 0;border-bottom:1px solid #e5e7eb;margin-bottom:10px;
+                          list-style:none">
+            <span style="display:inline-block;transition:transform 0.15s">▾</span>
+            ✗ Blocking eligibility <span style='color:#9ca3af;font-weight:400'>(8)</span>
+          </summary>
+          <div>
+    <div data-req="REQ0_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must be aged at least 6 months</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age value recorded now in months</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_months" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">at least</b> 6</div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ0_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must be aged at most 5 years</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age (years)</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_years" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">58</span> <b style="color:#9ca3af;font-weight:500">at most</b> 5</div>
+          <div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 58-year-old nonsmoker white female”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ1_COMPONENT0_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must (present with history of fever OR present with history of reported fever) in the current illness episode</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of fever (history) — current illness episode</code><span class="aegis-val" data-var="patient_has_finding_of_fever_inthehistory@@current_illness_episode" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span>
+  <b style="color:#9ca3af;font-weight:500">OR</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of reported fever (history) — current illness episode</code><span class="aegis-val" data-var="patient_has_finding_of_reported_fever_inthehistory@@current_illness_episode" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ2_COMPONENT0_PRESCREEN_NOTES_MUST_COMPLETELY_SUFFICE" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">INCLUSION</span>Must (present with cough OR present with difficult breathing)</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of cough</code><span class="aegis-val" data-var="patient_has_finding_of_cough_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#d1fae5;color:#065f46;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">yes</span>  <b style="color:#9ca3af;font-weight:500">OR</b>  <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has finding of difficulty breathing</code><span class="aegis-val" data-var="patient_has_finding_of_difficulty_breathing_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#d1fae5;color:#065f46;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">yes</span></div>
+          <div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “mild exertional dyspnea and occasional cough”</div><div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “mild exertional dyspnea”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ0_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>At least one of: &lt; patient age value recorded now in months 6, &gt; patient age (years) 5</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age value recorded now in months</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_months" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">less than</b> 6
+  <b style="color:#9ca3af;font-weight:500">OR</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age (years)</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_years" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">58</span> <b style="color:#9ca3af;font-weight:500">more than</b> 5</div>
+          <div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 58-year-old nonsmoker white female”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ0_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>At least one of: &lt; patient age value recorded now in months 6, &gt; patient age (years) 5</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age value recorded now in months</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_months" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#f3f4f6;color:#6b7280;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">unknown</span> <b style="color:#9ca3af;font-weight:500">less than</b> 6
+  <b style="color:#9ca3af;font-weight:500">OR</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">age (years)</code><span class="aegis-val" data-var="patient_age_value_recorded_now_in_years" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#dbeafe;color:#1e3a8a;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">58</span> <b style="color:#9ca3af;font-weight:500">more than</b> 5</div>
+          <div style="color:#6b7280;font-size:0.82em;margin-top:4px;padding:4px 8px;background:#f9fafb;border-left:2px solid #e5e7eb;border-radius:2px">chart: “A 58-year-old nonsmoker white female”</div>
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ1_COMPONENT0_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>At least one of: has signs of severe illness, has symptoms of symptom severe</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has signs of severe illness</code><span class="aegis-val" data-var="patient_has_signs_of_severe_illness_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span>
+  <b style="color:#9ca3af;font-weight:500">OR</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has symptoms of symptom severe</code><span class="aegis-val" data-var="patient_has_symptoms_of_symptom_severe_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div data-req="REQ1_COMPONENT1_OTHER_REQUIREMENTS" class="aegis-card"
+         style="border:1px solid #e5e7eb;border-left:3px solid #dc2626;
+                border-radius:4px;padding:10px 14px;margin:6px 0;background:white">
+      
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div class="aegis-icon" style="color:#dc2626;font-size:1.05em;font-weight:700;
+                    flex-shrink:0;width:1.2em;text-align:center;line-height:1.5em">✗</div>
+        <div style="flex:1;min-width:0">
+          <div class="aegis-req-title" style="color:#111827;font-size:0.95em;line-height:1.4"><span style="display:inline-block;background:#f3f4f6;color:#6b7280;padding:1px 7px;border-radius:3px;font-size:0.68em;font-weight:600;letter-spacing:0.05em;margin-right:8px;vertical-align:1px">EXCLUSION</span>At least one of: has signs of severe illness, has symptoms of symptom severe</div>
+          <div style="margin:4px 0 0 0;padding:2px 0;font-size:0.88em;color:#6b7280;
+                      line-height:1.55;white-space:pre-wrap;word-break:break-word"><code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has signs of severe illness</code><span class="aegis-val" data-var="patient_has_signs_of_severe_illness_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span>
+  <b style="color:#9ca3af;font-weight:500">OR</b> <code style="color:#374151;background:#f3f4f6;padding:0 3px;border-radius:2px">has symptoms of symptom severe</code><span class="aegis-val" data-var="patient_has_symptoms_of_symptom_severe_now" data-format="pill" title="Click to change" style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:10px;background:#fee2e2;color:#7f1d1d;font-weight:600;font-size:0.82em;cursor:pointer;border:1px solid transparent">no</span></div>
+          
+        </div>
+      </div>
+    </div></div>
+        </details>
+      
+      
+    </section>
+
+  <details style="margin:20px 0">
+    <summary style="cursor:pointer;font-weight:600;color:#374151;padding:8px 0;
+                    border-top:1px solid #e5e7eb">
+      Patient chart <span style="color:#9ca3af;font-weight:400">— highlighted spans are evidence for each fact</span>
+    </summary>
+    <div style="padding-top:8px">
+      <div class="chart"><mark style="background:#bfdbfe;color:#1e3a8a;padding:1px 2px;border-radius:2px" title="patient age value recorded now in years: 58">A 58-year-old nonsmoker white female</mark> with <mark style="background:#bbf7d0;color:#065f46;padding:1px 2px;border-radius:2px" title="patient has finding of difficulty breathing now: True">mild exertional dyspnea and occasional cough</mark> is found to have a left lung mass on chest x-ray. <mark style="background:#fecaca;color:#7f1d1d;padding:1px 2px;border-radius:2px" title="patient has symptoms of symptom severe now: False">She is otherwise asymptomatic. A neurologic examination is unremarkable</mark>, but a CT scan of the head shows a solitary mass in the right frontal lobe.</div>
+      <div class="meta" style="margin:6px 0 16px 0">
+        <span style="background:#bbf7d0;color:#065f46;padding:1px 6px;border-radius:3px">yes</span>
+        <span style="background:#fecaca;color:#7f1d1d;padding:1px 6px;border-radius:3px;margin-left:4px">no</span>
+        <span style="background:#bfdbfe;color:#1e3a8a;padding:1px 6px;border-radius:3px;margin-left:4px">numeric/other</span>
+      </div>
+    </div>
+  </details>
+
+  <details style="margin:20px 0">
+    <summary style="cursor:pointer;font-weight:600;color:#374151;padding:8px 0;
+                    border-top:1px solid #e5e7eb">
+      Compare rationales from all three systems
+    </summary>
+    <div style="padding-top:8px">
+    <section style="margin:24px 0">
+      <h2 style="margin:0 0 8px 0">Side-by-side rationales</h2>
+      <p class="meta">Each system's stated reasoning, shown blind-style so you can compare them directly.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px">
+        <div style="border:2px solid #3b82f6;padding:12px;border-radius:6px;background:#eff6ff">
+          <div style="font-weight:600;color:#1e40af;margin-bottom:6px">AEGIS (neuro-symbolic)</div>
+          <div style="font-size:0.9em;color:#1e3a8a"><b>Decision:</b> ineligible.<br><b>Inclusion violations:</b> 4 requirements not satisfied.<br><b>Exclusion violations:</b> 4 requirements not satisfied.</div>
+        </div>
+        <div style="border:1px solid #e5e7eb;padding:12px;border-radius:6px">
+          <div style="font-weight:600;color:#6b7280;margin-bottom:6px">GPT-4.1 Direct</div>
+          <div style="font-size:0.9em;color:#374151"><b>Decision:</b> ineligible<br><br>The patient is a 58-year-old female, which is explicitly outside the trial&#x27;s inclusion age range of 6 months to 5 years and meets the exclusion criterion of age above 5 years. Therefore, she is ineligible for this trial.</div>
+        </div>
+        <div style="border:1px solid #e5e7eb;padding:12px;border-radius:6px">
+          <div style="font-weight:600;color:#6b7280;margin-bottom:6px">TrialGPT</div>
+          <div style="font-size:0.9em;color:#374151"><b>Decision:</b> ineligible<br>2 inclusion criteria violated<br><br><b>Cited blockers:</b><br>• Age between 6 months and 5 years<br>• Present with history of fever or reported fever<br>• Age below 6 months and above 5 years</div>
+        </div>
+      </div>
+    </section></div>
+  </details>
+
+  <details style="margin:20px 0">
+    <summary style="cursor:pointer;font-weight:600;color:#374151;padding:8px 0;
+                    border-top:1px solid #e5e7eb">
+      Developer view — verbose per-criterion list + CF targets
+    </summary>
+    <div style="padding-top:8px">
+      
+    <section style="margin:24px 0;padding:16px;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:4px">
+      <h2 style="margin:0 0 8px 0;color:#92400e">What would change this decision?</h2>
+      <p style="color:#78350f;margin:0 0 12px 0">
+        Based on the trial's requirements, 1 chart fact would need to change
+        for this patient to potentially meet the criteria. A clinician may want to confirm each
+        item during full enrollment screening.
+      </p>
+      <ol style="margin:8px 0;padding-left:24px;color:#451a03">
+        <li style="margin:6px 0">Patient would need to have: <b>Boolean indicating whether the patient currently has signs of severe illness.</b> (chart currently says no) <span style="font-size:0.85em;color:#6b7280">(exclusion)</span></li>
+      </ol>
+    </section>
+    
+      
+    <section style="margin:24px 0">
+      <h2 style="color:#dc2626;margin:0 0 4px 0">
+        ✗ Inclusion: UNSAT
+      </h2>
+      <p style="color:#4b5563;margin:0 0 12px 0">Patient fails at least one requirement on this side (shown in red below).</p>
+
+      <h3 style="margin:16px 0 8px 0">Trial requirements on this side</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb">
+        <thead><tr style="background:#f3f4f6">
+          <th style="width:40px;padding:8px"></th>
+          <th style="text-align:left;padding:8px">Requirement</th>
+          <th style="text-align:left;padding:8px;width:160px">Status</th>
+        </tr></thead>
+        <tbody>
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">To be included, the patient must be aged ≥ 6 months.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">Numeric value indicating the patient&#x27;s current age in months. ≥ 6</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">To be included, the patient must be aged ≤ 5 years.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">Numeric value indicating the patient&#x27;s current age in years. ≤ 5</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">(no criterion text)</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">(patient has finding of fever inthehistory — current illness episode) OR (patient has finding of reported fever inthehistory — current illness episode)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">To be included, the patient must (present with cough OR present with difficult breathing).</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">(Boolean indicating whether the patient currently presents with cough.) OR (Boolean indicating whether the patient currently presents with difficult breathing.)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    </tbody>
+      </table>
+
+      <h3 style="margin:16px 0 8px 0">What the chart says (mined facts)</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb"><thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value indicating the patient&#x27;s current age in months.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">696</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">A 58-year-old nonsmoker white female</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value indicating the patient&#x27;s current age in years.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">58</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">A 58-year-old nonsmoker white female</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently presents with cough.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-weight:600;white-space:nowrap">yes</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">mild exertional dyspnea and occasional cough</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently presents with difficult breathing.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-weight:600;white-space:nowrap">yes</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#f59e0b;font-size:0.85em;white-space:nowrap">weak evidence</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">mild exertional dyspnea</td>
+        </tr>
+        </tbody></table>
+        <details style="margin-top:8px">
+          <summary style="cursor:pointer;color:#6b7280;font-size:0.9em">4 additional variables not documented in chart</summary>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;margin-top:8px">
+            <thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient has ever had a clinical finding of fever.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">patient has finding of fever inthehistory — current illness episode</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient has ever had a history of reported fever.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">patient has finding of reported fever inthehistory — current illness episode</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-size:0.85em;white-space:nowrap">inferred / no chart excerpt</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em"></td>
+        </tr>
+        </tbody>
+          </table>
+        </details>
+    </section>
+    
+      
+    <section style="margin:24px 0">
+      <h2 style="color:#dc2626;margin:0 0 4px 0">
+        ✗ Exclusion: UNSAT
+      </h2>
+      <p style="color:#4b5563;margin:0 0 12px 0">Patient fails at least one requirement on this side (shown in red below).</p>
+
+      <h3 style="margin:16px 0 8px 0">Trial requirements on this side</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb">
+        <thead><tr style="background:#f3f4f6">
+          <th style="width:40px;padding:8px"></th>
+          <th style="text-align:left;padding:8px">Requirement</th>
+          <th style="text-align:left;padding:8px;width:160px">Status</th>
+        </tr></thead>
+        <tbody>
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">the patient is below 6 months of age</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">(Numeric value indicating the patient&#x27;s current age in months. &lt; 6) OR (Numeric value indicating the patient&#x27;s current age in years. &gt; 5)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">the patient is above 5 years of age</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">(Numeric value indicating the patient&#x27;s current age in months. &lt; 6) OR (Numeric value indicating the patient&#x27;s current age in years. &gt; 5)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has signs of severe illness.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">(Boolean indicating whether the patient currently has signs of severe illness.) OR (Boolean indicating whether the patient currently has symptoms of severe illness.)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    
+    <tr data-status="unsat">
+      <td style="color:#dc2626;font-weight:bold;text-align:center;vertical-align:top;padding:8px">✗</td>
+      <td style="vertical-align:top;padding:8px">
+        <div style="font-weight:600">The patient is excluded if the patient has symptoms of severe illness.</div>
+        <details style="color:#6b7280;font-size:0.85em;margin-top:4px">
+          <summary style="cursor:pointer;color:#9ca3af">show compiled rule</summary>
+          <div style="margin-top:6px;padding:6px 8px;background:#f9fafb;border-radius:4px;font-family:monospace">(Boolean indicating whether the patient currently has signs of severe illness.) OR (Boolean indicating whether the patient currently has symptoms of severe illness.)</div>
+        </details>
+      </td>
+      <td style="color:#dc2626;font-weight:600;vertical-align:top;padding:8px;white-space:nowrap">NOT SATISFIED</td>
+    </tr>
+    </tbody>
+      </table>
+
+      <h3 style="margin:16px 0 8px 0">What the chart says (mined facts)</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb"><thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value indicating the patient&#x27;s current age in years.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">58</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">A 58-year-old nonsmoker white female</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has signs of severe illness.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">She is otherwise asymptomatic. A neurologic examination is unremarkable</td>
+        </tr>
+        
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Boolean indicating whether the patient currently has symptoms of severe illness.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#dc2626;font-weight:600;white-space:nowrap">no</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">She is otherwise asymptomatic.</td>
+        </tr>
+        </tbody></table>
+        <details style="margin-top:8px">
+          <summary style="cursor:pointer;color:#6b7280;font-size:0.9em">1 additional variables not documented in chart</summary>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;margin-top:8px">
+            <thead><tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Fact</th><th style="text-align:left;padding:8px">Value</th><th style="text-align:left;padding:8px">Evidence strength</th><th style="text-align:left;padding:8px">Chart excerpt</th></tr></thead><tbody>
+        <tr>
+          <td style="padding:6px 8px;vertical-align:top">Numeric value indicating the patient&#x27;s current age in months.</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-weight:600;white-space:nowrap">not documented</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#16a34a;font-size:0.85em;white-space:nowrap">explicit</td>
+          <td style="padding:6px 8px;vertical-align:top;color:#6b7280;font-size:0.9em">A 58-year-old nonsmoker white female</td>
+        </tr>
+        </tbody>
+          </table>
+        </details>
+    </section>
+    
+    </div>
+  </details>
+
+  <hr style="margin:32px 0;border:none;border-top:1px solid #e5e7eb">
+  <p class="meta">
+    This report was generated from AEGIS's structured rationale.
+    Every requirement status is derived from the SMT solver's evaluation of the compiled trial
+    program against patient facts extracted by the LLM miner. Review each "NOT SATISFIED" row
+    and its associated mined facts to understand why the trial was matched this way.
+  </p>
+</body>
+</html>
