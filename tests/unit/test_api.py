@@ -75,3 +75,50 @@ def test_verdict_match_and_explain_agree(pair_data_available):
     d = verdict.match(pair)
     assert d.decision in ("eligible", "ineligible")
     assert d.decision.upper() in verdict.explain(pair)
+
+
+# ---------------------------------------------------------------- registry
+def test_the_papers_six_matchers_are_registered_in_order():
+    """Adding a registry must not change which systems ship, or their order."""
+    assert list(verdict.systems()) == [
+        "verdict", "smt-only", "atoms", "lm-only", "hybrid", "trialgpt"]
+
+
+def test_third_party_matcher_can_be_registered():
+    from matchers.schema import Decision
+
+    @verdict.register("t-test-matcher", description="registered in a test")
+    def _m(pair_id):
+        return Decision(pair_id, "t-test-matcher", "eligible", "because", [])
+    try:
+        assert "t-test-matcher" in verdict.systems()
+        d = verdict.match("any__pair", system="t-test-matcher")
+        assert d.decision == "eligible" and d.reasoning == "because"
+    finally:
+        verdict.unregister("t-test-matcher")
+    assert "t-test-matcher" not in verdict.systems()
+
+
+def test_registering_over_a_builtin_is_refused_by_default():
+    """Silently shadowing 'verdict' would make two people's results differ."""
+    with pytest.raises(ValueError, match="already registered"):
+        verdict.register("verdict", lambda p: None)
+
+
+def test_override_is_allowed_when_explicit():
+    from matchers.schema import Decision
+    original = verdict.systems()["trialgpt"]
+    try:
+        verdict.register("trialgpt", lambda p: Decision(p, "x", "eligible", "", []),
+                         description="replaced", override=True)
+        assert verdict.systems()["trialgpt"] == "replaced"
+    finally:
+        verdict.unregister("trialgpt")
+        verdict.systems()                      # re-registers the built-in
+        assert verdict.systems()["trialgpt"] == original
+
+
+def test_cli_and_api_share_one_system_list():
+    """The list used to be duplicated in verdict_cli.py; it must not drift."""
+    import verdict_cli
+    assert set(verdict_cli._systems()) == set(verdict.systems())

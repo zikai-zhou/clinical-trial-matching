@@ -15,32 +15,15 @@ the stage-1 atom miner; see docs/DATA.md for how to obtain or regenerate them.
 from __future__ import annotations
 import argparse, json, os, pathlib, sys
 
-SYSTEMS = {
-    'verdict':  ('smt_lm_evidence_arbiter', 'SMT + LLM auditor with LM-judge evidence (recommended, auditable)'),
-    'smt-only': ('smt_raw',                 'atom miner + Z3 only, no review'),
-    'atoms':    ('smt_atoms_arbiter',       'SMT + LLM auditor on rejects (atoms only)'),
-    'lm-only':  ('lm_only',                 'single LLM call over chart + criteria'),
-    'hybrid':   ('hybrid_strict',           'accept-if-either + LM-evidence arbiter (max F1)'),
-    'trialgpt': ('trialgpt',                'TrialGPT baseline (Yang et al. 2023)'),
-}
+# The registry and the pair index live in the package, so the command and the
+# API can never disagree about which systems or pairs exist. Re-exported here
+# because callers (and the test suite) import them from this module.
+from verdict.data import iter_pairs, pair_root          # noqa: E402,F401
 
 
-def pair_root() -> pathlib.Path:
-    root = pathlib.Path(os.environ.get(
-        'VERDICT_ROOT', pathlib.Path(__file__).resolve().parent))
-    return pathlib.Path(os.environ.get('VERDICT_PAIR_DATA',
-                                       root / 'experiments' / '53_v2_full'))
-
-
-def iter_pairs():
-    base = pair_root() / 'cmsrc_out'
-    if not base.exists():
-        return
-    for pdir in sorted(base.iterdir()):
-        if not pdir.is_dir() or pdir.name.startswith('_'):
-            continue
-        for f in sorted(pdir.glob('*__full.json')):
-            yield f'{pdir.name}__{f.name.split("__")[0]}'
+def _systems() -> dict:
+    import verdict
+    return verdict.systems()
 
 
 def require_pairs():
@@ -53,10 +36,8 @@ def require_pairs():
 
 
 def run(system: str, pair_id: str):
-    from matchers import variants
-    fn_name, _ = SYSTEMS[system]
-    fn = getattr(variants, fn_name)
-    return fn(pair_id)
+    import verdict
+    return verdict.match(pair_id, system=system, strict=False)
 
 
 def cmd_list(a):
@@ -70,10 +51,13 @@ def cmd_list(a):
 
 
 def cmd_systems(a):
+    import verdict
+    verdict.systems()                       # ensure built-ins are registered
     print(f'{"name":<10s}{"function":<26s}description')
     print('-' * 92)
-    for k, (fn, desc) in SYSTEMS.items():
-        print(f'{k:<10s}{fn:<26s}{desc}')
+    from verdict.registry import _REGISTRY
+    for k, (fn, desc) in _REGISTRY.items():
+        print(f'{k:<10s}{getattr(fn, "__name__", "?"):<26s}{desc}')
 
 
 def cmd_match(a):
@@ -126,7 +110,7 @@ def main():
     for name, fn in (('match', cmd_match), ('explain', cmd_explain)):
         p = sub.add_parser(name, help=f'{name} a patient--trial pair')
         p.add_argument('pair_id')
-        p.add_argument('--system', choices=list(SYSTEMS), default='verdict')
+        p.add_argument('--system', choices=list(_systems()), default='verdict')
         if name == 'match':
             p.add_argument('--json', action='store_true')
         p.set_defaults(func=fn)

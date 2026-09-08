@@ -43,6 +43,11 @@ jobs:
           pip install pytest "z3-solver>=4.12"
           pytest
 
+      - name: Examples must run
+        run: |
+          python examples/03_add_your_own_matcher.py > /dev/null
+          python examples/02_read_the_artifacts.py > /dev/null
+
       - name: Invariants
         # Data-dependent checks SKIP on a runner (no local artifacts); the
         # hygiene, packaging and CLI checks must still pass.

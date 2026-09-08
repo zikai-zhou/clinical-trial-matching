@@ -240,6 +240,35 @@ Fields that a version does not compute are left out of the export rather than
 returned empty, so "we did not calculate this" cannot be misread as "we
 calculated it and found nothing".
 
+### Examples
+
+```bash
+python examples/02_read_the_artifacts.py     # needs only z3-solver
+python examples/03_add_your_own_matcher.py   # needs nothing
+python examples/01_decide_a_pair.py          # needs pair data
+```
+
+See [examples/README.md](examples/README.md). CI runs the first two, so they
+cannot fall out of date.
+
+### Adding your own matcher
+
+A matcher is any callable taking a pair id and returning a `Decision`.
+Register it and it is available everywhere the built-ins are, including the
+`verdict` command's `--system` flag:
+
+```python
+import verdict
+from matchers.schema import Decision
+
+@verdict.register("my-matcher", description="my approach")
+def my_matcher(pair_id):
+    return Decision(pair_id, "my-matcher", "eligible", "because ...", [])
+```
+
+Replacing a built-in requires `override=True` — shadowing `verdict` silently
+would make two people's results incomparable.
+
 ### Tests and checks
 
 ```bash

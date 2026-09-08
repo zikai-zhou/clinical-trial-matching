@@ -594,6 +594,27 @@ def _():
         f'pyproject licence does not match LICENSE: {declared!r}'
 
 
+@check('examples:run-without-data')
+def _():
+    """The examples that need no corpus must actually run.
+
+    Documentation rots silently; an executed example cannot.
+    """
+    import subprocess
+    ex = ROOT / 'examples'
+    assert ex.is_dir(), 'examples/ missing'
+    rc, out = sh(str(ex / '03_add_your_own_matcher.py'))
+    assert rc == 0, out
+    want(out, 'always-refer', 'ELIGIBLE')
+
+    # 02 needs a working solver; skip rather than fail without one
+    probe, _o = sh('-c', "import z3; print(hasattr(z3,'Optimize'))")
+    if 'True' in _o:
+        rc, out = sh(str(ex / '02_read_the_artifacts.py'))
+        assert rc == 0, out
+        want(out, 'Decision: INELIGIBLE', 'What it had to assume', '>= 60')
+
+
 # ---------------------------------------------------------------- hygiene
 # Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',

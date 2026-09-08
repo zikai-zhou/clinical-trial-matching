@@ -27,30 +27,30 @@ Pair data is read from $VERDICT_PAIR_DATA (default <repo>/experiments/53_v2_full
 from __future__ import annotations
 
 from matchers.schema import Decision, AuditStep, MissingPairData, NO_DATA
+from verdict.data import iter_pairs, pair_root
+from verdict.registry import BUILTINS, ensure_builtins, get, register, unregister
 
-__all__ = ["match", "explain", "systems", "pairs",
+__all__ = ["match", "explain", "systems", "pairs", "register", "unregister",
            "Decision", "AuditStep", "MissingPairData", "NO_DATA"]
 
-# public name -> matchers.variants function
-SYSTEMS = {
-    "verdict":  ("smt_lm_evidence_arbiter",
-                 "SMT + LLM auditor with LM-judge evidence (recommended, auditable)"),
-    "smt-only": ("smt_raw", "atom miner + Z3 only, no review"),
-    "atoms":    ("smt_atoms_arbiter", "SMT + LLM auditor on rejects (atoms only)"),
-    "lm-only":  ("lm_only", "single LLM call over chart + criteria"),
-    "hybrid":   ("hybrid_strict", "accept-if-either + LM-evidence arbiter (max F1)"),
-    "trialgpt": ("trialgpt", "TrialGPT baseline (Yang et al. 2023)"),
-}
+#: Back-compat: the built-in name -> (variants attribute, description) table.
+#: `systems()` and `match()` read the registry, which may hold more than this.
+SYSTEMS = {name: (attr, desc) for name, attr, desc in BUILTINS}
 
 
 def systems() -> dict[str, str]:
-    """Available matcher variants, as {name: description}."""
-    return {k: desc for k, (_, desc) in SYSTEMS.items()}
+    """Registered matchers, as {name: description}.
+
+    Includes anything added with `verdict.register`, not just the six from
+    the paper.
+    """
+    ensure_builtins()
+    from verdict.registry import systems as _systems
+    return _systems()
 
 
 def pairs() -> list[str]:
     """Pair ids available in the configured pair-data directory."""
-    from verdict_cli import iter_pairs
     return list(iter_pairs())
 
 
@@ -70,10 +70,9 @@ def match(pair_id: str, system: str = "verdict", *, strict: bool = True) -> Deci
         KeyError:          unknown `system`.
         MissingPairData:   pair not loadable and strict=True.
     """
-    if system not in SYSTEMS:
-        raise KeyError(f"unknown system {system!r}; choose from {sorted(SYSTEMS)}")
+    ensure_builtins()
+    fn = get(system)                       # raises KeyError listing valid names
     from matchers import variants
-    fn = getattr(variants, SYSTEMS[system][0])
     was = variants.is_strict()
     variants.strict(strict)
     try:
