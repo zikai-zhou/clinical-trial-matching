@@ -6,8 +6,12 @@ import sys
 
 import pytest
 
+import pathlib
+
 import satir
 import verdict
+
+ROOT_DIR = pathlib.Path(__file__).resolve().parents[2]
 
 
 # ---------------------------------------------------------------- satir
@@ -122,3 +126,28 @@ def test_cli_and_api_share_one_system_list():
     """The list used to be duplicated in verdict_cli.py; it must not drift."""
     import verdict_cli
     assert set(verdict_cli._systems()) == set(verdict.systems())
+
+
+# ---------------------------------------------------------------- pipeline
+def test_pipeline_is_the_only_module_touching_both_systems():
+    """SatIR and VERDICT stay independent; pipeline joins them."""
+    import ast
+    src = ast.parse((ROOT_DIR / "pipeline.py").read_text())
+    names = {n.names[0].name.split(".")[0] for n in ast.walk(src)
+             if isinstance(n, ast.Import)}
+    names |= {n.module.split(".")[0] for n in ast.walk(src)
+              if isinstance(n, ast.ImportFrom) and n.module}
+    assert {"satir", "verdict"} <= names
+
+
+def test_screen_result_never_confuses_undecided_with_ineligible():
+    """decision=None must not read as 'not eligible'."""
+    from pipeline import ScreenResult
+    undecided = ScreenResult(nct_id="NCT0", rank=1, retrieval_label="x")
+    assert undecided.decision is None
+    assert undecided.eligible is None          # not False
+    assert not undecided.evaluated
+
+    no = ScreenResult(nct_id="NCT1", rank=2, retrieval_label="x",
+                      decision="ineligible")
+    assert no.eligible is False and no.evaluated

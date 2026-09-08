@@ -93,6 +93,40 @@ for step in d.audit_trail:
     print(step)
 ```
 
+## End to end: screen a patient
+
+The two systems in sequence — retrieve candidates, then decide each one.
+
+```bash
+verdict screen sigir-20141 --db path/to/trial.db --limit 10
+```
+
+```
+patient  : sigir-20141
+retrieved: 10 candidate trial(s)
+decided  : 3   eligible: 2
+
+ rank  trial           verdict         why
+    1  NCT02357212     ELIGIBLE        SMT solver accepted
+    2  NCT00006055     not evaluated   no stage-1 data for this pair
+```
+
+```python
+import pipeline
+
+for r in pipeline.screen("sigir-20141", db="build/trial.db", limit=10):
+    print(r.rank, r.nct_id, r.decision or "undecided", r.pivotal)
+```
+
+**Undecided is not ineligible.** A candidate VERDICT could not evaluate comes
+back with `decision=None` and `eligible=None` — never `False`. For a trial
+matcher those must not be confused: one means the patient does not qualify,
+the other means nobody looked.
+
+Retrieval needs a clause database and is pure SQL — no LLM, no services. The
+decision step needs per-pair stage-1 artifacts under `$VERDICT_PAIR_DATA`.
+See [docs/DATA.md](docs/DATA.md) for both.
+
 ## Python API
 
 Both systems are importable, not just command-line tools.

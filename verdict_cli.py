@@ -50,6 +50,30 @@ def cmd_list(a):
           + (f'; showing {min(a.limit, len(pairs))}' if len(pairs) > a.limit else ''))
 
 
+def cmd_screen(a):
+    """Retrieve candidate trials for a patient, then decide each one."""
+    import pipeline
+    try:
+        rs = pipeline.screen(a.patient, db=a.db, limit=a.limit,
+                             system=a.system)
+    except RuntimeError as e:
+        sys.exit(str(e))
+    ev = [r for r in rs if r.evaluated]
+    print(f'patient  : {a.patient}')
+    print(f'retrieved: {len(rs)} candidate trial(s)')
+    print(f'decided  : {len(ev)}   eligible: {sum(1 for r in ev if r.eligible)}\n')
+    print(f'{"rank":>5s}  {"trial":<16s}{"verdict":<16s}why')
+    print('-' * 78)
+    for r in rs:
+        v = r.decision.upper() if r.decision else 'not evaluated'
+        why = r.reasoning[:34] if r.decision else 'no stage-1 data for this pair'
+        print(f'{str(r.rank):>5s}  {r.nct_id:<16s}{v:<16s}{why}')
+    if len(ev) < len(rs):
+        print(f'\n{len(rs) - len(ev)} candidate(s) could not be evaluated: VERDICT needs '
+              f'per-pair\nstage-1 artifacts under $VERDICT_PAIR_DATA. They are NOT '
+              f'ineligible --\nthey are undecided. See docs/DATA.md.')
+
+
 def cmd_systems(a):
     import verdict
     verdict.systems()                       # ensure built-ins are registered
@@ -106,6 +130,13 @@ def main():
 
     p = sub.add_parser('systems', help='list matcher variants')
     p.set_defaults(func=cmd_systems)
+
+    p = sub.add_parser('screen', help='retrieve candidate trials, then decide each')
+    p.add_argument('patient', help="patient id, e.g. sigir-20141")
+    p.add_argument('--db', help='clause database for retrieval')
+    p.add_argument('--limit', type=int, help='stop after N candidates')
+    p.add_argument('--system', choices=list(_systems()), default='verdict')
+    p.set_defaults(func=cmd_screen)
 
     for name, fn in (('match', cmd_match), ('explain', cmd_explain)):
         p = sub.add_parser(name, help=f'{name} a patient--trial pair')

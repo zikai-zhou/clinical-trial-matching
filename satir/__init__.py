@@ -25,9 +25,12 @@ Imports are lazy: `import satir` works without the optional heavy dependencies
 """
 from __future__ import annotations
 
-from typing import Any
+from dataclasses import dataclass, field
+import pathlib
+from typing import Any, List, Optional
 
 __all__ = ["config", "compile_trial", "compile_patient", "index", "retrieve",
+           "Candidate",
            "match", "load_patient", "build_ctx_from_persisted",
            "run_match_for_side", "services", "benchmark"]
 
@@ -71,25 +74,83 @@ def index(*args: str) -> Any:
     return _run_argv("db_indexer.cli", "main", list(args))
 
 
-def retrieve(*args: str, db: str | None = None) -> int:
-    """Run SQL constraint-satisfaction retrieval. Returns the exit code.
+@dataclass
+class Candidate:
+    """One trial SatIR considers worth a closer look, for one patient."""
+    nct_id: str                 # canonical NCT, e.g. NCT02357212
+    status: str                 # 'survivor' | 'eliminated'
+    label: str                  # why, e.g. 'all_satisfied'
+    rank: Optional[int] = None  # best rank across this trial's subcohorts
+    sub_nct_ids: List[str] = field(default_factory=list)
 
-    Defaults come from `config().retrieval`; `*args` are appended verbatim.
+    @property
+    def survived(self) -> bool:
+        return self.status == "survivor"
+
+
+def retrieve(patient_id: str, *args: str, db: Optional[str] = None,
+             out: Optional[str] = None, survivors_only: bool = True,
+             ) -> List["Candidate"]:
+    """Retrieve candidate trials for one patient. Returns them, ranked.
+
+    Pure SQL over the clause database -- no LLM, no services. Defaults come
+    from `config().retrieval`; `*args` are appended to the underlying command.
+
+    Args:
+        patient_id:     e.g. "sigir-20141".
+        db:             clause database; defaults to config().paths.build_dir.
+        out:            where to write results; a temporary directory if unset.
+        survivors_only: drop candidates retrieval already eliminated.
+
+    Raises:
+        RuntimeError: retrieval exited non-zero.
     """
-    import os, subprocess, sys, pathlib
+    import json
+    import os
+    import subprocess
+    import sys
+    import tempfile
+
     cfg = config()
     root = pathlib.Path(__file__).resolve().parent.parent
+    out_dir = pathlib.Path(out) if out else pathlib.Path(tempfile.mkdtemp())
     cmd = [sys.executable, "-m", "sql_retrieval.ops.constraint_retrieval",
            "--db", db or str(pathlib.Path(cfg.paths.build_dir) / "trial.db"),
+           "--patient", patient_id,
+           "--out", str(out_dir),
            "--scope", cfg.retrieval.scope,
            "--important-mode", cfg.retrieval.important_mode,
            "--alt-mode", cfg.retrieval.alt_mode,
-           "--parallel", str(cfg.retrieval.parallel)]
+           "--parallel", str(cfg.retrieval.parallel), "--quiet"]
     if cfg.retrieval.enable_prevention:
         cmd.append("--enable-prevention-hits")
     cmd += list(args)
-    return subprocess.run(
-        cmd, env={**os.environ, "PYTHONPATH": str(root)}).returncode
+    r = subprocess.run(cmd, env={**os.environ, "PYTHONPATH": str(root)},
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"retrieval failed ({r.returncode}):\n"
+                           f"{r.stderr[-800:] or r.stdout[-800:]}")
+
+    # retrieval writes list_to_match__<mode>__<prevent>__<alt>/<patient>__*.json
+    hits = sorted(out_dir.glob("list_to_match__*/*.json"))
+    if not hits:
+        return []
+    payload = json.loads(hits[0].read_text())
+    cands: List[Candidate] = []
+    for c in payload.get("canonical_trials", []):
+        ranks = [s.get("rank") for s in c.get("subcohorts", [])
+                 if s.get("rank") is not None]
+        cands.append(Candidate(
+            nct_id=c.get("canonical_nct_id", ""),
+            status=c.get("status", ""),
+            label=c.get("label", ""),
+            rank=min(ranks) if ranks else None,
+            sub_nct_ids=list(c.get("sub_nct_ids") or []),
+        ))
+    if survivors_only:
+        cands = [c for c in cands if c.survived]
+    cands.sort(key=lambda c: (c.rank is None, c.rank))
+    return cands
 
 
 def match(patient_id: str, trial_id: str, *args: str) -> Any:

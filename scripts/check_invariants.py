@@ -724,9 +724,12 @@ LAYERS = {
     'satir':   ['db_indexer', 'sql_retrieval', 'matching_batch'],
     'verdict': ['matchers', 'smt_matcher', 'verbalizer',
                 'counterfactual_modifier', 'rationale_generators', 'verdict'],
+    'app':     ['pipeline'],
 }
-#: who may import whom
-ALLOWED = {('satir', 'parser'), ('verdict', 'parser')}
+#: who may import whom. `pipeline` is the app layer: it is the ONLY place
+#: allowed to touch both systems, which is what keeps them independent.
+ALLOWED = {('satir', 'parser'), ('verdict', 'parser'),
+           ('app', 'parser'), ('app', 'satir'), ('app', 'verdict')}
 
 
 @check('architecture:layering-holds')
