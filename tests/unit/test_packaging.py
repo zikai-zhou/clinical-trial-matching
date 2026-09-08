@@ -45,10 +45,11 @@ def test_env_is_gitignored():
 
 def test_license_present_and_matches_pyproject():
     """No licence file means all rights reserved, even in a public repo."""
-    lic = ROOT / "LICENSE.md"
+    lic = ROOT / "LICENSE"
     assert lic.exists()
     txt = lic.read_text()
-    assert "PolyForm Noncommercial License 1.0.0" in txt
-    assert "Noncommercial Organizations" in txt      # the academic carve-out
-    assert "Patent License" in txt
-    assert "PolyForm-Noncommercial" in str(CFG["project"].get("license", ""))
+    assert "Apache License" in txt
+    assert "Version 2.0, January 2004" in txt
+    assert "Grant of Patent License" in txt          # why Apache over MIT/BSD
+    assert (ROOT / "NOTICE").exists()
+    assert "Apache-2.0" in str(CFG["project"].get("license", ""))

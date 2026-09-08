@@ -275,26 +275,15 @@ data provenance and redistribution status in `DATA.md`.
 
 ## License
 
-**PolyForm Noncommercial 1.0.0** — see [LICENSE.md](LICENSE.md).
+**Apache License 2.0** — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
-Free for noncommercial use. The license explicitly permits use by
-*"any charitable organization, educational institution, public research
-organization, public safety or health organization, environmental protection
-organization, or government institution ... regardless of the source of
-funding"*, so academic research, teaching, and nonprofit clinical research are
-covered without asking. It also grants a patent license for the method.
+Free for any use, academic or commercial, including modification and
+redistribution. Apache-2.0 also grants an explicit patent licence for the
+method, and terminates that grant for anyone who brings a patent suit over
+it — protection that MIT and BSD do not provide.
 
-**Commercial use requires a separate licence.** If you want to use this in a
-product, a for-profit service, or commercially-sponsored work, contact
-zikai@stanford.edu.
-
-Note this is a *source-available* licence, not an OSI-approved open-source
-one: open-source licences may not restrict fields of endeavour. Describe the
-release as "source-available" or "free for noncommercial use" rather than
-"open source".
-
-The code licence is separate from the data. See [DATA.md](DATA.md) for the
-corpora, which carry their own terms.
+The code licence is separate from the data. The evaluation corpora are
+third-party and carry their own terms; see [DATA.md](DATA.md).
 
 ## Layout
 

@@ -572,25 +572,26 @@ def _():
 
 @check('licensing:license-present-and-declared')
 def _():
-    """LICENSE.md must exist and pyproject must name the same licence.
+    """LICENSE must exist and pyproject must name the same licence.
 
     Without a licence file the default is all-rights-reserved, so nobody may
     use the code even from a public repo.
     """
-    lic = ROOT / 'LICENSE.md'
-    assert lic.exists(), 'LICENSE.md missing -- default is all rights reserved'
+    lic = ROOT / 'LICENSE'
+    assert lic.exists(), 'LICENSE missing -- default is all rights reserved'
     txt = lic.read_text()
-    for needle in ('PolyForm Noncommercial License 1.0.0', 'Noncommercial Purposes',
-                   'Patent License', 'Noncommercial Organizations'):
-        assert needle in txt, f'LICENSE.md missing section: {needle}'
+    for needle in ('Apache License', 'Version 2.0, January 2004',
+                   'Grant of Patent License', 'Redistribution'):
+        assert needle in txt, f'LICENSE missing section: {needle}'
+    assert (ROOT / 'NOTICE').exists(), 'Apache-2.0 ships a NOTICE file'
     try:
         import tomllib
     except ModuleNotFoundError:
         raise Skip('tomllib')
     cfg = tomllib.loads((ROOT / 'pyproject.toml').read_text())
     declared = str(cfg['project'].get('license', ''))
-    assert 'PolyForm-Noncommercial' in declared, \
-        f'pyproject licence does not match LICENSE.md: {declared!r}'
+    assert 'Apache-2.0' in declared, \
+        f'pyproject licence does not match LICENSE: {declared!r}'
 
 
 # ---------------------------------------------------------------- hygiene
