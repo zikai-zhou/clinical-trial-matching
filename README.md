@@ -1,4 +1,6 @@
-# SatIR + VERDICT — constraint-satisfaction clinical-trial retrieval and auditable matching
+# Stanford OVAL - Mayo Clinical Trial Matcher
+
+Constraint-satisfaction trial retrieval (SatIR) and auditable eligibility matching (VERDICT).
 
 This repository contains **two related systems** from two papers:
 
