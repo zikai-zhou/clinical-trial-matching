@@ -1,7 +1,7 @@
 [project]
 name = "satir"
 version = "0.2.0"
-description = "SatIR: Scalable High-Recall Constraint-Satisfaction-Based Clinical Trial Retrieval"
+description = "SatIR + VERDICT: constraint-satisfaction clinical-trial retrieval (SatIR) and auditable eligibility matching (VERDICT)"
 requires-python = ">=3.12"
 
 # Runtime deps, derived from the actual imports (see scripts/check_invariants.py

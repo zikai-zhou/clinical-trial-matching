@@ -1,20 +1,21 @@
-# Cross-Validated Symbolic and Natural-Language Reasoning for Auditable Clinical-Trial Prescreen
+# SatIR + VERDICT — constraint-satisfaction clinical-trial retrieval and auditable matching
 
 This repository contains **two related systems** from two papers:
 
 | | what it does | entry point |
 |---|---|---|
-| **VERDICT** | auditable patient--trial *eligibility matching* — LLM formalization + SMT/MaxSAT decision, with a per-criterion audit trail | `verdict` |
 | **SatIR** | constraint-satisfaction-based trial *retrieval and compilation* — trial/patient compilers, clause DB indexing, SQL retrieval | `satir` |
+| **VERDICT** | auditable patient--trial *eligibility matching* — LLM formalization + SMT/MaxSAT decision, with a per-criterion audit trail | `verdict` |
 
-They share `smt_core` (entity canonicalization, attribute extraction, inference
-engines). VERDICT decides a given pair; SatIR finds candidate trials at corpus
-scale and compiles the SMT programs VERDICT reasons over.
+They run in that order and share `smt_core` (entity canonicalization, attribute
+extraction, inference engines). SatIR compiles trials and patients into
+constraint programs and retrieves candidates at corpus scale; VERDICT then
+decides a given patient--trial pair over those programs and shows its work.
 
 ```bash
 pip install -e .
-verdict systems          # VERDICT: matcher variants
 satir --help             # SatIR: setup / compile / index / retrieve / match
+verdict systems          # VERDICT: matcher variants
 ```
 
 
@@ -26,6 +27,23 @@ pip install -e .
 cp .env.example .env      # fill in your API credentials
 source .env
 ```
+
+### SatIR — retrieval and compilation
+
+```bash
+satir setup               # validate environment and prerequisites
+satir info
+satir compile-trial ...   # trial text  -> constraint program
+satir compile-patient ... # patient note -> coded facts
+satir index               # build the clause database
+satir retrieve ...        # candidate trials at corpus scale
+```
+
+Run `satir <subcommand> --help` for arguments. Services (SNOMED Snowstorm,
+Elasticsearch) are described in `QUICKSTART.md`; build artifacts in
+`BUILD_ARTIFACTS.md`.
+
+### VERDICT — eligibility matching
 
 Decide a patient--trial pair:
 
