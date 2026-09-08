@@ -173,6 +173,43 @@ eligible exactly when nothing needs to change to make them eligible; ineligible
 exactly when nothing needs to change to make them ineligible; and there is
 always something that would flip the answer.
 
+### Where the artifacts come from
+
+`verdict.explain()` appends them automatically when the pair has a stored SMT
+program and a solver is installed:
+
+```
+audit trail (2 steps)
+1. atom_mining
+2. smt_solve -> eligible
+
+accountability artifacts (inclusion, maxsmt)
+  decision by solver : eligible
+  assumed (7 conditions the chart did not settle):
+    ischemic_symptoms_duration...: assumed to meet >= 5.0
+    patient_has_been_admitted_to_intensive_cardiac_care_unit_now: assumed True
+  would change the answer:
+    patient_age_value_recorded_now_in_years
+```
+
+Pass `artifacts=False` to suppress it. If no program is stored or no solver is
+installed, the audit trail is printed exactly as before.
+
+**The two inputs mean different things and are read from different places**
+(`verdict/artifacts.py`):
+
+- **`phi_t`** — the trial's requirements, from `smt_program_lines`. Hard
+  constraints; the patient never appears in them.
+- **conditions** — every variable `phi_t` declares, each with a status. A value
+  in `patient_var_values` means the chart settled it (`OBSERVED`); `None`
+  means the chart was silent (`UNRESOLVED`), and the solver's value for it
+  becomes an assumption.
+
+Every declared variable must appear as a condition. One left out is *free*, so
+the solver can satisfy `not phi` through it while keeping every patient
+constraint — which silently empties "what would change the answer". That is a
+real bug this code hit on real data, and a test now guards it.
+
 ### An assumed value is not a measurement
 
 When the chart is silent about a number, the solver picks *some* value that

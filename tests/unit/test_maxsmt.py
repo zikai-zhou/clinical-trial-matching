@@ -148,3 +148,77 @@ def test_symbols_table_covers_every_artifact_field():
     unmapped = {f.name for f in fields(Artifacts)} - mapped - {
         "status", "version"}
     assert not unmapped, f"artifact fields with no paper symbol: {unmapped}"
+
+
+# ------------------------------------------- the bridge from stored pairs
+def _pair_data() -> bool:
+    from verdict.data import pair_root
+    return (pair_root() / "cmsrc_out").exists()
+
+
+needs_pairs = pytest.mark.skipif(not _pair_data(), reason="needs stage-1 pair data")
+
+
+@requires_z3
+@needs_pairs
+def test_every_declared_variable_becomes_a_condition():
+    """phi_t = phi(c_1..c_n): a declared variable left out would be free.
+
+    A free variable lets the solver satisfy -phi while keeping every patient
+    constraint, which silently empties delta_I and breaks the invariant that
+    delta is never empty. This caught exactly that bug on real data.
+    """
+    from verdict.artifacts import conditions_from_pair, declared_variables
+    import verdict
+    for pair in verdict.pairs()[:3]:
+        phi, conds = conditions_from_pair(pair)
+        if not phi:
+            continue
+        missing = set(declared_variables(phi)) - {c.name for c in conds}
+        assert not missing, f"{pair}: declared but not a condition: {missing}"
+
+
+@requires_z3
+@needs_pairs
+def test_paper_invariants_hold_on_real_pairs():
+    """The three invariants must survive real programs, not just toy ones."""
+    from smt_core.maxsmt import ELIGIBLE, INELIGIBLE
+    from verdict.artifacts import artifacts_for
+    import verdict
+    checked = 0
+    for pair in verdict.pairs()[:5]:
+        a = artifacts_for(pair)
+        if a is None:
+            continue
+        checked += 1
+        assert (a.delta_e == []) == (a.decision == ELIGIBLE), (pair, a)
+        assert (a.delta_i == []) == (a.decision == INELIGIBLE), (pair, a)
+        assert a.pivotal != [], f"{pair}: delta must never be empty"
+    assert checked, "no pair yielded artifacts"
+
+
+@requires_z3
+@needs_pairs
+def test_assumptions_are_chart_silent_conditions_only():
+    """Never report an OBSERVED condition as an assumption."""
+    from smt_core.maxsmt import OBSERVED
+    from verdict.artifacts import artifacts_for, conditions_from_pair
+    import verdict
+    pair = verdict.pairs()[0]
+    a = artifacts_for(pair)
+    if a is None:
+        pytest.skip("no artifacts for this pair")
+    _phi, conds = conditions_from_pair(pair)
+    observed = {c.name for c in conds if c.status == OBSERVED}
+    assert not (set(a.assumptions) & observed), \
+        "an observed condition was reported as an assumption"
+
+
+@needs_pairs
+def test_explain_still_works_without_a_solver():
+    """The audit trail must never depend on the artifacts being available."""
+    import verdict
+    pair = verdict.pairs()[0]
+    plain = verdict.explain(pair, artifacts=False)
+    assert "audit trail" in plain
+    assert "accountability artifacts" not in plain

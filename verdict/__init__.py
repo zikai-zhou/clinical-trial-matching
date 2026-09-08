@@ -81,8 +81,16 @@ def match(pair_id: str, system: str = "verdict", *, strict: bool = True) -> Deci
         variants.strict(was)
 
 
-def explain(pair_id: str, system: str = "verdict", *, strict: bool = True) -> str:
-    """Same decision as match(), rendered as a readable audit trail."""
+def explain(pair_id: str, system: str = "verdict", *, strict: bool = True,
+            artifacts: bool = True) -> str:
+    """The decision from match(), rendered as a readable audit trail.
+
+    When `artifacts` is set and the pair has a stored SMT program, the
+    MaxSMT accountability artifacts are appended: what the solver had to
+    assume because the chart was silent, and what would change the answer.
+    Silently omitted when no program is stored or no solver is installed --
+    the audit trail above is unaffected either way.
+    """
     d = match(pair_id, system, strict=strict)
     out = [f"pair    : {pair_id}",
            f"system  : {system}",
@@ -98,4 +106,13 @@ def explain(pair_id: str, system: str = "verdict", *, strict: bool = True) -> st
             if k in ("stage", "step") or v in (None, "", {}, []):
                 continue
             out.append(f"     {k}: {str(v)[:200]}")
+
+    if artifacts:
+        try:
+            from verdict.artifacts import summarize
+            extra = summarize(pair_id)
+        except Exception:
+            extra = ""                     # never let this break the trail
+        if extra:
+            out += ["", extra]
     return "\n".join(out)
