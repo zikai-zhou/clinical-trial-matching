@@ -5,7 +5,7 @@
 to match gpt-4.1 validator's 'all_flipped AND no_overcorrection')."""
 import json, pathlib
 
-SF = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual/05_self_faithfulness/out')
+SF = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual/05_self_faithfulness/out')
 
 for filename in ('self_faithfulness_repro_subset_with_v3_validator.jsonl',
                  'self_faithfulness_Dfull_5mod_v3val_fullrationale.jsonl',

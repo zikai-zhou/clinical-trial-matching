@@ -3,7 +3,7 @@
 
 Dimensions: modifier × validator × shah/tg-blocker-filter."""
 import json, pathlib
-SF = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual/05_self_faithfulness/out')
+SF = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual/05_self_faithfulness/out')
 
 def summarize(path, valid_key='cf_valid', flipped_key='flipped'):
     if not path.exists(): return None

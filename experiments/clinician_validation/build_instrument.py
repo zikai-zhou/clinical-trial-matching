@@ -6,7 +6,7 @@ one other system, A/B randomized). Clinician answers: verdict + pairwise winner.
 Saves to localStorage; CSV export at end. No server required.
 """
 import json, pathlib, random, re
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 
 
 def load_charts():

@@ -7,9 +7,9 @@ Compute the new flip rate."""
 import json, os, pathlib, sys, subprocess, tempfile, shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
-CMSRC_DIR = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/cmsrc')
-CMSRC_PY = pathlib.Path('/Users/xyrus/.pyenv/versions/3.11.9/bin/python')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+CMSRC_DIR = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT/cmsrc')
+CMSRC_PY = pathlib.Path('<local-path>/.pyenv/versions/3.11.9/bin/python')
 PR_ROOT = ROOT/'experiments/53_v2_full/inputs/prompt_root'
 PR_MAP = PR_ROOT/'prompt_out/prompt_map.json'
 ENDPOINT = os.environ.get('OPENAI_ENDPOINT','')

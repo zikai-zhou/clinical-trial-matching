@@ -7,7 +7,7 @@ ROOT="$(cd "$HERE/../../../.." && pwd)"
 cd "$ROOT"
 set -a; source .env; set +a
 
-PY=/Users/xyrus/.pyenv/versions/3.11.9/bin/python
+PY=<local-path>/.pyenv/versions/3.11.9/bin/python
 DRIVER="$HERE/run_full_ablation.py"
 
 SLICES=16

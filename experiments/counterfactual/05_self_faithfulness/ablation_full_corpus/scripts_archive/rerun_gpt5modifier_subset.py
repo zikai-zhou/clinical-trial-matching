@@ -6,7 +6,7 @@ self_faithfulness_gpt5modifier_origvalidator_subset.jsonl so we can compare agai
 published values without disturbing them.
 """
 import json, os, pathlib, sys
-HERE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+HERE = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 sys.path.insert(0, str(HERE/'experiments/counterfactual/utils'))
 sys.path.insert(0, str(HERE/'experiments/counterfactual/05_self_faithfulness'))
 from concurrent.futures import ThreadPoolExecutor, as_completed

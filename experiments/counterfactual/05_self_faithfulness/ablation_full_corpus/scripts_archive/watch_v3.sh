@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored
+cd <local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored
 while true; do
   clear
   echo "═══ CF v3 run — $(date +%H:%M:%S) ═══"

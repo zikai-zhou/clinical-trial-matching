@@ -22,7 +22,7 @@ both inclusion AND exclusion sides; compiled patches inject (assert atom=true)
 with NULL->FALSE coercion on the patched atom only.
 
 Run:
-  /Users/xyrus/Desktop/llm-smt/smtvenv/bin/python overnight/repro_headline.py
+  <local-path>/Desktop/llm-smt/smtvenv/bin/python overnight/repro_headline.py
 
 Output: overnight/HEADLINE_VERIFIED.json with full table + provenance.
 """

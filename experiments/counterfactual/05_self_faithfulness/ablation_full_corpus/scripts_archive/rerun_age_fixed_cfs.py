@@ -9,7 +9,7 @@ cf_mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(cf_mod)
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 
 # Load existing CFs + targets
 sf_main = {r['pair']: r for r in [json.loads(l) for l in (ROOT/'experiments/counterfactual/05_self_faithfulness/out/self_faithfulness.jsonl').open() if l.strip()]}
@@ -68,7 +68,7 @@ def patch_targets(pair, nct):
                 patched += 1
     return targets, patched
 
-FE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
+FE = pathlib.Path('<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
 audit = json.load((FE/'clinician_review.json').open())
 CHARTS = {f"{t.get('patient_id')}__{t.get('trial_id')}": t.get('original_chart','') for t in audit['topics'] if t.get('sheet')=='cf_rewrite_review'}
 

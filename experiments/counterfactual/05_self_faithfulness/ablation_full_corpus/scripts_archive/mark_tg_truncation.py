@@ -4,7 +4,7 @@ entries whose source TG rationale was itself truncated mid-word by the
 matcher's 3000-token cap. Avoids the impression that the UI is at fault."""
 import json, pathlib, re, shutil
 
-FE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
+FE = pathlib.Path('<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
 review = json.load((FE/'clinician_review.json').open())
 SUFFIX = "\n\n[…rationale truncated at the upstream TrialGPT matcher's 3000-token cap; remaining per-criterion verdicts could not be obtained.]"
 

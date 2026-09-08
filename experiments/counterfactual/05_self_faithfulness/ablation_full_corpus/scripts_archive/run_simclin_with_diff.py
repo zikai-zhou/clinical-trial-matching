@@ -9,7 +9,7 @@ from __future__ import annotations
 import argparse, difflib, json, os, pathlib, re, sys, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 sys.path.insert(0, str(ROOT / "experiments/counterfactual/05_self_faithfulness"))
 from simulated_clinician import extract_target_for_system, load_charts, load_trials, llm_call
 

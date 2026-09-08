@@ -11,8 +11,8 @@ Atom name parsing rules:
 """
 import json, pathlib, re
 
-FE_PRIVATE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+FE_PRIVATE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 
 # Load SMT targets from full self_faithfulness.jsonl
 smt_targets = {}

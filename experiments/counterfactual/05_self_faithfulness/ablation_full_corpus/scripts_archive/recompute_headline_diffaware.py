@@ -12,7 +12,7 @@ Works on whatever subset of clinician_simulated_diff.jsonl is complete.
 import json, pathlib
 from collections import defaultdict
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 
 # Diff-aware simclin
 diff_path = ROOT / "experiments/counterfactual/05_self_faithfulness/out/clinician_simulated_diff.jsonl"

@@ -26,7 +26,7 @@ trials  = ds.load_trial_text()
 mine    = ds.load_v9_mine()
 arbiter = ds.load_arbiter_cache()
 
-CMSRC_DIR = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/cmsrc')
+CMSRC_DIR = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT/cmsrc')
 PR_ROOT = ROOT/'experiments/53_v2_full/inputs/prompt_root'
 PR_MAP  = PR_ROOT/'prompt_out/prompt_map.json'
 

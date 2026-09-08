@@ -14,7 +14,7 @@ For aegis — only 61/176 pairs have AEGIS rejudge (from the age-target fix).
 The remaining 115 are marked 'pending' under aegis/_pending/.
 """
 import json, pathlib, shutil
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 OUT = ROOT/'experiments/counterfactual/05_self_faithfulness/mbench_modifier_gpt5'
 if OUT.exists(): shutil.rmtree(OUT)
 OUT.mkdir(parents=True)

@@ -254,7 +254,7 @@ def main():
 
     # Load full SIGIR corpus to bypass the 1500-char cap in get_pair_inputs.
     sigir_corpus = {}
-    sigir_path = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl')
+    sigir_path = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl')
     if sigir_path.exists():
         for ln in sigir_path.open():
             r = json.loads(ln); sigir_corpus[r['_id']] = r

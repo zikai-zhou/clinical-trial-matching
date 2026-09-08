@@ -354,8 +354,8 @@ def validate_v3(chart, cf, trial, cited):
     return {'error': 'empty after retries', 'prompt': prompt}
 
 # ── Aegis judge (cmsrc subprocess) ──────────────────────────────────────
-CMSRC_DIR = pathlib.Path(os.environ.get('CMSRC_DIR', '/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/cmsrc'))
-CMSRC_PY  = pathlib.Path(os.environ.get('CMSRC_PY',  '/Users/xyrus/.pyenv/versions/3.11.9/bin/python'))
+CMSRC_DIR = pathlib.Path(os.environ.get('CMSRC_DIR', '<local-path>/Desktop/llm-smt/TrialGPT-SMT/cmsrc'))
+CMSRC_PY  = pathlib.Path(os.environ.get('CMSRC_PY',  '<local-path>/.pyenv/versions/3.11.9/bin/python'))
 PR_ROOT   = ROOT/'experiments/53_v2_full/inputs/prompt_root'
 PR_MAP    = PR_ROOT/'prompt_out/prompt_map.json'
 

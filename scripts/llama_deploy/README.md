@@ -12,7 +12,7 @@ Add to `~/.ssh/config`:
 Host sc-cluster
     HostName sc.stanford.edu
     User zikai
-    IdentityFile /Users/xyrus/.ssh/id_ed25519
+    IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
     AddKeysToAgent yes
     UseKeychain yes
@@ -27,7 +27,7 @@ From your laptop:
 
 ```bash
 # Push current branch (commit first if needed)
-cd /Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored
+cd <path-to>/clinical-trial-matching
 git push origin main          # or your branch
 
 # On the cluster (scdt is the data-transfer node, OK for cloning + rsync only)

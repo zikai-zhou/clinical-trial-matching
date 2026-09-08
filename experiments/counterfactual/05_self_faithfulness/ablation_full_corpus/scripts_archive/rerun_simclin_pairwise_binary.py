@@ -9,7 +9,7 @@ Keeps existing pairwise_winner and rationale_axes; only refreshes:
 import json, os, pathlib, urllib.request, re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-FE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+FE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
 
 PROMPT = """You are a clinical-trial prescreening clinician. Independently decide whether this patient is likely eligible for this trial. You MUST choose accept or reject — "uncertain" is not allowed. When borderline, commit to the more clinically defensible side.
 

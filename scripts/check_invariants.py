@@ -669,6 +669,54 @@ def _():
                            + "\n  ".join(offenders[:10]))
 
 
+@check('syntax:every-shipped-python-parses')
+def _():
+    """Every tracked .py must parse on the declared Python version.
+
+    sql_retrieval/ops/eval_pr_rec_at_k.py had a stray character that made it
+    unparseable from the day it was written; nothing imported it, so nothing
+    noticed. requires-python is >=3.12, so files using 3.12+ syntax are fine --
+    this runs on the interpreter executing the checks.
+    """
+    import ast as _ast
+    import subprocess
+    if sys.version_info < (3, 12):
+        raise Skip('needs the declared floor, python>=3.12')
+    files = subprocess.run(['git', 'ls-files', '*.py'], cwd=ROOT,
+                           capture_output=True, text=True).stdout.split()
+    broken = []
+    for rel in files:
+        f = ROOT / rel
+        if not f.exists():
+            continue
+        try:
+            _ast.parse(f.read_text(errors='ignore'))
+        except SyntaxError as e:
+            broken.append(f'{rel}:{e.lineno} {e.msg}')
+    assert not broken, ('files that do not parse:\n  ' + '\n  '.join(broken[:10]))
+
+
+@check('hygiene:no-personal-paths-or-internal-hosts')
+def _():
+    """No home directory, cluster path, or internal endpoint may ship.
+
+    Wider than the ship-path check: this covers EVERY tracked text file, not
+    just the library directories, because docs, logs and experiment scripts
+    leak identity and infrastructure just as effectively.
+    """
+    import subprocess
+    pats = [r'/Users/[A-Za-z]', r'/home/[a-z]', r'/nlp/scr/[a-z]',
+            r'/juice[0-9]+/', r'/sailhome/', r'scdt\.stanford',
+            r'[a-z0-9-]+\.openai\.azure\.com']
+    ALLOW = {'scripts/check_invariants.py'}          # this file states the patterns
+    out = subprocess.run(['git', 'grep', '-lIE', '|'.join(pats)],
+                         cwd=ROOT, capture_output=True, text=True).stdout.split()
+    hits = [f for f in out if f not in ALLOW]
+    # the placeholder in .env.example is intentional
+    hits = [f for f in hits if f != '.env.example']
+    assert not hits, ('personal paths or internal hosts in: ' + ', '.join(hits[:8]))
+
+
 # ---------------------------------------------------------------- hygiene
 # Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',

@@ -6,8 +6,8 @@ the same cell (both_wrong, aegis vs shahlab, gold=eligible, both said ineligible
 import json, os, pathlib, re, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
-FE   = pathlib.Path('/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+FE   = pathlib.Path('<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
 NEW  = 'sigir-201428__NCT01280292'
 OLD_ID = 'formatch_pairwise_review__32__sigir-20159__NCT00883493'  # current topic 30 after prev sub
 # Actually find the current topic 30 dynamically

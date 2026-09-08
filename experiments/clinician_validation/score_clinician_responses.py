@@ -15,7 +15,7 @@ Outputs:
 import argparse, csv, json, math, pathlib
 from collections import defaultdict, Counter
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 
 
 def load_csv(p):

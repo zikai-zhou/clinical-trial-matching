@@ -2,11 +2,11 @@
 """Re-score the 61 age-corrected CFs with the same simclin prompt to recompute
 the headline 'flip | valid' metric (currently 90.51% on old CFs)."""
 import json, os, pathlib, re, urllib.request, sys
-sys.path.insert(0, '/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual/05_self_faithfulness/validation')
+sys.path.insert(0, '<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual/05_self_faithfulness/validation')
 import run_simclin_unified as sc
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 
 # Load existing simclin results to know which pairs already have scores
 gpt5mod = {r['pair']:r for r in [json.loads(l) for l in (ROOT/'experiments/counterfactual/05_self_faithfulness/out/self_faithfulness_smt_gpt5modifier.jsonl').open() if l.strip()]}

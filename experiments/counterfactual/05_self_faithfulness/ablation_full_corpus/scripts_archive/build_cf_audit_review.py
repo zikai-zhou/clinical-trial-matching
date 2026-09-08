@@ -14,8 +14,8 @@ so it has no distinct CF and is omitted from the modifier-quality audit."""
 from __future__ import annotations
 import json, pathlib, re, sys, difflib
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
-FE_PRIVATE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+FE_PRIVATE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
 
 # Load the sample
 sample = json.load(open("/tmp/cf_audit_v2_final_K10.json"))

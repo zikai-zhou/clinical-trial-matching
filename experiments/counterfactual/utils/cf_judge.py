@@ -132,8 +132,8 @@ def judge_shah(chart: str, trial: str) -> dict:
 
 # ---------- AEGIS re-mine + solve ----------
 
-CMSRC_DIR = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/cmsrc')
-CMSRC_PY  = pathlib.Path('/Users/xyrus/.pyenv/versions/3.11.9/bin/python')
+CMSRC_DIR = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT/cmsrc')
+CMSRC_PY  = pathlib.Path('<local-path>/.pyenv/versions/3.11.9/bin/python')
 
 
 def judge_aegis(pair: str, full_tid: str, cf_chart: str,

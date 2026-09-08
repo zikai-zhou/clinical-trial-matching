@@ -3,8 +3,8 @@
 import json, os, pathlib, re, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
-FE   = pathlib.Path('/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+FE   = pathlib.Path('<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
 
 CANDS = ['sigir-201428__NCT01280292','sigir-20159__NCT02105714',
          'sigir-201430__NCT00311805','sigir-20147__NCT00883493','sigir-201527__NCT02441439',

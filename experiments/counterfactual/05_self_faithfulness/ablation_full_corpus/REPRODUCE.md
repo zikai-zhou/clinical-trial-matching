@@ -21,7 +21,7 @@ get statistically-equivalent results.
 
 2. **cmsrc matcher** — the AEGIS pipeline calls `match_patient_to_trial.py`
    from a sibling repo via subprocess. Default location:
-   `/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/cmsrc`. Override via
+   `<local-path>/Desktop/llm-smt/TrialGPT-SMT/cmsrc`. Override via
    `CMSRC_DIR` env var.
 
 3. **Azure OpenAI deployments** for gpt-4.1 and gpt-5. Provide both

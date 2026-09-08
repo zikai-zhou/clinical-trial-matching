@@ -9,7 +9,7 @@ from __future__ import annotations
 import json, os, pathlib, re, sys, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 
 # Load the fixed parser from shahlab/run.py (avoiding its main-module imports)
 import importlib.util

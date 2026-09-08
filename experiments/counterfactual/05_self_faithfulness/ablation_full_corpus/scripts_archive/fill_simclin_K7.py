@@ -4,8 +4,8 @@
 present in the v2 modifier output files."""
 import json, pathlib
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
-FE_PRIVATE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+FE_PRIVATE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
 
 # Load simclin judgments from v2 modifier output files
 simclin = {}  # (pair, system) → {coherent, flips_cited, keeps_other, explanation}

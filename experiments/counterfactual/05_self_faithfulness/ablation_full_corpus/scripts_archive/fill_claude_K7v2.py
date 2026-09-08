@@ -6,7 +6,7 @@ and adds new judgments for v5_gpt5 cells + the 6 new pairs.
 """
 import json, pathlib
 from datetime import datetime, timezone
-FE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+FE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
 
 # Previous Claude judgments (4-system, topics 1-18) — preserve verbatim
 PREVIOUS = {

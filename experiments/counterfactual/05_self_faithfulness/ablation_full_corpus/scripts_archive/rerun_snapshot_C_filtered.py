@@ -7,7 +7,7 @@ instead of the full per-criterion rationale. This isolates how much of C's
 flip-rate gain came from the gpt-5 modifier vs from "longer context."
 """
 import json, os, pathlib, sys
-HERE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+HERE = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 sys.path.insert(0, str(HERE/'experiments/counterfactual/utils'))
 sys.path.insert(0, str(HERE/'experiments/counterfactual/05_self_faithfulness'))
 from concurrent.futures import ThreadPoolExecutor, as_completed

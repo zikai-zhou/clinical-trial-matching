@@ -1,6 +1,6 @@
 {
   "db": "${SATIR_DATA_ROOT}/build/trial.db",
-  "openai_endpoint": "https://ovalnairr.openai.azure.com/openai/deployments/gpt-5",
+  "openai_endpoint": "https://YOUR-RESOURCE.openai.azure.com/openai/deployments/gpt-5",
   "snowstorm": {
     "base": "http://localhost:8080",
     "branch": "MAIN",

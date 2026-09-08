@@ -4,7 +4,7 @@ binarization. Gives the number the paper SHOULD have published."""
 import json, os, pathlib, re, sys, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 sys.path.insert(0, str(ROOT/"matchers/systems/shahlab"))
 src = (ROOT/"matchers/systems/shahlab/run.py").read_text()
 src_clean = src.replace("from run_better_nl_full import get_pair_inputs, collect_pairs","")

@@ -12,11 +12,11 @@ sys.path.insert(0, '.')
 
 # Standalone replacements for get_pair_inputs / collect_pairs (no holistic deps).
 def _load_charts():
-    p = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/dataset/clinical_trial/sigir/queries.jsonl')
+    p = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/dataset/clinical_trial/sigir/queries.jsonl')
     return {json.loads(l)['_id']: json.loads(l).get('text','') or '' for l in p.open()}
 
 def _load_inc_exc():
-    p = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/dataset/clinical_trial/sigir/corpus.jsonl')
+    p = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/dataset/clinical_trial/sigir/corpus.jsonl')
     out = {}
     for l in p.open():
         try: o = json.loads(l)
@@ -42,7 +42,7 @@ def get_pair_inputs(pair):
     return chart, inc, exc
 
 def collect_pairs():
-    p = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/matchers/systems/aegis/aegis_freeform.jsonl')
+    p = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/matchers/systems/aegis/aegis_freeform.jsonl')
     pairs = []; seen=set()
     for l in p.open():
         try: o=json.loads(l)
@@ -159,7 +159,7 @@ def main():
 
     # Load full SIGIR corpus to bypass 1500-char get_pair_inputs cap.
     sigir_corpus = {}
-    sigir_path = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl')
+    sigir_path = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl')
     if sigir_path.exists():
         for ln in sigir_path.open():
             r = json.loads(ln); sigir_corpus[r['_id']] = r

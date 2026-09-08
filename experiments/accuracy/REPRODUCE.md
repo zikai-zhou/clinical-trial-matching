@@ -11,7 +11,7 @@ All scripts are under `experiments/accuracy/scripts/`. All API calls use Azure O
 ## Data sources (read-only)
 
 - `experiments/53_v2_full/cmsrc_out/` — v6 mining outputs (chart, atoms-with-evidence, SMT programs per pair × cohort variant)
-- `/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl` — canonical SIGIR trial corpus (3621 trials)
+- `<local-path>/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl` — canonical SIGIR trial corpus (3621 trials)
 - `experiments/03_judge_rubric/prompts/` — 5 judge framings (clinician_v2, clinician_paraphrase, engineering_canonical, mechanical, rhetorical)
 - `verbalizer/prompts/verbalize_smt_rationale.prompt` — AEGIS verbalize prompt (evidence-rich)
 

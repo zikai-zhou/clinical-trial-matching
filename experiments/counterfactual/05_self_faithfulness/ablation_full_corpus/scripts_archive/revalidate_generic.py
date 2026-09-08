@@ -10,7 +10,7 @@ ap.add_argument('--output', required=True)
 ap.add_argument('--label',  default='Snapshot')
 args = ap.parse_args()
 
-HERE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+HERE = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 sys.path.insert(0, str(HERE/'experiments/counterfactual/utils'))
 import cf_dataset as ds
 

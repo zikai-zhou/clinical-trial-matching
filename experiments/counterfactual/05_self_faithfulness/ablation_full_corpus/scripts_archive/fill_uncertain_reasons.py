@@ -3,7 +3,7 @@
 import json, os, pathlib, urllib.request, re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-FE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+FE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
 
 PROMPT = """You are a clinical-trial prescreening clinician. You reviewed the chart and trial below and were UNCERTAIN whether the patient is eligible. In 1–2 sentences, state concretely what you would need to check or confirm at the in-person visit to decide. Be specific (which chart fact, which test/measurement).
 

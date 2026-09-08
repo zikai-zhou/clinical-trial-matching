@@ -15,7 +15,7 @@ Data provenance (verified against the cluster, 2026-09-03):
 Train and test share no NCT, so there is no trial leakage.
 
 Inputs live in the svpo-rl repo (pulled from
-scdt.stanford.edu:/nlp/scr/zikai/svpo-rl). Override with --svpo.
+<cluster-host>:<path-to>/svpo-rl). Override with --svpo.
 
 Usage:
     python scripts/tables/table2_trec2021_f1.py
@@ -87,7 +87,7 @@ def main():
     if not clean.exists():
         sys.exit(f'missing frozen test set: {clean}\n'
                  f'pull it with:\n'
-                 f'  ssh scdt.stanford.edu "tar czf - -C /nlp/scr/zikai/svpo-rl '
+                 f'  ssh <cluster-host> "tar czf - -C <path-to>/svpo-rl '
                  f'data/test_clean_tagged.jsonl" | tar xzf - -C {args.svpo}')
 
     gold = {pair_key(r['pair']): str(r.get('gold', '')).lower()

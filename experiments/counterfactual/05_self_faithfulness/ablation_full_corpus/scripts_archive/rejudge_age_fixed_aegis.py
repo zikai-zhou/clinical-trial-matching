@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Re-judge age-fixed CFs with the full AEGIS pipeline; report new flip rate."""
 import json, os, pathlib, sys
-sys.path.insert(0, '/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual')
+sys.path.insert(0, '<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual')
 from utils import cf_judge as jg
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 sf = {r['pair']:r for r in [json.loads(l) for l in (ROOT/'experiments/counterfactual/05_self_faithfulness/out/self_faithfulness.jsonl').open() if l.strip()]}
 new_cfs = {}
 for ln in open('/tmp/age_fixed_cfs.jsonl'):

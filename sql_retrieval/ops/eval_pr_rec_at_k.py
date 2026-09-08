@@ -893,7 +893,7 @@ def main() -> None:
     ap.add_argument("--retrieved-dir", type=Path, default=Path("retrieved_mappings/clean"),
                     help="SYSTEM: directory of clean retrieved lists (txt).")
 
-    ap.add_argument("--baseline-retrieval-json", type=Path, default="trialgptref/trialgpt_retrieve.json"e,
+    ap.add_argument("--baseline-retrieval-json", type=Path, default="trialgptref/trialgpt_retrieve.json",
                     help="BASELINE: JSON mapping {patient_id: [NCT...,...]}")
 
     ap.add_argument("--compose_merged_csv_dir", type=Path, default=Path("./retrieved_mappings/merged_csv"),

@@ -7,7 +7,7 @@ Independent from gpt-5 simclin oracle.
 import json, pathlib
 from datetime import datetime, timezone
 
-FE_PRIVATE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+FE_PRIVATE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
 
 # Indexed by display_index (1..18), then by label (A/B/C/D)
 JUDGMENTS = {

@@ -7,7 +7,7 @@ ROOT="$(cd "$HERE/../../../.." && pwd)"
 cd "$ROOT"
 set -a; source .env; set +a
 
-PY="${CMSRC_PY:-/Users/xyrus/.pyenv/versions/3.11.9/bin/python}"
+PY="${CMSRC_PY:-<local-path>/.pyenv/versions/3.11.9/bin/python}"
 DRIVER="$HERE/run_full_ablation.py"
 LOG_DIR="$HERE/logs"
 mkdir -p "$LOG_DIR"

@@ -11,7 +11,7 @@ from __future__ import annotations
 import json, os, pathlib, sys, urllib.request
 
 HERE = pathlib.Path(__file__).resolve().parent
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 SF = HERE / "selffaith"  # not used
 sys.path.insert(0, str(ROOT / "experiments/counterfactual/05_self_faithfulness"))
 from simulated_clinician import PROMPT, extract_target_for_system, load_charts, load_trials, llm_call

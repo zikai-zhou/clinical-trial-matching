@@ -4,8 +4,8 @@ from __future__ import annotations
 import json, pathlib, re, sys, difflib, shutil
 from collections import defaultdict
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
-FE_PRIVATE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+FE_PRIVATE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
 
 # === 1. Load per-system flip maps ===
 def get_flips_from_rejudge(system):

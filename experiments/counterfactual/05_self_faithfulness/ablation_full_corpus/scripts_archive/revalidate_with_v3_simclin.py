@@ -6,7 +6,7 @@ the validator effect.
 import json, os, pathlib, re, sys, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-HERE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+HERE = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 sys.path.insert(0, str(HERE/'experiments/counterfactual/utils'))
 import cf_dataset as ds
 

@@ -192,8 +192,8 @@ JUDGMENTS = {
 if __name__ == '__main__':
     import json, pathlib
     from datetime import datetime, timezone
-    FE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
-    ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+    FE = pathlib.Path('<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
+    ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 
     audit = json.load((ROOT/'experiments/clinician_validation/cf_audit_K7_cell3.json').open())
     topic_by_id = {t['id']: t for t in audit['topics']}

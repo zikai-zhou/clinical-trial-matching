@@ -483,7 +483,7 @@ class TrialTargetDiseasePipeline:
         从 <SATIR_ROOT>/subcohort_results/<NCT>.json 读取 enrollment_cohorts。
         如果文件不存在或格式不对，返回 []。
         """
-        root = Path("../canonical_subcohort_results")   #/home/clark/Documents/GitHub/trial-forma/canonical_subcohort_results
+        root = Path("../canonical_subcohort_results")
         path = root / f"{base_trial_id}.json"
         if not path.exists():
             return []

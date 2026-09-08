@@ -11,8 +11,8 @@ reproduction script yet (gap to close).
 | # | Table caption | Script / command | Data file | Status |
 |---|---|---|---|---|
 | 1 | Patient-level eligibility on SIGIR (5-system gold, n=539, F1/P/R) | `python experiments/clinician_validation/processing/report.py` (calls `accuracy_adjusted_f1.py`) | `matchers/systems/*/verdicts.jsonl` + `experiments/accuracy/data/gold_5sys_freeform_balanced.json` | ✓ |
-| 2 | F1 on 363 TREC 2021 pairs (5 backbones × 2 pipelines) | `python scripts/tables/table2_trec2021_f1.py` | `~/Desktop/llm-smt/svpo-rl/data/test_clean_tagged.jsonl` + `eval_runs/*/rollouts.jsonl` | ✓ (GPT-5-mini + Qwen rows) |
-| 3 | Clinician preference over rationales (W-T-L, corpus-reweighted) | `python experiments/clinician_validation/processing/report.py` (Table 24 in results) | `/Users/xyrus/Downloads/evaluations_results.json` (or `~/chart_silence_review/submissions.jsonl` on yelpbot3) + `merge/clinician_review_merged.json` | ✓ |
+| 2 | F1 on 363 TREC 2021 pairs (5 backbones × 2 pipelines) | `python scripts/tables/table2_trec2021_f1.py` | `$SVPO_RL/data/test_clean_tagged.jsonl` + `eval_runs/*/rollouts.jsonl` | ✓ (GPT-5-mini + Qwen rows) |
+| 3 | Clinician preference over rationales (W-T-L, corpus-reweighted) | `python experiments/clinician_validation/processing/report.py` (Table 24 in results) | `$EVALUATIONS_RESULTS` (or `~/chart_silence_review/submissions.jsonl` on yelpbot3) + `merge/clinician_review_merged.json` | ✓ |
 | 4 | Mean clinician ratings (1–5 axes) | `python experiments/clinician_validation/processing/report.py` → per-axis section | same as Table 3 | ✓ |
 | 5 | Policy-verdict agreement (%) — TypedPolicy vs LLM | `python experiments/typed_policy/scripts/07_compare.py` | `experiments/typed_policy/data/{nl_track_results.jsonl,smt_track_results.jsonl}` | ✓ |
 | 6 | Raw ineligible→eligible **PIVOTALFLIPRATE** | Same source as Table 27 (full-corpus run, N_valid denominator) | `experiments/counterfactual/05_self_faithfulness/out/` (full corpus, not the `mbench_3cell/` inspection subset) | ✓ |
@@ -65,15 +65,15 @@ python experiments/counterfactual/06_reverse_cf/summarize.py \
 ## Table 2 — TREC 2021 F1 (resolved 2026-09-03)
 
 **Data lives in the `svpo-rl` repo**, not this one. It was pulled from
-`scdt.stanford.edu:/nlp/scr/zikai/svpo-rl` to `~/Desktop/llm-smt/svpo-rl`:
+`<cluster-host>:<path-to>/svpo-rl` to `$SVPO_RL`:
 
 ```bash
-ssh scdt.stanford.edu 'tar czf - -C /nlp/scr/zikai/svpo-rl \
+ssh <cluster-host> 'tar czf - -C <path-to>/svpo-rl \
     scripts eval_runs sbatch training README_CLUSTER.md \
     data/test_tagged.jsonl data/test_clean_tagged.jsonl \
     data/mini_test_rollouts.jsonl data/mini_test_assign.jsonl \
     data/xu_assign.jsonl data/oracle_all.jsonl' \
-  | tar xzf - -C ~/Desktop/llm-smt/svpo-rl
+  | tar xzf - -C $SVPO_RL
 ```
 
 ### How the 363-pair test set was built

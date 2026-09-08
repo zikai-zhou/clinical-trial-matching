@@ -18,7 +18,7 @@ from __future__ import annotations
 import json, pathlib, re, difflib, random
 from collections import defaultdict
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 OUT_BASE = ROOT/'experiments/counterfactual/05_self_faithfulness/ablation_full_corpus/out'
 CELL = 'cell3_5m_v3v_filt'
 OUT_FILE = ROOT/'experiments/clinician_validation/cf_audit_K7_cell3.json'
@@ -248,7 +248,7 @@ print(f'\nwrote {OUT_FILE}')
 
 # Also publish to the frontend's private dir as clinician_review.json
 import shutil
-FE_PRIVATE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
+FE_PRIVATE = pathlib.Path('<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
 if FE_PRIVATE.exists():
     target = FE_PRIVATE/'clinician_review.json'
     backup = FE_PRIVATE/'clinician_review.pre_cf_audit_K7_cell3.json.bak'

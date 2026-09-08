@@ -11,7 +11,7 @@ from __future__ import annotations
 import argparse, json, os, pathlib, sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 sys.path.insert(0, str(ROOT/"experiments/counterfactual/utils"))
 sys.path.insert(0, str(ROOT/"experiments/counterfactual/05_self_faithfulness"))
 import cf_judge as jg

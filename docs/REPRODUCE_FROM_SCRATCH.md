@@ -24,7 +24,7 @@ OPENAI_API_KEY=<key>
 EOF
 
 # The cmsrc external repo (Stage 1 SMT atom mining driver)
-# Expected at /Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/cmsrc/
+# Expected at $CMSRC_DIR  (a sibling TrialGPT-SMT/cmsrc checkout)
 # Override with: export CMSRC_DIR=<path>
 ```
 

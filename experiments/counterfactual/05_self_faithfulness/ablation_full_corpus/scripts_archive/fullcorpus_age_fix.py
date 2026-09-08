@@ -16,11 +16,11 @@ sys.path.insert(0, '/tmp')
 import importlib.util
 spec = importlib.util.spec_from_file_location('cf_mod', '/tmp/cf_modifier_gpt5.py')
 cf_mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(cf_mod)
-sys.path.insert(0, '/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual')
+sys.path.insert(0, '<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored/experiments/counterfactual')
 from utils import cf_judge as jg
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 
 # Load existing sf + chart corpus
 sf = {r['pair']:r for r in [json.loads(l) for l in (ROOT/'experiments/counterfactual/05_self_faithfulness/out/self_faithfulness.jsonl').open() if l.strip()]}

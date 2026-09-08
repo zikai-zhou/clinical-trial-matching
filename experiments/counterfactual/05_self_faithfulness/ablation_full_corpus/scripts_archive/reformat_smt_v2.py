@@ -3,8 +3,8 @@
 import json, pathlib, re
 from collections import defaultdict
 
-FE_PRIVATE = pathlib.Path("/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+FE_PRIVATE = pathlib.Path("<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 
 smt_targets = {}
 for ln in (ROOT/"experiments/counterfactual/05_self_faithfulness/out/self_faithfulness.jsonl").open():

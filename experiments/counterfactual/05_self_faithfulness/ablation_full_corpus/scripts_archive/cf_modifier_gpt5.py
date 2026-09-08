@@ -15,7 +15,7 @@ so we can drop it into the existing run.py pipeline.
 from __future__ import annotations
 import json, os, pathlib, urllib.request
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 KEY = os.environ.get("OPENAI_API_KEY", "")
 EP_GPT5 = os.environ.get("OPENAI_ENDPOINT_GPT5") or os.environ.get("OPENAI_ENDPOINT", "")
 BASE = EP_GPT5.split("/openai/")[0] if EP_GPT5 else ""

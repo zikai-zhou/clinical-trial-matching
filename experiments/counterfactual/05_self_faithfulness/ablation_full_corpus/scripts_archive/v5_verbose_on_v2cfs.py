@@ -12,7 +12,7 @@ Step 2: Verbose verdict on v2 CF chart → checks if the verdict flips.
 import json, os, pathlib, re, sys, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path("<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored")
 ep = os.environ["OPENAI_ENDPOINT"]
 key = os.environ["OPENAI_API_KEY"]
 base = ep.split("/openai/")[0]

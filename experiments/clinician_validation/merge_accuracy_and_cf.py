@@ -10,8 +10,8 @@ Sources:
 """
 import json, pathlib, shutil
 
-FE = pathlib.Path('/Users/xyrus/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+FE = pathlib.Path('<local-path>/Desktop/llm-smt/clinical-trial-annotation-frontend/private')
+ROOT = pathlib.Path('<local-path>/Desktop/llm-smt/TrialGPT-SMT-Refactored')
 
 backup = FE/'clinician_review.pre_cf_audit_K7_cell3.json.bak'
 cf_new = ROOT/'experiments/clinician_validation/cf_audit_K7_cell3.json'
