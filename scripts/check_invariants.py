@@ -202,6 +202,68 @@ def _():
     want(out, 'eager: []')
 
 
+@check('maxsmt:paper-invariants-hold')
+def _():
+    """Steps 2-6 must satisfy the three invariants the paper states.
+
+        delta_E = {} iff d = ELIGIBLE
+        delta_I = {} iff d = INELIGIBLE
+        delta  != {}
+
+    and rho must hold the solver's WITNESS while the verbalizer view reports
+    the REQUIREMENT (a witness is arbitrary within the satisfying region).
+
+    Runs in a subprocess with cwd=ROOT so `smt_core` is importable.
+    """
+    rc, out = sh('-c', """
+import sys
+try:
+    import z3
+    assert all(hasattr(z3, a) for a in ('parse_smt2_string', 'Optimize'))
+except Exception:
+    print('NO_Z3'); sys.exit(0)
+from smt_core.maxsmt import (Condition, solve, OBSERVED, IMPUTED,
+                             UNRESOLVED, ELIGIBLE, INELIGIBLE)
+phi = ['(declare-const |egfr| Bool)', '(declare-const |crcl| Real)',
+       '(assert |egfr|)', '(assert (>= |crcl| 60))']
+cases = [
+    [Condition('egfr', False, OBSERVED), Condition('crcl', None, UNRESOLVED)],
+    [Condition('egfr', True, OBSERVED),  Condition('crcl', None, UNRESOLVED)],
+    [Condition('egfr', True, OBSERVED),  Condition('crcl', 80, OBSERVED)],
+    [Condition('egfr', True, OBSERVED),  Condition('crcl', 40, OBSERVED)],
+    [Condition('egfr', True, IMPUTED, 'assume-normal'),
+     Condition('crcl', None, UNRESOLVED)],
+]
+for conds in cases:
+    a = solve(phi, conds)
+    assert (a.delta_e == []) == (a.decision == ELIGIBLE), ('dE', a)
+    assert (a.delta_i == []) == (a.decision == INELIGIBLE), ('dI', a)
+    assert a.pivotal != [], ('delta empty', a)
+a = solve(phi, cases[0])
+assert a.decision == INELIGIBLE and a.pivotal == ['egfr'], a
+assert 'crcl' in a.assumptions
+v = a.for_verbalizer(phi)
+assert v['assumptions']['crcl']['requirement'] == '>= 60', v
+assert 'witness' in v['assumptions']['crcl'], v
+print('MAXSMT_OK')
+""")
+    assert rc == 0, out
+    if 'NO_Z3' in out:
+        raise Skip('z3-solver (pip install "z3-solver>=4.12")')
+    want(out, 'MAXSMT_OK')
+
+
+@check('maxsmt:verbalizer-prompt-forbids-witnesses')
+def _():
+    """The v13 prompt must carry the requirement-not-witness rule."""
+    p = ROOT / 'verbalizer/prompts/_freeform_rationale_v13_maxsmt.prompt'
+    assert p.exists(), 'v13 MaxSMT verbalizer prompt missing'
+    txt = p.read_text()
+    for needle in ('assumptions', 'witness', 'requirement the trial imposes',
+                   'pivotal'):
+        assert needle.lower() in txt.lower(), f'prompt missing rule: {needle}'
+
+
 # ------------------------------------------------- reproduction numbers
 @check('table2:trec-f1-matches-paper')
 def _():

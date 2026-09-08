@@ -133,6 +133,53 @@ verdict.match("nope__NCT0")                  # raises MissingPairData
 verdict.match("nope__NCT0", strict=False)    # Decision(reasoning='no data')
 ```
 
+## Accountability artifacts (MaxSMT)
+
+`smt_core.maxsmt` implements Steps 2--6 of the published VERDICT algorithm.
+
+```python
+from smt_core.maxsmt import Condition, solve, OBSERVED, UNRESOLVED
+
+phi = ["(declare-const |egfr| Bool)", "(declare-const |crcl| Real)",
+       "(assert |egfr|)", "(assert (>= |crcl| 60))"]
+a = solve(phi, [Condition("egfr", False, OBSERVED),
+                Condition("crcl", None, UNRESOLVED)])
+
+a.decision      # 'ineligible'          d
+a.trace         # why                   gamma
+a.assumptions   # {'crcl': 60.0}        rho  -- the solver's witness
+a.pivotal       # ['egfr']              delta
+a.delta_e, a.delta_i
+```
+
+Three invariants from the paper are asserted in the test suite:
+`delta_E = {}` iff ELIGIBLE, `delta_I = {}` iff INELIGIBLE, and `delta` is
+never empty.
+
+### Terminology: assumptions, not residual constraints
+
+`rho` was called **residual constraints** in the submitted version and held
+unresolved conditions *as constraints* (`{crcl >= 60}`). It is now
+**assumptions** and holds the value the MaxSMT solver *assigns*
+(`{crcl = 72}`). These are not interchangeable — one is a requirement, the
+other one satisfying value of it. `MaxSAT` is likewise now `MaxSMT`.
+
+### A witness is not a finding
+
+The witness for an unresolved numeric condition is arbitrary within the
+satisfying region: for `crcl >= 60` the solver may return 60, 72, or 500, and
+none is a fact about the patient. So a rationale must report **the requirement,
+never the witness**:
+
+```python
+a.for_verbalizer(phi)["assumptions"]["crcl"]
+# {'requirement': '>= 60', 'witness': 60.0}
+```
+
+`verbalizer/prompts/_freeform_rationale_v13_maxsmt.prompt` carries this rule.
+It is a new version rather than an edit to v12, so previously published
+rationales stay reproducible.
+
 ### Checks
 
 ```bash
