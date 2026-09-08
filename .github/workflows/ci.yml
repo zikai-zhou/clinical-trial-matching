@@ -38,6 +38,11 @@ jobs:
           fi
           verdict match FAKE__NCT0 2>&1 | grep -qiE 'unknown pair|no pair data'
 
+      - name: Unit tests
+        run: |
+          pip install pytest "z3-solver>=4.12"
+          pytest
+
       - name: Invariants
         # Data-dependent checks SKIP on a runner (no local artifacts); the
         # hygiene, packaging and CLI checks must still pass.

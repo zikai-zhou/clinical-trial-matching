@@ -85,3 +85,11 @@ compile-trial = "trial_compiler.cli:main"
 compile-patient = "patient_compiler.cli:main"
 index-db = "db_indexer.cli:main"
 match-trial = "smt_matcher.cli:main"
+
+[tool.pytest.ini_options]
+# Default `pytest` runs only the fast, hermetic unit suite. The scripts at
+# tests/*.py are service-level (Elasticsearch, Snowstorm, a built trial.db)
+# and are run explicitly, e.g. `python tests/test_end_to_end.py`; collecting
+# them by default would fail on any machine without those services.
+testpaths = ["tests/unit"]
+addopts = "-q"

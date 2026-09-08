@@ -219,10 +219,11 @@ a.for_verbalizer(phi)["assumptions"]["crcl"]
 It is a new version rather than an edit to v12, so previously published
 rationales stay reproducible.
 
-### Checks
+### Tests and checks
 
 ```bash
-python scripts/check_invariants.py        # ~1s, 20 checks
+pytest                                    # fast unit suite (~0.3s, no services)
+python scripts/check_invariants.py        # ~1s, 26 checks
 ```
 
 Run this after every change. It covers the CLI, the Python API, the

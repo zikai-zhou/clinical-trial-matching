@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the papers below."
+title: "SatIR + VERDICT: constraint-satisfaction clinical-trial retrieval and auditable matching"
+authors:
+  - family-names: Zhou
+    given-names: Zikai
+repository-code: "https://github.com/zikai-zhou/clinical-trial-matching"
+preferred-citation:
+  type: conference-paper
+  title: "VERDICT: Verified explanations with assumption Disclosure, Invariant Consistency, and Traceable pivotal conditions"
+  authors:
+    - family-names: Zhou
+      given-names: Zikai
+  year: 2026
