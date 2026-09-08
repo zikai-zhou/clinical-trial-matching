@@ -55,7 +55,6 @@ def _write_json(p: pathlib.Path, obj: Any) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
 
-_log(f"[boot] overlap controls: ALWAYS_ENV={ALLOW_OVERLAP_ALWAYS_ENV} LAST_TRY_ENV={ALLOW_OVERLAP_LAST_TRY_ENV}")
 
 # ──────────────────── RECONCILE LINKER ────────────────────
 def _reconcile_linker(batch, res):

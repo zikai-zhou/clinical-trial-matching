@@ -130,15 +130,21 @@ def run(cmd):
     print("\n>>> " + " ".join(cmd))
     subprocess.run(cmd, check=True)
 
-for attr in ATTRS:
-    run(["python", ROOT / "get_attribute_ranges.py", "--attr-id", str(attr)])
 
-    ranges_file = ROOT / "attribute_ranges" / f"{attr}_ranges.txt"
-    run([
-        "python",
-        ROOT / "build_index_for_attribute_ranges.py",
-        "--allowed-file", str(ranges_file),
-        "--index-name", f"snomed_vectors_{attr}",
-    ])
+def main() -> None:
+    for attr in ATTRS:
+        run(["python", ROOT / "get_attribute_ranges.py", "--attr-id", str(attr)])
 
-print("\nAll done!")
+        ranges_file = ROOT / "attribute_ranges" / f"{attr}_ranges.txt"
+        run([
+            "python",
+            ROOT / "build_index_for_attribute_ranges.py",
+            "--allowed-file", str(ranges_file),
+            "--index-name", f"snomed_vectors_{attr}",
+        ])
+
+    print("\nAll done!")
+
+
+if __name__ == "__main__":
+    main()

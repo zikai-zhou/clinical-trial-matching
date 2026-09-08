@@ -86,12 +86,61 @@ def _fp(*parts):
     return hashlib.sha256("||".join(p[:s] for p, s in parts).encode()).hexdigest()
 
 
-_ATOMS_CACHE = _load_jsonl_cache(ROOT / "experiments/97_smt_based/cache_atoms_only.jsonl")
-_LM_CACHE    = _load_jsonl_cache(ROOT / "experiments/97_smt_based/cache_with_lm.jsonl")
-_PRESCREEN_CACHE = _load_jsonl_cache(ROOT / "experiments/99_counterfactual_lm/lm_prescreen_full_cache.jsonl")
-# Also load the disagreement-only cache (122 pairs) — overlaps with full cache but covers both
-_PRESCREEN_CACHE.update(_load_jsonl_cache(ROOT / "experiments/99_counterfactual_lm/lm_prescreen_cache.jsonl"))
-_MULTIAGENT_CACHE = _load_jsonl_cache(ROOT / "experiments/100_multiagent_nl/multiagent_cache.jsonl")
+class _LazyJsonlCache(dict):
+    """A cache that reads its files on first use, not at import.
+
+    Importing this module used to read four jsonl caches from disk, so merely
+    `import matchers.variants` did I/O and failed noisily where the corpus was
+    absent. Paths are merged in the order given, so later files override
+    earlier ones exactly as the previous eager `.update()` chain did.
+    """
+
+    def __init__(self, *rel_paths: str):
+        super().__init__()
+        self._rel_paths = rel_paths
+        self._loaded = False
+
+    def _ensure(self) -> None:
+        if self._loaded:
+            return
+        self._loaded = True                      # set first: a failed read
+        for rel in self._rel_paths:              # must not retry on every call
+            super().update(_load_jsonl_cache(ROOT / rel))
+
+    # every read path materialises the cache first
+    def get(self, key, default=None):
+        self._ensure(); return super().get(key, default)
+
+    def __getitem__(self, key):
+        self._ensure(); return super().__getitem__(key)
+
+    def __contains__(self, key):
+        self._ensure(); return super().__contains__(key)
+
+    def __len__(self):
+        self._ensure(); return super().__len__()
+
+    def __iter__(self):
+        self._ensure(); return super().__iter__()
+
+    def items(self):
+        self._ensure(); return super().items()
+
+    def keys(self):
+        self._ensure(); return super().keys()
+
+    def values(self):
+        self._ensure(); return super().values()
+
+
+_ATOMS_CACHE = _LazyJsonlCache("experiments/97_smt_based/cache_atoms_only.jsonl")
+_LM_CACHE = _LazyJsonlCache("experiments/97_smt_based/cache_with_lm.jsonl")
+# full cache first, then the disagreement-only cache (122 pairs) which overlaps
+# it -- same merge order as before, so lookups resolve identically
+_PRESCREEN_CACHE = _LazyJsonlCache(
+    "experiments/99_counterfactual_lm/lm_prescreen_full_cache.jsonl",
+    "experiments/99_counterfactual_lm/lm_prescreen_cache.jsonl")
+_MULTIAGENT_CACHE = _LazyJsonlCache("experiments/100_multiagent_nl/multiagent_cache.jsonl")
 
 
 # ============================================================================

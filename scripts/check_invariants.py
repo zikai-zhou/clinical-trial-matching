@@ -615,6 +615,60 @@ def _():
         want(out, 'Decision: INELIGIBLE', 'What it had to assume', '>= 60')
 
 
+@check('imports:no-work-at-import-time')
+def _():
+    """Importing a module must not run analyses, print, or touch the disk.
+
+    matchers.variants used to read four jsonl caches at import, and the example
+    scripts ran a full sweep. A library that works when merely imported cannot
+    be embedded, tested, or introspected safely.
+
+    Pure config (env-var branching) and sys.path setup are allowed.
+    """
+    import ast as _ast
+    ALLOWED_PREFIX = ("sys.path.", "_sys.path.", "warnings.", "logging.",
+                      "csv.field_size_limit", "session.mount")
+    SAFE = (_ast.Import, _ast.ImportFrom, _ast.FunctionDef, _ast.AsyncFunctionDef,
+            _ast.ClassDef, _ast.Assign, _ast.AnnAssign, _ast.AugAssign,
+            _ast.Try, _ast.Delete, _ast.Pass)
+
+    def is_main_guard(n):
+        return (isinstance(n, _ast.If) and isinstance(n.test, _ast.Compare)
+                and isinstance(n.test.left, _ast.Name)
+                and n.test.left.id == "__name__")
+
+    # env-var config branching: an If whose body only assigns
+    def is_config_if(n):
+        return (isinstance(n, _ast.If)
+                and all(isinstance(b, (_ast.Assign, _ast.AnnAssign, _ast.Pass))
+                        for b in list(n.body) + list(n.orelse)))
+
+    offenders = []
+    for d in ("matchers", "verbalizer", "smt_core", "counterfactual_modifier",
+              "rationale_generators", "satir", "verdict"):
+        base = ROOT / d
+        if not base.exists():
+            continue
+        for f in sorted(base.rglob("*.py")):
+            if ".bak" in f.name or "__pycache__" in str(f):
+                continue
+            try:
+                tree = _ast.parse(f.read_text(errors="ignore"))
+            except SyntaxError:
+                continue
+            for n in tree.body:
+                if isinstance(n, SAFE) or is_main_guard(n) or is_config_if(n):
+                    continue
+                if isinstance(n, _ast.Expr) and isinstance(n.value, _ast.Constant):
+                    continue                      # docstring
+                src = _ast.unparse(n).split("\n")[0]
+                if src.startswith(ALLOWED_PREFIX):
+                    continue
+                offenders.append(f"{f.relative_to(ROOT)}:{n.lineno} {src[:60]}")
+    assert not offenders, ("modules doing work at import:\n  "
+                           + "\n  ".join(offenders[:10]))
+
+
 # ---------------------------------------------------------------- hygiene
 # Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',

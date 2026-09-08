@@ -27,7 +27,7 @@ PROMPTS_DIR = ROOT / "verbalizer/prompts"
 RERENDER = ROOT / "verbalizer/rerender_v6.py"
 SAMPLE_JSON = ROOT / "experiments/clinician_validation/sample_32pairs_balanced.json"
 LOG_DIR = pathlib.Path("/tmp/verbalizer_overnight")
-LOG_DIR.mkdir(parents=True, exist_ok=True)
+# created on use, not on import (see _ensure_log_dir)
 SUMMARY = LOG_DIR / "summary.jsonl"
 
 
@@ -163,6 +163,10 @@ VARIANTS = [
     ("v9a_structural_rep2",   "_freeform_rationale_v9a_structural.prompt"),
     ("v9b_doctrine_rep2",     "_freeform_rationale_v9b_doctrine.prompt"),
 ]
+
+
+def _ensure_log_dir() -> None:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def main():
