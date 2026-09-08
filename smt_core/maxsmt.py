@@ -209,6 +209,16 @@ def _z3():
     except ImportError as e:                    # pragma: no cover
         raise ImportError(
             "MaxSMT needs the solver: pip install 'z3-solver>=4.12'") from e
+    except Exception as e:                      # pragma: no cover
+        # z3-solver is installed but its shared library will not load. The
+        # usual cause is a wheel built for a newer OS than the one running
+        # (macOS especially), and it raises Z3Exception, not ImportError.
+        raise ImportError(
+            f"z3-solver is installed but its native library failed to load "
+            f"({type(e).__name__}: {str(e).splitlines()[0] if str(e) else ''}). "
+            f"This is usually a wheel built for a newer OS than yours. Try "
+            f"`pip install --force-reinstall --no-binary :all: z3-solver`, or "
+            f"install z3 from your package manager.") from e
     missing = [a for a in ("parse_smt2_string", "Optimize", "Solver")
                if not hasattr(z3, a)]
     if missing:                                 # pragma: no cover

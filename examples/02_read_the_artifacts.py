@@ -30,7 +30,10 @@ PATIENT = [
 
 
 def main() -> None:
-    a = solve(TRIAL, PATIENT)
+    try:
+        a = solve(TRIAL, PATIENT)
+    except ImportError as e:      # no solver, or one whose library will not load
+        raise SystemExit(f"This example needs a working solver.\n  {e}")
 
     print(f"Decision: {a.decision.upper()}")
     print(f"  because: {a.trace}\n")
