@@ -77,6 +77,62 @@ for step in d.audit_trail:
     print(step)
 ```
 
+## Python API
+
+Both systems are importable, not just command-line tools.
+
+### SatIR
+
+```python
+import satir
+
+satir.config()                              # resolved SatIRConfig
+satir.compile_trial("NCT00337116")          # trial text   -> SMT constraints
+satir.compile_patient("sigir-20141")        # patient note -> coded facts
+satir.index()                               # constraints  -> clause database
+satir.retrieve()                            # SQL constraint-satisfaction retrieval
+satir.match("sigir-20141", "NCT00337116")   # SMT eligibility check
+```
+
+The compiler and indexer stages are argv-driven underneath, so extra options
+pass straight through rather than being re-declared in a parallel schema that
+could drift from the real parser:
+
+```python
+satir.compile_trial("NCT00337116", "--side", "inclusion", "--stop-after", "ir")
+```
+
+For programmatic matching, the genuinely reusable pieces are re-exported:
+`satir.load_patient`, `satir.build_ctx_from_persisted`, `satir.run_match_for_side`.
+
+Imports are lazy — `import satir` pulls in no heavy backend, so reading config
+costs nothing. Touching a function that needs one raises with the extra to
+install (`pip install -e '.[llm]'`).
+
+### VERDICT
+
+```python
+import verdict
+
+verdict.systems()                           # {name: description}
+d = verdict.match("sigir-20141__NCT00337116")
+print(d.decision, d.reasoning)              # 'eligible', 'SMT solver accepted; ...'
+for step in d.audit_trail:
+    print(step.stage, step.decision)
+
+print(verdict.explain(pair_id))             # rendered audit trail
+verdict.match(pair_id, system="hybrid")     # a different variant
+```
+
+**The API defaults to `strict=True`**, so a pair that cannot be loaded raises
+`MissingPairData` instead of returning a confident `ineligible`. Pass
+`strict=False` for the paper-compatible sentinel:
+
+```python
+verdict.match("nope__NCT0")                  # raises MissingPairData
+verdict.match("nope__NCT0", strict=False)    # Decision(reasoning='no data')
+```
+
 ### Checks
 
 ```bash

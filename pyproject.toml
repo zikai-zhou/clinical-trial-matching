@@ -49,6 +49,9 @@ py-modules = ["verdict_cli", "satir_cli"]
 
 [tool.setuptools.packages.find]
 include = [
+    # public APIs
+    "satir*",
+    "verdict*",
     # VERDICT
     "matchers*",
     "verbalizer*",

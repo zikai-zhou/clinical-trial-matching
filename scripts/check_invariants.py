@@ -160,6 +160,48 @@ def _():
     want(out, 'ineligible | no data | True')
 
 
+@check('api:public-packages-import-cleanly')
+def _():
+    """`import satir` / `import verdict` must work with no optional deps."""
+    rc, out = sh('-c', 'import satir, verdict;'
+                       'print(len(satir.__all__), len(verdict.__all__));'
+                       'print(sorted(verdict.systems())[:2]);'
+                       'print(type(satir.config()).__name__)')
+    assert rc == 0, out
+    want(out, 'SatIRConfig')
+
+
+@check('api:verdict-api-matches-cli', needs=PAIR_DATA)
+def _():
+    """The verdict API and CLI must agree, and the API must default to strict."""
+    rc, out = sh('-c',
+        'import verdict;'
+        'd=verdict.match("sigir-20141__NCT00337116");'
+        'print("decision", d.decision);'
+        'print("npairs", len(verdict.pairs()));'
+        'ok=0\n'
+        'try:\n'
+        '    verdict.match("FAKE__NCT0")\n'
+        'except verdict.MissingPairData: ok=1\n'
+        'print("strict", ok);'
+        'print("lenient", verdict.match("FAKE__NCT0", strict=False).reasoning)')
+    assert rc == 0, out
+    want(out, 'decision eligible', 'strict 1', 'lenient no data')
+    rc2, cli = sh('verdict_cli.py', 'match', 'sigir-20141__NCT00337116')
+    assert rc2 == 0 and 'ELIGIBLE' in cli, 'CLI and API disagree'
+
+
+@check('api:satir-lazy-imports')
+def _():
+    """satir must not import heavy backends at module import time."""
+    rc, out = sh('-c', 'import sys, satir;'
+                       'heavy=[m for m in ("torch","elasticsearch","matplotlib",'
+                       '"dspy","azure") if m in sys.modules];'
+                       'print("eager:", heavy)')
+    assert rc == 0, out
+    want(out, 'eager: []')
+
+
 # ------------------------------------------------- reproduction numbers
 @check('table2:trec-f1-matches-paper')
 def _():
