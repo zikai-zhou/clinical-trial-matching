@@ -41,3 +41,14 @@ def test_env_example_has_no_secrets_or_internal_hosts():
 def test_env_is_gitignored():
     gi = (ROOT / ".gitignore").read_text().splitlines()
     assert ".env" in gi and "!.env.example" in gi
+
+
+def test_license_present_and_matches_pyproject():
+    """No licence file means all rights reserved, even in a public repo."""
+    lic = ROOT / "LICENSE.md"
+    assert lic.exists()
+    txt = lic.read_text()
+    assert "PolyForm Noncommercial License 1.0.0" in txt
+    assert "Noncommercial Organizations" in txt      # the academic carve-out
+    assert "Patent License" in txt
+    assert "PolyForm-Noncommercial" in str(CFG["project"].get("license", ""))

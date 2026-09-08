@@ -570,6 +570,29 @@ def _():
     assert not bad_scripts, f'console scripts pointing at nothing: {bad_scripts}'
 
 
+@check('licensing:license-present-and-declared')
+def _():
+    """LICENSE.md must exist and pyproject must name the same licence.
+
+    Without a licence file the default is all-rights-reserved, so nobody may
+    use the code even from a public repo.
+    """
+    lic = ROOT / 'LICENSE.md'
+    assert lic.exists(), 'LICENSE.md missing -- default is all rights reserved'
+    txt = lic.read_text()
+    for needle in ('PolyForm Noncommercial License 1.0.0', 'Noncommercial Purposes',
+                   'Patent License', 'Noncommercial Organizations'):
+        assert needle in txt, f'LICENSE.md missing section: {needle}'
+    try:
+        import tomllib
+    except ModuleNotFoundError:
+        raise Skip('tomllib')
+    cfg = tomllib.loads((ROOT / 'pyproject.toml').read_text())
+    declared = str(cfg['project'].get('license', ''))
+    assert 'PolyForm-Noncommercial' in declared, \
+        f'pyproject licence does not match LICENSE.md: {declared!r}'
+
+
 # ---------------------------------------------------------------- hygiene
 # Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',

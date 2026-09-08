@@ -273,6 +273,29 @@ work between this repository and a general-purpose tool.
 Reproduction of the paper's tables is documented in `REPRODUCE_TABLES.md`;
 data provenance and redistribution status in `DATA.md`.
 
+## License
+
+**PolyForm Noncommercial 1.0.0** — see [LICENSE.md](LICENSE.md).
+
+Free for noncommercial use. The license explicitly permits use by
+*"any charitable organization, educational institution, public research
+organization, public safety or health organization, environmental protection
+organization, or government institution ... regardless of the source of
+funding"*, so academic research, teaching, and nonprofit clinical research are
+covered without asking. It also grants a patent license for the method.
+
+**Commercial use requires a separate licence.** If you want to use this in a
+product, a for-profit service, or commercially-sponsored work, contact
+zikai@stanford.edu.
+
+Note this is a *source-available* licence, not an OSI-approved open-source
+one: open-source licences may not restrict fields of endeavour. Describe the
+release as "source-available" or "free for noncommercial use" rather than
+"open source".
+
+The code licence is separate from the data. See [DATA.md](DATA.md) for the
+corpora, which carry their own terms.
+
 ## Layout
 
 ```

@@ -3,6 +3,7 @@ name = "satir"
 version = "0.2.0"
 description = "SatIR + VERDICT: constraint-satisfaction clinical-trial retrieval (SatIR) and auditable eligibility matching (VERDICT)"
 requires-python = ">=3.12"
+license = { text = "PolyForm-Noncommercial-1.0.0" }
 
 # Runtime deps, derived from the actual imports (see scripts/check_invariants.py
 # :: deps:declared-match-imports). requirements.txt is a pinned lock of one
