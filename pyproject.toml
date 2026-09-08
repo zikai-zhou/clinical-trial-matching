@@ -1,7 +1,7 @@
 [project]
-name = "oval-mayo-ctm"
+name = "oval-clinical-trial-matcher"
 version = "0.2.0"
-description = "Stanford OVAL - Mayo Clinical Trial Matcher: constraint-satisfaction trial retrieval (SatIR) and auditable eligibility matching (VERDICT)"
+description = "Stanford OVAL Clinical Trial Matcher: constraint-satisfaction trial retrieval (SatIR) and auditable eligibility matching (VERDICT)"
 requires-python = ">=3.12"
 license = { text = "Apache-2.0" }
 

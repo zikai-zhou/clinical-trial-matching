@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite the papers below."
-title: "Stanford OVAL - Mayo Clinical Trial Matcher"
+title: "Stanford OVAL Clinical Trial Matcher"
 authors:
   - family-names: Zhou
     given-names: Zikai

@@ -1,4 +1,4 @@
-# Stanford OVAL - Mayo Clinical Trial Matcher
+# Stanford OVAL Clinical Trial Matcher
 
 Software that finds clinical trials a patient might qualify for, decides
 whether they actually meet the criteria, and shows its reasoning so a
