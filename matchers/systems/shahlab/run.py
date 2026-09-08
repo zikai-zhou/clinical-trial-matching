@@ -3,6 +3,7 @@
 Adapts their `prompt__all_criteria_koopman` to our 538-pair format.
 Reports binary eligibility per pair (global_decision >= 1 = "might be eligible" → forward)."""
 from __future__ import annotations
+import os
 import argparse, json, os, pathlib, re, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -119,7 +120,8 @@ def main():
 
     # Load full SIGIR corpus to bypass 1500-char get_pair_inputs cap.
     sigir_corpus = {}
-    sigir_path = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl')
+    sigir_path = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3]))
     if sigir_path.exists():
         for ln in sigir_path.open():
             r = json.loads(ln); sigir_corpus[r['_id']] = r

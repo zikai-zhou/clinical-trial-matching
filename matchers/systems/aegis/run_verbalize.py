@@ -4,6 +4,7 @@ verbalize_smt_rationale.prompt). Then we can fair-compare with V5's NL rationale
 in the adjudicator (both NL-form, no concrete-symbolic vs free-text framing bias).
 """
 from __future__ import annotations
+import os
 import argparse, json, os, pathlib, re, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -30,7 +31,8 @@ _HEADLINE_LABELS = {}
 def _load_headline_labels():
     global _HEADLINE_LABELS
     if _HEADLINE_LABELS: return
-    p = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/overnight/aegis_strict_inc.jsonl')
+    p = pathlib.Path(os.environ.get('VERDICT_ROOT',
+        str(pathlib.Path(__file__).resolve().parents[3])) + '/overnight/aegis_strict_inc.jsonl')
     if p.exists():
         for ln in p.open():
             r = json.loads(ln); _HEADLINE_LABELS[r['pair']] = r.get('eligibility')
@@ -38,7 +40,8 @@ def _get_corpus():
     global _SIGIR_CORPUS
     if _SIGIR_CORPUS is None:
         _SIGIR_CORPUS = {}
-        p = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl')
+        p = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3]))
         if p.exists():
             for ln in p.open():
                 r = json.loads(ln); _SIGIR_CORPUS[r['_id']] = r

@@ -673,6 +673,9 @@ def _():
 # Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',
            'counterfactual_modifier', 'verdict_cli.py',
+           # matchers was missing from this list, so 12 files under it kept
+           # hardcoded home paths that the check never saw
+           'matchers', 'satir', 'verdict',
            # SatIR
            'trial_compiler', 'patient_compiler', 'db_indexer', 'sql_retrieval',
            'smt_matcher', 'matching_batch', 'evaluation', 'audit',

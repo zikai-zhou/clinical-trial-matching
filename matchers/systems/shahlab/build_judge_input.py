@@ -3,9 +3,11 @@
 Same render_rationale format used for trialgpt_for_judges.jsonl so the two
 NL-baselines have comparable presentation to the gold judges.
 """
+import os
 import json, pathlib
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3]))
 
 
 def _clip_at_sentence(text: str, max_len: int = 500) -> str:

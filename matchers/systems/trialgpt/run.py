@@ -5,6 +5,7 @@ decisions to a binary eligibility per pair via:
   eligible iff (no inclusion criterion is "not_included" AND no exclusion criterion is "excluded")
 This matches the spirit of TrialGPT-Aggregation (which assigns positive scores to "included"/"not_excluded")."""
 from __future__ import annotations
+import os
 import argparse, json, os, pathlib, re, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 sys.path.insert(0, '/tmp/TrialGPT/trialgpt_matching')
@@ -124,7 +125,8 @@ def main():
 
     # Load full SIGIR corpus to bypass 1500-char get_pair_inputs cap.
     sigir_corpus = {}
-    sigir_path = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/dataset/clinical_trial/sigir/corpus.jsonl')
+    sigir_path = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3]))
     if sigir_path.exists():
         for ln in sigir_path.open():
             r = json.loads(ln); sigir_corpus[r['_id']] = r

@@ -7,9 +7,11 @@ must be observable in the chart" is too strict. Skip these auxiliaries; the
 patient passes inclusion if all OTHER atoms are SAT (or NULL).
 """
 from __future__ import annotations
+import os
 import argparse, json, pathlib, re, sys
 from collections import defaultdict
-sys.path.insert(0, str(pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored/backup')))
+sys.path.insert(0, str(pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3])) / 'backup'))
 try:
     from overnight.repro_headline import is_silence, quote_smt, smt_number, thresh_binding_lines
     import z3
@@ -21,7 +23,8 @@ except ModuleNotFoundError as _e:  # pragma: no cover
         "`verdict` Python package; see README."
     ) from _e
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3]))
 
 # Auxiliary :named patterns that we'll SKIP under prescreen-doctrine
 SOFT_AUX_PATTERNS = [

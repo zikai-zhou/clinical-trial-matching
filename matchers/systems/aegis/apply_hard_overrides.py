@@ -20,10 +20,12 @@ trial-site documentation or methodology of care, so they default to NULL
 and resolve at the visit.
 """
 from __future__ import annotations
+import os
 import argparse, json, pathlib, re, sys
 from collections import defaultdict
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3]))
 sys.path.insert(0, str(ROOT/'backup'))
 
 # Methodology qualifier patterns

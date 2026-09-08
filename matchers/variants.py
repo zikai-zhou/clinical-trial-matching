@@ -63,7 +63,8 @@ def _no_data(pair_id: str, variant: str) -> Decision:
 
 
 
-ROOT = pathlib.Path("/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored")
+ROOT = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[1]))
 
 
 # ============================================================================

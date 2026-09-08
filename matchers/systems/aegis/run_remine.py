@@ -4,10 +4,13 @@
 Output: per-pair cmsrc_out/<patient>/<NCT>__full.json with fresh atoms,
 SMT programs, and verdicts.
 """
+import os
+import sys
 import argparse, json, os, pathlib, re, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT-Refactored')
+ROOT = pathlib.Path(os.environ.get('VERDICT_ROOT',
+    pathlib.Path(__file__).resolve().parents[3]))
 
 
 def main():
@@ -30,8 +33,10 @@ def main():
 
     out_root = (ROOT / args.out_root).resolve()
     out_root.mkdir(parents=True, exist_ok=True)
-    cmsrc_dir = pathlib.Path('/Users/xyrus/Desktop/llm-smt/TrialGPT-SMT/cmsrc')
-    cmsrc_python = '/Users/xyrus/.pyenv/versions/3.11.9/bin/python'
+    cmsrc_dir = pathlib.Path(os.environ.get('CMSRC_DIR',
+        pathlib.Path(__file__).resolve().parents[3].parent
+        / 'TrialGPT-SMT' / 'cmsrc'))
+    cmsrc_python = os.environ.get('CMSRC_PYTHON', sys.executable)
     matcher = cmsrc_dir / 'match_patient_to_trial.py'  # compiles SMT on the fly
     prompt_root = (ROOT/'experiments/53_v2_full/inputs/prompt_root').resolve()
 
