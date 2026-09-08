@@ -717,6 +717,53 @@ def _():
     assert not hits, ('personal paths or internal hosts in: ' + ', '.join(hits[:8]))
 
 
+#: The layering. The semantic parser turns text into structured constraints;
+#: SatIR and VERDICT are two independent consumers of that output.
+LAYERS = {
+    'parser':  ['smt_core', 'trial_compiler', 'patient_compiler'],
+    'satir':   ['db_indexer', 'sql_retrieval', 'matching_batch'],
+    'verdict': ['matchers', 'smt_matcher', 'verbalizer',
+                'counterfactual_modifier', 'rationale_generators', 'verdict'],
+}
+#: who may import whom
+ALLOWED = {('satir', 'parser'), ('verdict', 'parser')}
+
+
+@check('architecture:layering-holds')
+def _():
+    """parser <- {satir, verdict}, and satir must not know about verdict.
+
+    The parser is the base layer: it may not import its consumers. SatIR and
+    VERDICT are siblings -- coupling them would mean you could not run
+    retrieval without the matcher, or the matcher without a database.
+    """
+    import ast as _ast
+    owner = {pkg: layer for layer, pkgs in LAYERS.items() for pkg in pkgs}
+    violations = []
+    for layer, pkgs in LAYERS.items():
+        for pkg in pkgs:
+            base = ROOT / pkg
+            if not base.exists():
+                continue
+            for f in base.rglob('*.py'):
+                if '.bak' in f.name or '__pycache__' in str(f):
+                    continue
+                try:
+                    tree = _ast.parse(f.read_text(errors='ignore'))
+                except SyntaxError:
+                    continue
+                for n in _ast.walk(tree):
+                    mods = ([a.name for a in n.names] if isinstance(n, _ast.Import)
+                            else [n.module] if isinstance(n, _ast.ImportFrom)
+                            and n.module else [])
+                    for m in mods:
+                        tgt = owner.get(m.split('.')[0])
+                        if tgt and tgt != layer and (layer, tgt) not in ALLOWED:
+                            violations.append(
+                                f'{f.relative_to(ROOT)}: {layer} -> {tgt} ({m})')
+    assert not violations, ('layering violated:\n  ' + '\n  '.join(violations[:10]))
+
+
 # ---------------------------------------------------------------- hygiene
 # Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',

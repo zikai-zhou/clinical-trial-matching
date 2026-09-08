@@ -397,29 +397,43 @@ it — protection that MIT and BSD do not provide.
 The code licence is separate from the data. The evaluation corpora are
 third-party and carry their own terms; see [docs/DATA.md](docs/DATA.md).
 
-## Layout
+## Architecture
 
-Two systems share one solver core. Nothing else is shared.
+One parser, two consumers.
 
-| | | |
-|---|---|---|
-| **SatIR** | `trial_compiler/` | trial text → SMT constraint programs |
-| | `patient_compiler/` | patient notes → coded facts |
-| | `db_indexer/` | constraints → clause database |
-| | `sql_retrieval/` | constraint-satisfaction retrieval at corpus scale |
-| | `smt_matcher/` | SMT eligibility check |
-| | `matching_batch/`, `evaluation/`, `audit/` | batch runs, metrics, inspection |
-| | `satir/`, `satir_cli.py` | public API and CLI |
-| **shared** | `smt_core/` | entity canonicalization, attribute extraction, inference engines |
-| | `smt_core/maxsmt.py` | the accountability artifacts (both paper versions) |
-| **VERDICT** | `matchers/` | the matcher variants compared in the paper |
-| | `verbalizer/` | rationale generation, prompts |
-| | `rationale_generators/`, `counterfactual_modifier/` | flip sets, counterfactual edits |
-| | `verdict/`, `verdict_cli.py` | public API and CLI |
-| **support** | `scripts/` | reproduction + `check_invariants.py` |
-| | `tests/unit/` | fast suite; `tests/*.py` are service-level scripts |
-| | `experiments/`, `paper/`, `assets/` | run artifacts and figures |
-| | `docs/` | reproduction, data provenance, architecture |
+```
+                    trial criteria (text)     patient note (text)
+                              |                       |
+                    +---------v-----------------------v---------+
+                    |            SEMANTIC PARSER                |
+                    |  smt_core/          concepts, attributes, |
+                    |                     units, inference      |
+                    |  trial_compiler/    criteria -> constraints|
+                    |  patient_compiler/  note -> coded facts   |
+                    +---------+-----------------------+---------+
+                              |                       |
+                 constraints  |                       | coded facts
+                              |                       |
+              +---------------v-------+   +-----------v--------------+
+              |        SatIR          |   |        VERDICT           |
+              |  db_indexer/          |   |  matchers/               |
+              |  sql_retrieval/       |   |  smt_matcher/            |
+              |  matching_batch/      |   |  verbalizer/             |
+              |                       |   |  smt_core/maxsmt.py      |
+              |  which trials are     |   |  does THIS patient meet  |
+              |  worth looking at?    |   |  THIS trial, and why?    |
+              +-----------------------+   +--------------------------+
+                        satir                       verdict
+```
+
+The parser turns text into structured constraints. SatIR indexes those
+constraints and retrieves candidates at corpus scale; VERDICT decides a single
+pair over them and shows its reasoning.
+
+**The two never import each other** — verified, not aspirational. SatIR makes
+42 imports from the parser, VERDICT 11, and the parser imports neither. The
+`architecture:layering-holds` check fails the build on any cross-import, so you
+can run retrieval without the matcher, or the matcher without a database.
 
 ## The four matchers
 
