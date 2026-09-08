@@ -58,7 +58,7 @@ def _no_data(pair_id: str, variant: str) -> Decision:
     if _STRICT:
         raise MissingPairData(
             f"no pair data for {pair_id!r} (variant {variant!r}). "
-            f"Check $VERDICT_PAIR_DATA; see DATA.md.")
+            f"Check $VERDICT_PAIR_DATA; see docs/DATA.md.")
     return Decision(pair_id, variant, "ineligible", NO_DATA, [])
 
 

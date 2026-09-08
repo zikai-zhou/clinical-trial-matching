@@ -1,6 +1,6 @@
 # Reproducing the AEGIS accuracy results
 
-> **See [REPRODUCE_FROM_SCRATCH.md](../../REPRODUCE_FROM_SCRATCH.md) for the
+> **See [docs/REPRODUCE_FROM_SCRATCH.md](../../docs/REPRODUCE_FROM_SCRATCH.md) for the
 > full pipeline starting from raw inputs (SIGIR + prompts).** This document
 > covers the accuracy-only steps in detail.
 

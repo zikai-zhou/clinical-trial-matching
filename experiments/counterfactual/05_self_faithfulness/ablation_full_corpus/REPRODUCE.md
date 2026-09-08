@@ -2,7 +2,7 @@
 
 > **For the FULL pipeline starting from raw SIGIR data (no pre-computed
 > SMT mine or arbiter cache), see
-> [../../../../REPRODUCE_FROM_SCRATCH.md](../../../../REPRODUCE_FROM_SCRATCH.md)
+> [../../../../docs/REPRODUCE_FROM_SCRATCH.md](../../../../docs/REPRODUCE_FROM_SCRATCH.md)
 > stages 1-3 first.** This document assumes the v9 SMT mine and arbiter
 > cache already exist; it covers the CF self-faithfulness pipeline only.
 

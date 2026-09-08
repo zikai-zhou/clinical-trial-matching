@@ -40,8 +40,8 @@ satir retrieve ...        # candidate trials at corpus scale
 ```
 
 Run `satir <subcommand> --help` for arguments. Services (SNOMED Snowstorm,
-Elasticsearch) are described in `QUICKSTART.md`; build artifacts in
-`BUILD_ARTIFACTS.md`.
+Elasticsearch) are described in `docs/QUICKSTART.md`; build artifacts in
+`docs/BUILD_ARTIFACTS.md`.
 
 ### VERDICT — eligibility matching
 
@@ -266,12 +266,12 @@ it never emits a verdict for missing data.
 artifacts produced by the stage-1 atom miner from `$VERDICT_PAIR_DATA`
 (default `experiments/53_v2_full`). It does **not** yet accept a free-text
 chart and trial and run the pipeline end to end: stage-1 mining lives in the
-separate `cmsrc` codebase (set `$CMSRC_DIR`; see `DATA.md`). Wiring that into a
+separate `cmsrc` codebase (set `$CMSRC_DIR`; see `docs/DATA.md`). Wiring that into a
 single `verdict match --chart c.txt --trial NCT...` call is the main piece of
 work between this repository and a general-purpose tool.
 
-Reproduction of the paper's tables is documented in `REPRODUCE_TABLES.md`;
-data provenance and redistribution status in `DATA.md`.
+Reproduction of the paper's tables is documented in `docs/REPRODUCE_TABLES.md`;
+data provenance and redistribution status in `docs/DATA.md`.
 
 ## License
 
@@ -283,31 +283,31 @@ method, and terminates that grant for anyone who brings a patent suit over
 it — protection that MIT and BSD do not provide.
 
 The code licence is separate from the data. The evaluation corpora are
-third-party and carry their own terms; see [DATA.md](DATA.md).
+third-party and carry their own terms; see [docs/DATA.md](docs/DATA.md).
 
 ## Layout
 
-```
-TrialGPT-SMT-Refactored/
-├── matchers/               — the 4 clinical-trial matchers + Python wrapper
-│   ├── systems/
-│   │   ├── aegis/          — SMT-backed atom mining + Z3 solve + verbalize
-│   │   ├── trialgpt/       — Canonical Jin/Yang 2024 per-criterion prompt
-│   │   ├── single_shot_llm/ — LLM-only baseline (formerly V5 TWO_STEP)
-│   │   └── shahlab/        — Stanford som-shahlab Koopman prompt
-│   ├── variants.py         — common decide(pair_id) interface
-│   └── prompts.py, schema.py, data.py
-├── verbalizer/             — symbolic-rationale → NL (standalone, used by AEGIS verbalize)
-│   ├── prompts/            — verbalize_smt_rationale.prompt (canonical) + variants
-│   └── run_aegis_verbalize.py
-├── experiments/
-│   ├── accuracy/           — accuracy / F1 + inspection mbench
-│   └── policy/             — policy-alignment compliance experiments
-├── dataset/                — SIGIR clinical-trial dataset (corpus.jsonl, queries, etc.)
-├── smt_core/               — shared utilities (inference engine, parse functions)
-├── backup/                 — historical artifacts (everything not actively used)
-└── README.md, QUICKSTART.md, requirements.txt, pyproject.toml
-```
+Two systems share one solver core. Nothing else is shared.
+
+| | | |
+|---|---|---|
+| **SatIR** | `trial_compiler/` | trial text → SMT constraint programs |
+| | `patient_compiler/` | patient notes → coded facts |
+| | `db_indexer/` | constraints → clause database |
+| | `sql_retrieval/` | constraint-satisfaction retrieval at corpus scale |
+| | `smt_matcher/` | SMT eligibility check |
+| | `matching_batch/`, `evaluation/`, `audit/` | batch runs, metrics, inspection |
+| | `satir/`, `satir_cli.py` | public API and CLI |
+| **shared** | `smt_core/` | entity canonicalization, attribute extraction, inference engines |
+| | `smt_core/maxsmt.py` | the accountability artifacts (both paper versions) |
+| **VERDICT** | `matchers/` | the matcher variants compared in the paper |
+| | `verbalizer/` | rationale generation, prompts |
+| | `rationale_generators/`, `counterfactual_modifier/` | flip sets, counterfactual edits |
+| | `verdict/`, `verdict_cli.py` | public API and CLI |
+| **support** | `scripts/` | reproduction + `check_invariants.py` |
+| | `tests/unit/` | fast suite; `tests/*.py` are service-level scripts |
+| | `experiments/`, `paper/`, `assets/` | run artifacts and figures |
+| | `docs/` | reproduction, data provenance, architecture |
 
 ## The four matchers
 
@@ -340,12 +340,12 @@ Tune any system by editing its `prompts/<name>.prompt` and re-running `run.py`.
 
 ## The two experiments
 
-**[`experiments/accuracy/`](experiments/accuracy/README.md)** — accuracy + F1 + inspection
+**[`experiments/accuracy/`](experiments/accuracy/REPRODUCE.md)** — accuracy + F1 + inspection
 - 5-system gold (n=532), bootstrap CIs, Pareto controllability, sharpness ratings, fliprate
 - `inspection/mbench/` — 539-pair drillable mbench with per-atom mining outcomes
 - `inspection/v5_beats_aegis/` — 52 cases where V5 beats AEGIS on the gold
 
-**[`experiments/policy/`](experiments/policy/README.md)** — policy alignment
+**`experiments/typed_policy/`** — policy alignment
 - 3-policy benchmark: AEGIS 100% compliance vs LLM 52-72%
 - 4-axis stacked policies for fine-grained control
 - 22 typed-atom dispatch (lab_chemistry, functional_score, etc.)

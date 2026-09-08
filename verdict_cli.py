@@ -10,7 +10,7 @@ PAIR_ID is "<patient>__<NCT>", e.g. sigir-20141__NCT00337116.
 
 Pair data is read from $VERDICT_PAIR_DATA (default:
 <repo>/experiments/53_v2_full). These are the per-pair artifacts produced by
-the stage-1 atom miner; see DATA.md for how to obtain or regenerate them.
+the stage-1 atom miner; see docs/DATA.md for how to obtain or regenerate them.
 """
 from __future__ import annotations
 import argparse, json, os, pathlib, sys
@@ -48,7 +48,7 @@ def require_pairs():
     if not pairs:
         sys.exit(f'no pair data under {pair_root()/"cmsrc_out"}.\n'
                  f'Set $VERDICT_PAIR_DATA to a directory of stage-1 miner '
-                 f'outputs, or see DATA.md.')
+                 f'outputs, or see docs/DATA.md.')
     return pairs
 
 

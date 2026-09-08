@@ -123,7 +123,7 @@ def _():
                        'print(repr(d.decision), repr(d.reasoning))')
     assert rc == 0, out
     assert 'no data' in out, ('sentinel changed: a missing pair no longer '
-                              'reports "no data" -- update verdict_cli and DATA.md')
+                              'reports "no data" -- update verdict_cli and docs/DATA.md')
     rc, out = sh('verdict_cli.py', 'match', 'TOTALLY__FAKE999')
     assert rc != 0, 'CLI must refuse an unknown pair rather than emit a verdict'
     assert ('unknown pair' in out) or ('no pair data' in out), \
@@ -664,7 +664,7 @@ def main():
     print()
     if skipped:
         print(f'{len(skipped)} skipped -- local-only data absent '
-              f'(expected in a fresh clone; see DATA.md)')
+              f'(expected in a fresh clone; see docs/DATA.md)')
     if failed:
         print(f'{len(failed)}/{len(checks)} FAILED')
         for n, e in failed:
