@@ -853,6 +853,13 @@ def _():
     experiments/ is research code kept for the record; the tool has to install
     and run without it. Only two documented fallbacks may name it, so an old
     checkout keeps working, and both prefer data/ when it exists.
+
+    SCOPE: this is a STATIC check over source text. It proves no tool file
+    names experiments/; it does NOT prove the tool functions without that
+    tree. The pair-data fallback legitimately resolves into experiments/ and
+    is exercised by no test when pair artifacts are absent (all pair tests
+    skip). Do not read a pass here as "the tool runs standalone" -- for that,
+    see headline:paper-pipeline-reproduces plus the assertion below.
     """
     TOOL = ['verdict', 'satir', 'pipeline.py', 'verdict_cli.py', 'satir_cli.py',
             'examples']
@@ -873,6 +880,13 @@ def _():
                 if needle_a in line or needle_b in line:
                     bad.append(r + ':' + str(i))
     assert not bad, ('tool code reading experiments/: ' + ', '.join(bad[:8]))
+
+    # Behavioural half: the headline reproduction is the one tool path we can
+    # actually run here, so assert it never reaches for pair data (whose
+    # fallback does live under experiments/).
+    hl = (ROOT / 'verdict' / 'headline.py').read_text(errors='ignore')
+    for sym in ('pair_root', 'iter_pairs', 'VERDICT_PAIR_DATA'):
+        assert sym not in hl, 'headline.py must not depend on pair data: ' + sym
 
 
 # ---------------------------------------------------------------- hygiene

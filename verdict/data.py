@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import os
 import pathlib
+import warnings
 from typing import Iterator
 
 
@@ -32,10 +33,26 @@ def pair_root() -> pathlib.Path:
     return root / "experiments" / "53_v2_full"
 
 
+def pair_data_available() -> bool:
+    """Whether pair artifacts are actually present.
+
+    Callers that would otherwise report an empty result should use this to
+    tell "no pairs matched" apart from "the data was never installed".
+    """
+    return (pair_root() / "cmsrc_out").exists()
+
+
 def iter_pairs() -> Iterator[str]:
     """Yield every available pair id, as '<patient>__<NCT>'."""
     base = pair_root() / "cmsrc_out"
     if not base.exists():
+        # Silence here reads as "no pairs exist" when the truth is "the data
+        # is not installed". Say which, once, instead of returning empty.
+        warnings.warn(
+            "no pair data found at " + str(base) + " -- returning no pairs. "
+            "Set $VERDICT_PAIR_DATA, or install pair artifacts under "
+            "data/pairs/cmsrc_out (see docs/DATA.md).",
+            stacklevel=2)
         return
     for pdir in sorted(base.iterdir()):
         if not pdir.is_dir() or pdir.name.startswith("_"):
