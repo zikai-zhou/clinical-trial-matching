@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
 """verdict — command-line interface to the VERDICT clinical-trial matcher.
 
+Two ways to get a decision.
+
+  On a NEW patient -- runs the matcher, needs an LLM endpoint:
+    verdict run NCT02509286 P001 --patient-file note.json
+
+  On a STORED pair -- reads precomputed artifacts, no endpoint needed:
     verdict list                      show available patient--trial pairs
     verdict match  PAIR_ID            decide one pair
     verdict explain PAIR_ID           decide, with the full audit trail
+
+  Other:
+    verdict headline                  reproduce the paper's table
     verdict systems                   list the matcher variants
 
 PAIR_ID is "<patient>__<NCT>", e.g. sigir-20141__NCT00337116.
 
-Pair data is read from $VERDICT_PAIR_DATA (default:
-<repo>/experiments/53_v2_full). These are the per-pair artifacts produced by
-the stage-1 atom miner; see docs/DATA.md for how to obtain or regenerate them.
+`run` needs a compiled trial program under $VERDICT_BUILD and an LLM endpoint
+in $OPENAI_ENDPOINT. Stored pair data is read from $VERDICT_PAIR_DATA and is
+not distributed with the repository; see docs/DATA.md for both.
 """
 from __future__ import annotations
 import argparse, json, os, pathlib, sys
@@ -93,6 +102,30 @@ def cmd_systems(a):
         print(f'{k:<10s}{getattr(fn, "__name__", "?"):<26s}{desc}')
 
 
+def cmd_run(a):
+    """Decide a NEW patient against a trial, compiling on the fly.
+
+    Unlike `match`, which reads a stored pair, this runs the matcher itself:
+    it needs a compiled trial program under $VERDICT_BUILD and an LLM endpoint.
+    """
+    import os
+    if not (os.getenv("OPENAI_ENDPOINT") or os.getenv("OPENAI_MODEL")):
+        raise SystemExit(
+            "verdict run needs an LLM endpoint. Set OPENAI_ENDPOINT (and "
+            "OPENAI_API_KEY); see docs/DATA.md.")
+    from verdict.engine import match_patient_to_trial as engine
+    cfg = engine.Config()
+    if not cfg.build_root.exists():
+        raise SystemExit(
+            "no compiled trial programs at " + str(cfg.build_root) + ".\n"
+            "Compile the trial first (trial_compiler), or point $VERDICT_BUILD "
+            "at an existing build tree.")
+    argv = [a.trial_id, a.patient_id]
+    if a.patient_file: argv += ["--patient-file", a.patient_file]
+    if a.out_root:     argv += ["--out-root", a.out_root]
+    return engine.main(argv)
+
+
 def cmd_match(a):
     d = run(a.system, a.pair_id)
     if a.json:
@@ -143,6 +176,16 @@ def main():
     p = sub.add_parser('headline',
                        help="reproduce the paper's headline table")
     p.set_defaults(func=cmd_headline)
+
+    p = sub.add_parser('run',
+                       help='decide a NEW patient against a trial (needs an LLM endpoint)')
+    p.add_argument('trial_id', help='NCT id, e.g. NCT02509286')
+    p.add_argument('patient_id', help='identifier for the patient')
+    p.add_argument('--patient-file', default=None,
+                   help='JSON file holding the patient note; required for a patient '
+                        'not in the bundled cohorts')
+    p.add_argument('--out-root', default=None, help='where to write per-pair output')
+    p.set_defaults(func=cmd_run)
 
     p = sub.add_parser('screen', help='retrieve candidate trials, then decide each')
     p.add_argument('patient', help="patient id, e.g. sigir-20141")

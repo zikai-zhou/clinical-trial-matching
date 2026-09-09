@@ -96,3 +96,37 @@ They are deliberately still present in two places:
 |---|---|---|
 | VERDICT | AEGIS | `matchers/systems/aegis/`, artifact `system` fields |
 | LLM-only | V5 | `matchers/systems/single_shot_llm/`, `lm_only_V5_TWO_STEP.jsonl` |
+
+## The vendored matcher (`verdict/engine/`)
+
+`verdict run` executes the real matcher, vendored from the `cmsrc` checkout
+that produced the paper's results. This is the system, not a reimplementation
+— the distinction that `matchers/variants.py` failed to satisfy.
+
+**What was changed on vendoring.** Only module resolution and I/O paths:
+
+- flat imports (`from utils import ...`) became package-relative;
+- `data_root`, `build_root`, `project_root` were resolved against the *current
+  working directory* upstream (`../build`, `../dataset/clinical_trial`), so the
+  matcher only ran from inside its own directory. They are now anchored to the
+  package and overridable via `$TRIAL_DATA` and `$VERDICT_BUILD`.
+- `prompt_root` likewise resolved against `cwd()`.
+
+No prompt text, solver logic, or decision rule was modified.
+
+**Which prompts shipped, and why it matters.** The prompts in the `cmsrc`
+working tree are *older* (17 Mar) than the snapshot the paper ran against
+(27 Apr), and are missing 84 lines across `smt.prompt` and
+`SMTVariableProjectionRewriter.prompt` implementing the chart-typical-detail
+calibration — the "would this be mentioned if true" test that the silence-null
+results depend on.
+
+Vendoring the working copy would therefore have shipped a **pre-silence**
+configuration under the paper's name. `verdict/engine/prompts/prompt_out/` is
+the 27 Apr snapshot from `53_v2_full/inputs/prompt_root`, which is what the
+published runs used.
+
+**What is still not shipped.** Compiled trial programs (`$VERDICT_BUILD`:
+IR, symtab, linkmap, canon) and the patient corpora. `verdict run` needs a
+build tree and an LLM endpoint; it reports which is missing rather than
+failing obscurely.
