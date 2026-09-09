@@ -662,6 +662,15 @@ def _():
                 and all(isinstance(b, (_ast.Assign, _ast.AnnAssign, _ast.Pass))
                         for b in list(n.body) + list(n.orelse)))
 
+    # `if TYPE_CHECKING:` never executes at runtime, so an import inside it
+    # does no work at import time -- it is the standard way to keep a heavy
+    # optional dependency out of the module-load path.
+    def is_type_checking_if(n):
+        return (isinstance(n, _ast.If) and isinstance(n.test, _ast.Name)
+                and n.test.id == "TYPE_CHECKING"
+                and all(isinstance(b, (_ast.Import, _ast.ImportFrom, _ast.Pass))
+                        for b in list(n.body) + list(n.orelse)))
+
     offenders = []
     for d in ("matchers", "verbalizer", "smt_core", "counterfactual_modifier",
               "rationale_generators", "satir", "verdict"):
@@ -676,7 +685,8 @@ def _():
             except SyntaxError:
                 continue
             for n in tree.body:
-                if isinstance(n, SAFE) or is_main_guard(n) or is_config_if(n):
+                if (isinstance(n, SAFE) or is_main_guard(n) or is_config_if(n)
+                        or is_type_checking_if(n)):
                     continue
                 if isinstance(n, _ast.Expr) and isinstance(n.value, _ast.Constant):
                     continue                      # docstring

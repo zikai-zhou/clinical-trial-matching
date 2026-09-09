@@ -12,11 +12,17 @@ import re
 import sys
 import time
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
-from .inference_engine_5 import AzureInferenceEngine
-from .modules.SMTMatcher.SMTMatcher import SMTMatcher
 from .utils import dict_to_readable_string
+
+# azure-ai-inference and dspy are optional extras, needed only to actually call
+# a model. Importing them at module load made `import verdict.engine` fail on a
+# base install, so the CLI could not report a missing endpoint as guidance.
+# `from __future__ import annotations` above keeps the type hints below working
+# without the runtime import.
+if TYPE_CHECKING:  # pragma: no cover
+    from .inference_engine_5 import AzureInferenceEngine
 
 SIDES = ("inclusion", "exclusion")
 
@@ -631,6 +637,13 @@ def run_match_for_side(
                     "path": str(cache_path),
                 },
             }
+
+    try:
+        from .modules.SMTMatcher.SMTMatcher import SMTMatcher
+    except ImportError as exc:  # optional extra, not in the base install
+        raise SystemExit(
+            "running the matcher needs the inference extra: "
+            "pip install '.[inference]' (missing: " + str(exc) + ")")
 
     result_ctx = SMTMatcher(engine).forward(ctx)
 
@@ -1766,6 +1779,13 @@ def main(argv: List[str] | None = None) -> None:
         conservative=bool(getattr(args, "conservative", False)),
         miner_mode=str(getattr(args, "miner_mode", "infer") or "infer"),
     )
+    try:
+        from .inference_engine_5 import AzureInferenceEngine
+    except ImportError as exc:  # optional extra, not in the base install
+        raise SystemExit(
+            "running the matcher needs the inference extra: "
+            "pip install '.[inference]' (missing: " + str(exc) + ")")
+
     engine = AzureInferenceEngine(
         endpoint=cfg.azure_endpoint,
         api_key_env_var="OPENAI_API_KEY",

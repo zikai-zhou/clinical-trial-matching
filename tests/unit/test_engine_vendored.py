@@ -50,3 +50,41 @@ def test_run_without_endpoint_explains_itself():
     assert out.returncode != 0
     assert "OPENAI_ENDPOINT" in (out.stdout + out.stderr)
     assert "Traceback" not in out.stderr
+
+
+def test_engine_imports_without_optional_extras(tmp_path):
+    """A base install has no azure/dspy; importing the engine must still work.
+
+    This is what CI caught: the heavy clients were imported at module load, so
+    `verdict run` raised ModuleNotFoundError instead of reporting the missing
+    endpoint. Kept as a test because a local dev venv has the extras and will
+    not notice the regression.
+    """
+    blocker = tmp_path / "sitecustomize.py"
+    blocker.write_text(
+        "import sys\n"
+        "BLOCK = {'azure', 'dspy', 'nltk'}\n"
+        "class _Block:\n"
+        "    def find_spec(self, name, path=None, target=None):\n"
+        "        if name.split('.')[0] in BLOCK:\n"
+        "            raise ImportError('blocked for test: ' + name)\n"
+        "        return None\n"
+        "sys.meta_path.insert(0, _Block())\n"
+    )
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join([str(tmp_path), str(REPO)]))
+    # Prove the blocker engaged before trusting the result -- otherwise this
+    # test passes vacuously in any venv that simply has the extras installed.
+    code = (
+        "try:\n"
+        "    import azure\n"
+        "    raise SystemExit('BLOCKER-INACTIVE')\n"
+        "except ImportError:\n"
+        "    pass\n"
+        "from verdict.engine.match_patient_to_trial import Config\n"
+        "print('OK', sum(1 for v in Config().prompt_sources().values() if not v.exists()))\n")
+    out = subprocess.run([sys.executable, "-c", code], cwd=tmp_path,
+                         capture_output=True, text=True, env=env)
+    assert "BLOCKER-INACTIVE" not in (out.stdout + out.stderr), \
+        "the import blocker did not engage; test would be vacuous"
+    assert out.returncode == 0, out.stderr
+    assert out.stdout.strip().endswith("OK 0"), out.stdout
