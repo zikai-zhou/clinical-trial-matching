@@ -7,7 +7,7 @@
 │   ────────────────                                              │
 │     aegis/             Z3 + atom mining                         │
 │     shahlab/           Koopman per-criterion ternary verdict    │
-│     single_shot_llm/   V5 single-prompt LM                      │
+│     single_shot_llm/   single-prompt LM                      │
 │     trialgpt/          TrialGPT per-criterion                   │
 │                                                                 │
 │   matchers/configs/         (matcher × prompt × backbone) recipes│

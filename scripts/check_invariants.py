@@ -782,10 +782,46 @@ def _():
         raise Skip('z3-solver')
     rc, out = sh('verdict/headline.py')
     assert rc == 0, out[-800:]
-    want(out, 'AEGIS default (compiled)', 'AEGIS opt-in', 'V5 LM-only')
+    want(out, 'VERDICT default (compiled)', 'VERDICT opt-in', 'LLM-only')
     # counts recorded in the paper's own HEADLINE_VERIFIED.json
     want(out, '856', '553', '539')
     assert 'not written' in out, 'headline.py must not write unless asked'
+
+
+@check('naming:no-legacy-names-user-facing')
+def _():
+    """AEGIS and V5 are pre-publication names; the paper says VERDICT and
+    LLM-only. They must not appear in anything a reader sees.
+
+    On-disk paths (matchers/systems/aegis/) and the contents of data artifacts
+    keep their historical names on purpose -- renaming those would break
+    provenance and every stored reference. See docs/MATCHERS.md.
+    """
+    import re as _re
+    import subprocess
+    surfaces = ['README.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'pipeline.py',
+                'verdict_cli.py', 'satir_cli.py']
+    surfaces += [f'docs/{p.name}' for p in (ROOT / 'docs').glob('*.md')]
+    surfaces += [str(p.relative_to(ROOT)) for p in (ROOT / 'verdict').glob('*.py')]
+    surfaces += [str(p.relative_to(ROOT)) for p in (ROOT / 'satir').glob('*.py')]
+    surfaces += [str(p.relative_to(ROOT)) for p in (ROOT / 'examples').glob('*')]
+    # docs/MATCHERS.md is the mapping document: it must name both the paper
+    # name and the legacy one, side by side. It is the single exemption.
+    EXEMPT = {'docs/MATCHERS.md'}
+    bad = []
+    for rel in surfaces:
+        if rel in EXEMPT:
+            continue
+        f = ROOT / rel
+        if not f.is_file():
+            continue
+        for i, line in enumerate(f.read_text(errors='ignore').splitlines(), 1):
+            # the mapping note in MATCHERS.md is allowed to name them
+            if 'historical name' in line or 'legacy name' in line:
+                continue
+            if _re.search(r'\bAEGIS\b|\bV5\b', line):
+                bad.append(f'{rel}:{i}')
+    assert not bad, ('legacy names in user-facing text: ' + ', '.join(bad[:8]))
 
 
 # ---------------------------------------------------------------- hygiene

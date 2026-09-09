@@ -90,7 +90,7 @@ Run each of the 4 matchers. Each produces `verdicts.jsonl` and
 `rationales.jsonl`.
 
 ```bash
-# AEGIS (uses cmsrc mine + arbiter cache + Z3 solve)
+# VERDICT (uses cmsrc mine + arbiter cache + Z3 solve)
 python matchers/systems/aegis/run.py
 
 # Single-shot LLM (V5_TWO_STEP)
@@ -112,9 +112,9 @@ matchers/systems/<system>/
 
 ---
 
-## Stage 4 — Verbalize AEGIS
+## Stage 4 — Verbalize VERDICT
 
-AEGIS produces SMT atoms + Z3 model; verbalizer converts to evidence-rich NL.
+VERDICT produces SMT atoms + Z3 model; verbalizer converts to evidence-rich NL.
 
 ```bash
 python verbalizer/run_aegis_v9_arbiter_verbalize.py --workers 16
@@ -156,11 +156,11 @@ python experiments/accuracy/scripts/run_meta_fusion.py --mode recall    --worker
 Per-system FP/FN/agreement drilldown for clinician inspection.
 
 ```bash
-# AEGIS FP/FN balanced
+# VERDICT FP/FN balanced
 python experiments/accuracy/scripts/build_aegis_fpfn_mbench_balanced.py
 # → experiments/accuracy/inspection/aegis_fpfn_mbench_balanced/
 
-# AEGIS-vs-V5 disagreement
+# VERDICT-vs-LLM-only disagreement
 python experiments/accuracy/scripts/build_aegis_v5_mbench.py
 # → experiments/accuracy/inspection/aegis_v5_mbench/
 
@@ -212,11 +212,11 @@ Each pair × system gets a directory tree:
 ```
 mbench_3cell/cell1_.../<system>/{flipped,not_flipped,invalid_cf}/<pair>/
   00_summary.md       — verdict before/after, validator status, cohort flags
-  01_first_round/     — original matcher prompt + response (pointer for AEGIS)
+  01_first_round/     — original matcher prompt + response (pointer for VERDICT)
   02_blockers/        — targets/rationale handed to the modifier
   03_cf_generation/   — generated CF chart (vs original — see where_to_find_original.md)
   04_validator/       — validator audit response
-  05_rejudged/        — final matcher verdict (+ cmsrc full.json for AEGIS)
+  05_rejudged/        — final matcher verdict (+ cmsrc full.json for VERDICT)
 ```
 
 ---
@@ -256,15 +256,15 @@ bash scripts/reproduce_all.sh --through stage7  # stop after accuracy mbench
 
 | System | F1 |
 |---|---|
-| AEGIS (gpt-4.1 mine + Z3) | 0.873 |
+| VERDICT (gpt-4.1 mine + Z3) | 0.873 |
 | single_shot_llm (V5_TWO_STEP) | 0.904 |
 | trialgpt | 0.804 |
 | shahlab | 0.836 |
-| AEGIS+V5+TG MAJ | **0.906** |
+| VERDICT+LLM-only+TrialGPT MAJ | **0.906** |
 
 See `experiments/accuracy/results.md` for full tables.
 
-### Counterfactual self-faithfulness (cell 3, gpt-5 mod + gpt-5 val, no truncation, AEGIS random-cohort seed=2)
+### Counterfactual self-faithfulness (cell 3, gpt-5 mod + gpt-5 val, no truncation, VERDICT random-cohort seed=2)
 
 | System | flipped/valid | rate |
 |---|---|---|
@@ -287,7 +287,7 @@ for cell 1/2 tables and ±2 pp stochasticity envelope.
 | aegis | not_flipped (n=7) | **14%** | **43%** |
 | LLM baselines | both buckets | 86-100% | 86-100% |
 
-Shows AEGIS's failure mode is **modifier-side** (atom-level edits don't always
+Shows VERDICT's failure mode is **modifier-side** (atom-level edits don't always
 compose into clinically coherent prose) — not atom-selection or matcher.
 
 ---
@@ -312,7 +312,7 @@ compose into clinically coherent prose) — not atom-selection or matcher.
 
 ## Reproducibility notes
 
-- **Z3 MaxSat (AEGIS atom selection)** is bit-exact deterministic given the
+- **Z3 MaxSat (VERDICT atom selection)** is bit-exact deterministic given the
   same input program + LLM-asserted atoms.
 - **LLM calls** are temperature=0 for gpt-4.1; gpt-5 ignores temperature so
   bit-exact reproduction isn't achievable, but aggregate metrics stable ±2 pp.

@@ -28,11 +28,11 @@ Output, on the shipped artifacts:
 
 | row | F1 | P | R |
 |---|---|---|---|
-| AEGIS+silence-null | 0.835 | 0.769 | 0.915 |
-| **AEGIS default (compiled)** | **0.873** | 0.884 | 0.862 |
-| AEGIS opt-in (∪V5) | 0.868 | 0.784 | 0.972 |
-| AEGIS+verdict-gate | 0.873 | 0.901 | 0.846 |
-| V5 LM-only | 0.875 | 0.803 | 0.960 |
+| VERDICT+silence-null | 0.835 | 0.769 | 0.915 |
+| **VERDICT default (compiled)** | **0.873** | 0.884 | 0.862 |
+| VERDICT opt-in (∪LLM-only) | 0.868 | 0.784 | 0.972 |
+| VERDICT+verdict-gate | 0.873 | 0.901 | 0.846 |
+| LLM-only | 0.875 | 0.803 | 0.960 |
 
 **Known discrepancy.** The paper reports **0.863 / 0.837 / 0.891** for the
 default row; this run gives **0.873 / 0.884 / 0.862**. Two of the five rows
@@ -40,7 +40,7 @@ default row; this run gives **0.873 / 0.884 / 0.862**. Two of the five rows
 points. Script and inputs all predate the paper's stored result, so the cause
 is environmental -- most likely the solver version, since which satisfying
 assignment Z3 returns can change with it. Every qualitative claim is
-unaffected: AEGIS ties V5 on F1, AEGIS has higher precision, V5 higher recall.
+unaffected: VERDICT ties LLM-only on F1, VERDICT has higher precision, LLM-only higher recall.
 Unresolved; do not present the numbers as bit-reproducible.
 
 ## 2. `matchers/variants.py` — a reimplementation, not the paper
@@ -76,3 +76,23 @@ the wrong one costs ~5 points of agreement, and nothing warns you.
 | Headline numbers, exactly as printed in the paper | **no** -- see the discrepancy above |
 | The paper's per-pair verdicts | yes, they ship as `matchers/systems/aegis/verdicts.jsonl` (F1 0.861 vs the paper's 0.863) |
 | Re-running the SMT matcher from scratch | needs `cmsrc` and Azure credentials |
+
+## Names
+
+The paper's names are **VERDICT** (the system) and **LLM-only** (the
+single-prompt baseline). Earlier drafts called them **AEGIS** and **V5**; those
+are historical names and should not appear in anything a reader sees. An
+invariant enforces that.
+
+They are deliberately still present in two places:
+
+- **On-disk paths** — `matchers/systems/aegis/`, `aegis_freeform.jsonl`.
+  Renaming these would break every stored reference and the provenance chain
+  back to the runs that produced the paper.
+- **Inside data artifacts** — records carry `"system": "aegis_freeform"`.
+  Editing a stored artifact to match new terminology would be falsifying it.
+
+| paper | legacy name | where the legacy name survives |
+|---|---|---|
+| VERDICT | AEGIS | `matchers/systems/aegis/`, artifact `system` fields |
+| LLM-only | V5 | `matchers/systems/single_shot_llm/`, `lm_only_V5_TWO_STEP.jsonl` |

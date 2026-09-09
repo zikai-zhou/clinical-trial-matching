@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Reproducibility script for the AEGIS two-tier headline.
+"""Reproducibility script for the VERDICT two-tier headline.
 
 Produces the verified headline table on disk:
   - silence-null bothsides             F1=0.835 P=0.763 R=0.923
   - + compiled patches (default tier)  F1=0.863 P=0.837 R=0.891
-  - + opt-in V5 fallback (opt-in tier) F1=0.847 F2=0.920 R=0.976
+  - + opt-in LLM-only fallback (opt-in tier) F1=0.847 F2=0.920 R=0.976
   - + verdict-time pop-gate (variant)  F1=0.876 P=0.898 R=0.854
-  - V5 LM-only (baseline)              F1=0.863 P=0.787 R=0.955
+  - LLM-only (baseline)              F1=0.863 P=0.787 R=0.955
   - TrialGPT (baseline)                F1=0.375 P=0.82  R=0.24
 
 Inputs (all already on disk):
@@ -14,7 +14,7 @@ Inputs (all already on disk):
   experiments/53_v2_full/judges_<j>/        5-judge gold (clinician_v2 etc.)
   overnight/lm_population_gate.jsonl        LM gate verdicts (305 forwards)
   overnight/gate_to_constraint.jsonl        compiled per-pair patches (58 atoms)
-  overnight/lm_only_V5_TWO_STEP.jsonl       V5 LM-only predictions
+  overnight/lm_only_V5_TWO_STEP.jsonl       LLM-only predictions
   overnight/baseline_metrics_trialgpt_matching.json  TrialGPT scores
 
 Methodology: gold-majority of 5 judges (>=3/5 yes); silence-null applied to
@@ -226,7 +226,7 @@ def load_jsonl_preds(path):
 # ============================================================================
 
 def compute_aegis_verdict(v6, patches=None):
-    """Run AEGIS over all pairs with given patches (or empty)."""
+    """Run VERDICT over all pairs with given patches (or empty)."""
     patches = patches or {}
     out = {}
     for pair, vs in v6.items():
@@ -288,28 +288,28 @@ def main():
     print(f'  compiled patches: {len(patches)} pairs')
     print(f'  gate-no rejections: {len(gate_no)}')
 
-    # V5 LM-only (decision file already on disk)
+    # LLM-only (decision file already on disk)
     v5 = load_jsonl_preds(DATA/'lm_only_V5_TWO_STEP.jsonl')
 
-    # Compute AEGIS verdicts
-    print('\nComputing AEGIS verdicts...')
-    aegis_silence = compute_aegis_verdict(v6, patches=None)
-    aegis_default = compute_aegis_verdict(v6, patches=patches)
+    # Compute VERDICT verdicts
+    print('\nComputing VERDICT verdicts...')
+    verdict_silence = compute_aegis_verdict(v6, patches=None)
+    verdict_default = compute_aegis_verdict(v6, patches=patches)
     print('  silence-null bothsides: done')
     print('  + compiled patches:     done')
 
     # Variants
-    aegis_optin = {p: aegis_default.get(p, False) or v5.get(p, False)
-                   for p in aegis_default if p in v5}
-    aegis_gate = {p: (False if p in gate_no else aegis_silence[p])
-                  for p in aegis_silence}
+    verdict_optin = {p: verdict_default.get(p, False) or v5.get(p, False)
+                   for p in verdict_default if p in v5}
+    verdict_gate = {p: (False if p in gate_no else verdict_silence[p])
+                  for p in verdict_silence}
 
     rows = {
-        'AEGIS+silence-null':      metrics(aegis_silence, gold),
-        'AEGIS default (compiled)': metrics(aegis_default, gold),
-        'AEGIS opt-in (∪V5)':      metrics(aegis_optin, gold),
-        'AEGIS+verdict-gate':      metrics(aegis_gate, gold),
-        'V5 LM-only':              metrics(v5, gold),
+        'VERDICT+silence-null':      metrics(verdict_silence, gold),
+        'VERDICT default (compiled)': metrics(verdict_default, gold),
+        'VERDICT opt-in (∪LLM-only)':      metrics(verdict_optin, gold),
+        'VERDICT+verdict-gate':      metrics(verdict_gate, gold),
+        'LLM-only':              metrics(v5, gold),
     }
 
     # Format output

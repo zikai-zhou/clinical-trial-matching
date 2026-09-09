@@ -497,16 +497,16 @@ Tune any system by editing its `prompts/<name>.prompt` and re-running `run.py`.
 
 | System | Model | F1 (5-system gold) |
 |---|---|---|
-| **AEGIS** | gpt-4.1 atom mining + Z3 solve | 0.873 |
-| **single_shot_llm** (V5) | gpt-4.1 two-step | **0.904** |
+| **VERDICT** | gpt-4.1 atom mining + Z3 solve | 0.873 |
+| **single_shot_llm** (LLM-only) | gpt-4.1 two-step | **0.904** |
 | **trialgpt** | gpt-4.1 per-criterion | 0.804 |
 | **shahlab** | gpt-4.1 Koopman prompt | 0.836 |
 
 | Hybrid | F1 |
 |---|---|
-| **AEGIS+V5+TG MAJ** | **0.906** |
-| AEGIS+V5 OR | 0.896 (R=0.975) |
-| AEGIS+V5 AND | 0.879 (P=0.943) |
+| **VERDICT+LLM-only+TG MAJ** | **0.906** |
+| VERDICT+LLM-only OR | 0.896 (R=0.975) |
+| VERDICT+LLM-only AND | 0.879 (P=0.943) |
 | Meta-fusion balanced | 0.878 (P=0.958) |
 
 ## The two experiments
@@ -514,10 +514,10 @@ Tune any system by editing its `prompts/<name>.prompt` and re-running `run.py`.
 **[`experiments/accuracy/`](experiments/accuracy/REPRODUCE.md)** — accuracy + F1 + inspection
 - 5-system gold (n=532), bootstrap CIs, Pareto controllability, sharpness ratings, fliprate
 - `inspection/mbench/` — 539-pair drillable mbench with per-atom mining outcomes
-- `inspection/v5_beats_aegis/` — 52 cases where V5 beats AEGIS on the gold
+- `inspection/v5_beats_aegis/` — 52 cases where LLM-only beats VERDICT on the gold
 
 **`experiments/typed_policy/`** — policy alignment
-- 3-policy benchmark: AEGIS 100% compliance vs LLM 52-72%
+- 3-policy benchmark: VERDICT 100% compliance vs LLM 52-72%
 - 4-axis stacked policies for fine-grained control
 - 22 typed-atom dispatch (lab_chemistry, functional_score, etc.)
 
@@ -529,7 +529,7 @@ export OPENAI_ENDPOINT=...
 export OPENAI_API_KEY=...
 export OPENAI_ENDPOINT_GPT5=...   # for gold derivation only
 
-# Re-mine + re-solve AEGIS
+# Re-mine + re-solve VERDICT
 python matchers/systems/aegis/run.py
 python matchers/systems/aegis/run_verbalize.py
 
