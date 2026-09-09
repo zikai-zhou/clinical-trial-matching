@@ -405,6 +405,17 @@ To reproduce the numbers in the paper, see
 [docs/REPRODUCE_TABLES.md](docs/REPRODUCE_TABLES.md). For where the data comes
 from and what may be redistributed, see [docs/DATA.md](docs/DATA.md).
 
+## Which matcher reproduces the paper
+
+`verdict headline` runs the published system — v6 mined atoms plus
+silence-null, compiled patches, and the population gate. `verdict match` runs
+a **reimplementation** that agrees with the paper on 88.7% of pairs and is for
+inspection and comparison, not reproduction.
+
+The distinction matters and is easy to get wrong: see
+[docs/MATCHERS.md](docs/MATCHERS.md), which also records a known discrepancy —
+the headline pipeline currently prints F1 0.873 where the paper reports 0.863.
+
 ## Known gaps
 
 Documented so you do not have to rediscover them.

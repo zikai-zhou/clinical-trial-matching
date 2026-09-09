@@ -24,7 +24,11 @@ def load_pair_data(pair_id: str) -> Optional[Dict[str, Any]]:
     Returns None if pair not found.
     """
     pid, nct = pair_id.split("__", 1)
-    pdir = EXP53 / "cmsrc_out" / pid
+    # Which mining snapshot to read. Several exist (cmsrc_out,
+    # cmsrc_out_REMINE_v10_full, ... ) and they do NOT agree pair-for-pair, so
+    # the choice changes the verdicts. $VERDICT_SNAPSHOT selects one.
+    snapshot = os.environ.get("VERDICT_SNAPSHOT", "cmsrc_out")
+    pdir = EXP53 / snapshot / pid
     if not pdir.exists(): return None
 
     # Use first variant of the trial (a/b/c) — paper aggregates if any variant accepts

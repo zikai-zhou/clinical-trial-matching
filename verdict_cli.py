@@ -74,6 +74,15 @@ def cmd_screen(a):
               f'ineligible --\nthey are undecided. See docs/DATA.md.')
 
 
+def cmd_headline(a):
+    """Reproduce the paper's headline table from the shipped artifacts."""
+    import runpy
+    import sys as _s
+    root = pathlib.Path(__file__).resolve().parent
+    _s.argv = ['headline']
+    runpy.run_path(str(root / 'verdict' / 'headline.py'), run_name='__main__')
+
+
 def cmd_systems(a):
     import verdict
     verdict.systems()                       # ensure built-ins are registered
@@ -130,6 +139,10 @@ def main():
 
     p = sub.add_parser('systems', help='list matcher variants')
     p.set_defaults(func=cmd_systems)
+
+    p = sub.add_parser('headline',
+                       help="reproduce the paper's headline table")
+    p.set_defaults(func=cmd_headline)
 
     p = sub.add_parser('screen', help='retrieve candidate trials, then decide each')
     p.add_argument('patient', help="patient id, e.g. sigir-20141")

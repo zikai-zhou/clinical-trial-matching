@@ -767,6 +767,27 @@ def _():
     assert not violations, ('layering violated:\n  ' + '\n  '.join(violations[:10]))
 
 
+@check('headline:paper-pipeline-reproduces')
+def _():
+    """The vendored paper pipeline must still produce its table.
+
+    verdict/headline.py is the actual system behind the paper: v6 mined atoms
+    + silence-null on both sides + 58 compiled patches + the population gate.
+    matchers/variants.py is a reimplementation and does NOT reproduce it.
+    """
+    if not (ROOT / 'data/headline/v6').is_dir():
+        raise Skip('data/headline/v6')
+    probe, out = sh('-c', "import z3; print(hasattr(z3,'Optimize'))")
+    if 'True' not in out:
+        raise Skip('z3-solver')
+    rc, out = sh('verdict/headline.py')
+    assert rc == 0, out[-800:]
+    want(out, 'AEGIS default (compiled)', 'AEGIS opt-in', 'V5 LM-only')
+    # counts recorded in the paper's own HEADLINE_VERIFIED.json
+    want(out, '856', '553', '539')
+    assert 'not written' in out, 'headline.py must not write unless asked'
+
+
 # ---------------------------------------------------------------- hygiene
 # Both systems live here: VERDICT (the matcher) and SatIR (retrieval/compilation).
 SHIPPED = ['scripts', 'smt_core', 'verbalizer', 'rationale_generators',

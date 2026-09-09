@@ -1,0 +1,305 @@
+{"pair": "sigir-201530__NCT01744314", "population_fit": "yes", "reason": "Patient has trans-olecranon fracture dislocation, which is listed in trial inclusion criteria."}
+{"pair": "sigir-201421__NCT00430677", "population_fit": "borderline", "reason": "Renal biopsy confirming active proliferative lupus nephritis is not mentioned."}
+{"pair": "sigir-201530__NCT00840593", "population_fit": "no", "reason": "Patient has elbow dislocation, not Tossy grade 3 acromioclavicular dislocation."}
+{"pair": "sigir-201419__NCT01054274", "population_fit": "borderline", "reason": "Esophageal cancer is not confirmed; only progressive dysphagia is documented."}
+{"pair": "sigir-201530__NCT00551668", "population_fit": "no", "reason": "Patient has an acute elbow dislocation, not a primary traumatic patellar dislocation."}
+{"pair": "sigir-201530__NCT00251160", "population_fit": "no", "reason": "Patient has traumatic elbow dislocation, not shoulder instability."}
+{"pair": "sigir-201421__NCT01689025", "population_fit": "yes", "reason": "Patient is a non-pregnant female with clinically active SLE meeting ACR criteria and positive ANA/anti-dsDNA."}
+{"pair": "sigir-201530__NCT00586365", "population_fit": "yes", "reason": "Adult with elbow fracture-dislocation, which matches trial population."}
+{"pair": "sigir-201421__NCT02034344", "population_fit": "borderline", "reason": "Patient has SLE with active skin findings, but no clear evidence of DLE or SCLE as required by trial."}
+{"pair": "sigir-201421__NCT02284984", "population_fit": "yes", "reason": "Adult female with SLE diagnosis, major organ involvement, and seropositivity matches trial population."}
+{"pair": "sigir-201421__NCT01689350", "population_fit": "yes", "reason": "Patient meets SLE criteria and is in the target population for the trial."}
+{"pair": "sigir-201419__NCT00816634", "population_fit": "borderline", "reason": "Advanced esophageal squamous cell carcinoma is suspected but not histologically confirmed in the chart."}
+{"pair": "sigir-201419__NCT00727376", "population_fit": "borderline", "reason": "Chart suggests esophageal cancer symptoms but lacks biopsy confirmation and cancer type."}
+{"pair": "sigir-201417__NCT01911702", "population_fit": "yes", "reason": "Patient has acute abdomen, underwent emergency abdominal surgery, and presents to ICU with signs of bad perfusion."}
+{"pair": "sigir-201419__NCT00826813", "population_fit": "borderline", "reason": "Esophageal cancer diagnosis is not confirmed in chart; dysphagia present but cause unclear."}
+{"pair": "sigir-201410__NCT00667381", "population_fit": "no", "reason": "Patient had right femoral access, but trial requires patients undergoing procedures via retrograde femoral approach (not post-procedure complications)."}
+{"pair": "sigir-201417__NCT01296789", "population_fit": "yes", "reason": "Patient has septic shock with infection, SIRS criteria, and vasopressor need likely in ICU."}
+{"pair": "sigir-201419__NCT01745107", "population_fit": "borderline", "reason": "Chart describes symptoms of esophageal carcinoma but lacks confirmation of stage T2-3N0M0 and R0 surgery at specified hospital."}
+{"pair": "sigir-201417__NCT01013662", "population_fit": "yes", "reason": "Patient is aged 48 and has severe sepsis/septic shock, matching trial population."}
+{"pair": "sigir-201419__NCT01366833", "population_fit": "borderline", "reason": "Esophageal cancer is suspected but not biopsy-confirmed in the chart."}
+{"pair": "sigir-20145__NCT02375919", "population_fit": "borderline", "reason": "Patient has acute dyspnea but recent surgery and prolonged bed rest may indicate higher pretest probability of PE."}
+{"pair": "sigir-201419__NCT00907543", "population_fit": "yes", "reason": "Adult male with symptoms consistent with esophageal cancer; no clear population mismatch."}
+{"pair": "sigir-20142__NCT02139384", "population_fit": "no", "reason": "Patient is not intubated and not admitted to PICU."}
+{"pair": "sigir-201417__NCT00630513", "population_fit": "yes", "reason": "Adult with surgically treated, localized intra-abdominal abscess (liver), matching trial population."}
+{"pair": "sigir-20142__NCT02380352", "population_fit": "yes", "reason": "Patient is a child aged 8 with clinical and radiographic findings consistent with CAP."}
+{"pair": "sigir-20142__NCT01017081", "population_fit": "yes", "reason": "Patient is 8 years old with acute community-acquired pneumonia and meets all age and clinical criteria."}
+{"pair": "sigir-201417__NCT02449928", "population_fit": "yes", "reason": "Patient has septic shock, matching the trial's target population."}
+{"pair": "sigir-20142__NCT01631916", "population_fit": "yes", "reason": "Patient is a hospitalized child aged 8 with community-acquired pneumonia."}
+{"pair": "sigir-20145__NCT01164046", "population_fit": "no", "reason": "Patient has not completed 6-12 months of anticoagulant therapy for DVT/PE."}
+{"pair": "sigir-20145__NCT01604538", "population_fit": "yes", "reason": "Patient is an adult with suspected acute pulmonary embolism."}
+{"pair": "sigir-20145__NCT00413374", "population_fit": "borderline", "reason": "Chart does not confirm DVT/PE diagnosis by imaging as required."}
+{"pair": "sigir-201429__NCT01677637", "population_fit": "yes", "reason": "Postmenopausal woman over 45 seeking osteoporosis screening."}
+{"pair": "sigir-201429__NCT02347865", "population_fit": "no", "reason": "Patient has not yet been treated with Prolia or received a prescription for Prolia."}
+{"pair": "sigir-201429__NCT00578981", "population_fit": "yes", "reason": "51-year-old postmenopausal woman fits the trial's target population."}
+{"pair": "sigir-201411__NCT00350766", "population_fit": "no", "reason": "Patient does not have myocardial infarction or cardiac symptoms."}
+{"pair": "sigir-20145__NCT02258958", "population_fit": "no", "reason": "Patient had a mastectomy, not major lung resection surgery."}
+{"pair": "sigir-20142__NCT02605122", "population_fit": "yes", "reason": "8-year-old with clinical and radiographic findings consistent with community-acquired bacterial pneumonia."}
+{"pair": "sigir-201418__NCT01569698", "population_fit": "yes", "reason": "Patient is under 18 and has acute kidney injury requiring renal replacement therapy."}
+{"pair": "sigir-201411__NCT00823563", "population_fit": "no", "reason": "Patient is not referred for elective coronary angiography and presents acutely to the ER."}
+{"pair": "sigir-201418__NCT00572715", "population_fit": "yes", "reason": "Patient is a 6-month-old infant, which fits the trial's target population of infants."}
+{"pair": "sigir-201418__NCT02306642", "population_fit": "no", "reason": "Patient is 6 months old and not a NICU patient; trial is for children with AKI or no AKI during NICU stay at UVA."}
+{"pair": "sigir-201418__NCT02046135", "population_fit": "borderline", "reason": "Surgery type not specified; unclear if cardiac surgery with cardiopulmonary bypass."}
+{"pair": "sigir-201427__NCT00253812", "population_fit": "no", "reason": "Patient has not had ileo-rectal anastomosis; siblings had total proctocolectomy."}
+{"pair": "sigir-201427__NCT00808743", "population_fit": "borderline", "reason": "Patient has family history and multiple polyps but does not clearly meet FAP diagnosis or >100 polyps criteria."}
+{"pair": "sigir-201418__NCT02443389", "population_fit": "yes", "reason": "Patient is a 6-month-old infant likely admitted to NICU and fits neonatal/infant population."}
+{"pair": "sigir-201427__NCT02521727", "population_fit": "no", "reason": "Patient is 21 years old, outside the required 40-70 year age range."}
+{"pair": "sigir-201418__NCT01219998", "population_fit": "yes", "reason": "The patient is an infant who underwent major surgery, fitting the trial's target population."}
+{"pair": "sigir-201427__NCT00641147", "population_fit": "yes", "reason": "Patient has FAP, intact colon, and \u22655 adenomas in rectosigmoid."}
+{"pair": "sigir-201427__NCT01725490", "population_fit": "yes", "reason": "Patient is 21 years old with FAP and multiple colonic polyps, matching trial population."}
+{"pair": "sigir-201420__NCT01594385", "population_fit": "borderline", "reason": "Chart does not confirm DC/OA management; trauma and age fit but surgical status unclear."}
+{"pair": "sigir-201420__NCT00228111", "population_fit": "yes", "reason": "Patient is a blunt trauma victim with multiple long bone fractures after a high-energy car accident."}
+{"pair": "sigir-201427__NCT02113202", "population_fit": "borderline", "reason": "Patient has dozens, not >100, colorectal polyps and no APC mutation documented."}
+{"pair": "sigir-201427__NCT01483144", "population_fit": "yes", "reason": "Patient is a young adult with classical FAP phenotype and dozens of colorectal adenomas, matching trial population."}
+{"pair": "sigir-201420__NCT01540318", "population_fit": "no", "reason": "Trial is for children with blunt trauma, but patient is a 32-year-old adult."}
+{"pair": "sigir-201420__NCT01853735", "population_fit": "borderline", "reason": "Chart does not confirm post-injury open abdomen; abdominal tenderness alone is insufficient."}
+{"pair": "sigir-201420__NCT02229695", "population_fit": "borderline", "reason": "It is unclear from the chart whether she is undergoing emergency laparotomy with temporary abdominal closure."}
+{"pair": "sigir-201420__NCT01828749", "population_fit": "yes", "reason": "Adult patient with blunt trauma fits trial age and injury population."}
+{"pair": "sigir-201420__NCT01161849", "population_fit": "no", "reason": "Patient has not yet undergone abdominal surgery or laparotomy."}
+{"pair": "sigir-20144__NCT00000520", "population_fit": "yes", "reason": "2-year-old boy with clinical features consistent with Kawasaki Syndrome within 10 days of illness."}
+{"pair": "sigir-201420__NCT02255487", "population_fit": "borderline", "reason": "Chart does not state whether she will undergo open abdominal laparotomy with primary closure."}
+{"pair": "sigir-201420__NCT01911702", "population_fit": "borderline", "reason": "Patient has acute abdomen but has not yet undergone emergency abdominal surgery or arrived in ICU."}
+{"pair": "sigir-20144__NCT01917721", "population_fit": "yes", "reason": "2-year-old with acute Kawasaki disease and coronary artery dilation during the first month fits trial population."}
+{"pair": "sigir-20143__NCT01803542", "population_fit": "no", "reason": "Patient has brain metastasis, but trial excludes patients with non-lung metastases (lung-only metastasis required)."}
+{"pair": "sigir-20143__NCT00946712", "population_fit": "yes", "reason": "Patient has stage IV NSCLC with brain metastasis and no neurological deficit, matching trial population."}
+{"pair": "sigir-20143__NCT01421316", "population_fit": "borderline", "reason": "Patient has brain metastasis but only one lesion and RPA class is not specified."}
+{"pair": "sigir-20144__NCT02317913", "population_fit": "yes", "reason": "Patient is a child with classic Kawasaki disease manifestations and coronary artery involvement."}
+{"pair": "sigir-20157__NCT01579942", "population_fit": "yes", "reason": "Patient is an adult outpatient with symptoms consistent with major depressive disorder."}
+{"pair": "sigir-20143__NCT00049543", "population_fit": "no", "reason": "Patient has evidence of brain metastasis, not resectable early-stage NSCLC."}
+{"pair": "sigir-20157__NCT02023567", "population_fit": "yes", "reason": "Patient is 20 years old, able to read/write, and has symptoms consistent with DSM-IV MDD."}
+{"pair": "sigir-20144__NCT02439996", "population_fit": "yes", "reason": "2-year-old with clinical features of Kawasaki disease and no prior treatment fits trial population."}
+{"pair": "sigir-20157__NCT01284218", "population_fit": "yes", "reason": "Patient is an adult with symptoms consistent with MDD and no clear population mismatch."}
+{"pair": "sigir-20159__NCT02105714", "population_fit": "yes", "reason": "10-year-old with recent persistent abdominal pain and diarrhea fits trial's target population."}
+{"pair": "sigir-20157__NCT01583400", "population_fit": "yes", "reason": "Patient is an adult female in generally good health with anhedonia and impaired daily function."}
+{"pair": "sigir-20159__NCT02612896", "population_fit": "yes", "reason": "10-year-old child meets age and community criteria; no evidence of epilepsy."}
+{"pair": "sigir-20157__NCT00610506", "population_fit": "yes", "reason": "Patient is 20 years old with non-psychotic major depression with atypical features."}
+{"pair": "sigir-20157__NCT00339066", "population_fit": "no", "reason": "Trial targets late-life depression; patient is a 20-year-old."}
+{"pair": "sigir-20157__NCT02593643", "population_fit": "borderline", "reason": "Depression is suggested but no clear diagnosis of MDD or bipolar depression, nor evidence of inpatient status or suicidal ideation."}
+{"pair": "sigir-20157__NCT02116361", "population_fit": "yes", "reason": "Adult female with symptoms consistent with moderate major depressive disorder."}
+{"pair": "sigir-20159__NCT00002444", "population_fit": "no", "reason": "Patient does not have an AIDS diagnosis or evidence of cryptosporidial diarrhea."}
+{"pair": "sigir-20158__NCT02562040", "population_fit": "yes", "reason": "10-year-old boy with habitual snoring and nocturnal obstructive symptoms fits pediatric trial population."}
+{"pair": "sigir-20158__NCT02053012", "population_fit": "yes", "reason": "10-year-old child with snoring fits the trial's target population."}
+{"pair": "sigir-20159__NCT00002191", "population_fit": "no", "reason": "Patient does not have documented HIV-positive status or biopsy-proven microsporidiosis."}
+{"pair": "sigir-20158__NCT01554527", "population_fit": "yes", "reason": "10-year-old boy with symptoms of sleep apnea fits trial age and condition population."}
+{"pair": "sigir-20158__NCT02447614", "population_fit": "yes", "reason": "10-year-old boy with habitual snoring fits the trial's target population of children aged 3-12 with habitual snoring."}
+{"pair": "sigir-20159__NCT00138346", "population_fit": "borderline", "reason": "Residence in the study area (Cooperative Tupac Amaru) is not confirmed."}
+{"pair": "sigir-20158__NCT00394550", "population_fit": "yes", "reason": "Patient is a child (10 years old) with clinical signs of obstructive sleep apnea."}
+{"pair": "sigir-20158__NCT00393913", "population_fit": "yes", "reason": "Patient is a child with symptoms of OSA, snoring, and daytime sleepiness, matching trial population."}
+{"pair": "sigir-20156__NCT01204359", "population_fit": "yes", "reason": "Patient has typical Graves disease symptoms, abnormal thyroid function, and eye signs consistent with trial population."}
+{"pair": "sigir-20158__NCT02627937", "population_fit": "borderline", "reason": "Patient is a child with snoring but confirmation of OSAHS by polysomnography is not documented."}
+{"pair": "sigir-20156__NCT02373995", "population_fit": "yes", "reason": "Patient has untreated Graves' hyperthyroidism with mild thyroid eye disease, matching trial population."}
+{"pair": "sigir-20156__NCT01182584", "population_fit": "yes", "reason": "Patient has clinical features consistent with Graves' disease, matching trial population."}
+{"pair": "sigir-20156__NCT01611896", "population_fit": "yes", "reason": "Adult patient with clinical features of active Graves' hyperthyroidism fits trial population."}
+{"pair": "sigir-20156__NCT01227499", "population_fit": "borderline", "reason": "Patient likely has thyrotoxicosis but duration suggests may not be newly diagnosed."}
+{"pair": "sigir-20156__NCT00150124", "population_fit": "yes", "reason": "Patient has hyperthyroidism and findings consistent with Graves' disease, matching trial population."}
+{"pair": "sigir-20151__NCT02150941", "population_fit": "yes", "reason": "Patient presents with coffee ground emesis and hypotension, matching trial population."}
+{"pair": "sigir-20156__NCT01247077", "population_fit": "yes", "reason": "Patient is 46, has symptoms and signs consistent with autoimmune thyrotoxicosis."}
+{"pair": "sigir-20156__NCT02107794", "population_fit": "yes", "reason": "Adult patient with clinical diagnosis of Graves Disease."}
+{"pair": "sigir-20151__NCT01155401", "population_fit": "yes", "reason": "Patient has acute upper gastrointestinal bleeding with coffee ground vomiting, matching trial population."}
+{"pair": "sigir-20156__NCT00796913", "population_fit": "no", "reason": "Patient has active Graves' hyperthyroidism, not in remission after ATD."}
+{"pair": "sigir-20151__NCT02017379", "population_fit": "yes", "reason": "Adult ICU patient with coffee ground emesis matches trial population."}
+{"pair": "sigir-20151__NCT00152399", "population_fit": "yes", "reason": "Adult male with hematemesis and hypovolemia fits trial population for acute severe upper GI bleeding."}
+{"pair": "sigir-20156__NCT00150111", "population_fit": "yes", "reason": "Adult woman with clinical features of Graves' disease matches trial population."}
+{"pair": "sigir-20151__NCT00164905", "population_fit": "borderline", "reason": "Endoscopic confirmation of ulcer bleeding is not documented in the chart."}
+{"pair": "sigir-201513__NCT01177657", "population_fit": "yes", "reason": "5-year-old child admitted for a non-gastroenteritis cause fits hospital control population."}
+{"pair": "sigir-201513__NCT00954031", "population_fit": "yes", "reason": "Patient has clinical signs of peritonsillar abscess and visible throat findings justifying puncture."}
+{"pair": "sigir-20151__NCT02105532", "population_fit": "yes", "reason": "Adult with acute upper GI bleeding presenting with hematemesis fits trial population."}
+{"pair": "sigir-201513__NCT02010294", "population_fit": "yes", "reason": "5-year-old child with possible severe GAS infection fits trial age and clinical population."}
+{"pair": "sigir-201522__NCT00923832", "population_fit": "yes", "reason": "Patient has cavity and dense lesion on chest imaging, matching trial's target population."}
+{"pair": "sigir-201514__NCT02612558", "population_fit": "borderline", "reason": "No clear evidence of warm antibody AIHA diagnosis; DAT is negative."}
+{"pair": "sigir-201513__NCT00643149", "population_fit": "borderline", "reason": "Patient is a child with sore throat and fever, but presentation suggests possible epiglottitis rather than uncomplicated strep throat."}
+{"pair": "sigir-201522__NCT01178177", "population_fit": "no", "reason": "Patient does not have history of solid organ transplant or hematologic disease."}
+{"pair": "sigir-201522__NCT02234739", "population_fit": "no", "reason": "Patient does not have COPD, which is required for trial population."}
+{"pair": "sigir-201522__NCT01259336", "population_fit": "yes", "reason": "Patient has chronic pulmonary symptoms, radiological cavity with intracavitary mass, and sputum positive for aspergillus."}
+{"pair": "sigir-20151__NCT01292915", "population_fit": "borderline", "reason": "Chart does not mention whether upper GI endoscopy was performed."}
+{"pair": "sigir-201522__NCT01247142", "population_fit": "yes", "reason": "Patient is hospitalized, age >16, and has probable invasive pulmonary aspergillosis."}
+{"pair": "sigir-201525__NCT02447172", "population_fit": "no", "reason": "Patient does not have a diabetic foot ulcer; trial is for infected diabetic foot ulcers in patients with diabetes."}
+{"pair": "sigir-201514__NCT00842621", "population_fit": "yes", "reason": "Adult with established hemolysis fits trial population for non-SCD hemolysis, age \u22655."}
+{"pair": "sigir-201524__NCT00118651", "population_fit": "borderline", "reason": "No chest radiograph findings are mentioned in the chart."}
+{"pair": "sigir-201524__NCT00873522", "population_fit": "yes", "reason": "Patient has community-acquired pneumonia and does not meet HCAP criteria."}
+{"pair": "sigir-201524__NCT00132951", "population_fit": "yes", "reason": "Adult outpatient with clinical diagnosis of community-acquired pneumonia meets trial population criteria."}
+{"pair": "sigir-201524__NCT02559310", "population_fit": "borderline", "reason": "Radiographic evidence of pneumonia is not documented in the chart."}
+{"pair": "sigir-201524__NCT02269644", "population_fit": "yes", "reason": "Adult with acute pneumonia symptoms and findings matches trial population."}
+{"pair": "sigir-201524__NCT00261105", "population_fit": "yes", "reason": "Adult outpatient with new-onset symptoms and exam findings compatible with mild to moderate community-acquired pneumonia."}
+{"pair": "sigir-201524__NCT00540072", "population_fit": "yes", "reason": "Adult with clinical and exam findings consistent with community-acquired pneumonia."}
+{"pair": "sigir-201523__NCT01983553", "population_fit": "no", "reason": "Trial is for Thai children in a vaccine study; patient is an adult traveler not in that population."}
+{"pair": "sigir-201515__NCT00932425", "population_fit": "yes", "reason": "Adult with cryptogenic stroke within 60 days seen at UCSF."}
+{"pair": "sigir-201522__NCT01430663", "population_fit": "no", "reason": "Patient does not have a hematological malignancy."}
+{"pair": "sigir-201515__NCT01550588", "population_fit": "no", "reason": "No evidence of high-risk PFO on echocardiogram as required by trial."}
+{"pair": "sigir-201515__NCT02014896", "population_fit": "no", "reason": "Patient's stroke occurred two weeks ago; trial targets acute stroke within 18-30 hours of onset."}
+{"pair": "sigir-201524__NCT02489578", "population_fit": "yes", "reason": "Adult patient with clinical findings consistent with pneumonia fits trial population."}
+{"pair": "sigir-201523__NCT01080989", "population_fit": "yes", "reason": "Patient is a hospital case with symptoms suspicious for flavivirus infection, matching trial population."}
+{"pair": "sigir-201515__NCT00861133", "population_fit": "yes", "reason": "Patient had a recent cryptogenic stroke, negative brain imaging for hemorrhage, and is in sinus rhythm."}
+{"pair": "sigir-201512__NCT01747369", "population_fit": "yes", "reason": "Patient is hospitalized with clinical signs of bacterial meningitis, matching trial population."}
+{"pair": "sigir-201512__NCT01355627", "population_fit": "borderline", "reason": "Patient has a skull fracture with CSF leak, but it is unclear if a qualifying skull base surgical approach is planned."}
+{"pair": "sigir-201512__NCT01730391", "population_fit": "yes", "reason": "Patient is an adult with suspected bacterial meningitis and had CSF sampling as part of routine care."}
+{"pair": "sigir-201512__NCT01730690", "population_fit": "borderline", "reason": "Chart suggests possible meningitis but no confirmed bacterial diagnosis per inclusion criteria."}
+{"pair": "sigir-20148__NCT00104663", "population_fit": "yes", "reason": "Patient is over 12 and has a diagnosis consistent with human prion disease."}
+{"pair": "sigir-201515__NCT02428140", "population_fit": "yes", "reason": "Patient is an adult with recent ischemic stroke and no atrial fibrillation/flutter on ECG."}
+{"pair": "sigir-20148__NCT01050881", "population_fit": "no", "reason": "Patient is not a deferred blood donor; chart describes neurologic disease, not blood donation status."}
+{"pair": "sigir-20146__NCT02136654", "population_fit": "yes", "reason": "Patient is a South Asian adult with type 2 diabetes requiring medication and elevated HbA1c."}
+{"pair": "sigir-20148__NCT02263235", "population_fit": "yes", "reason": "62-year-old man with neurodegenerative disease fits trial population age and diagnosis criteria."}
+{"pair": "sigir-20146__NCT00264901", "population_fit": "yes", "reason": "Patient is an adult with type 2 diabetes, matching the trial's target population."}
+{"pair": "sigir-20146__NCT02458495", "population_fit": "borderline", "reason": "Type of diabetes (type 2 vs. other) is not explicitly confirmed in chart."}
+{"pair": "sigir-201512__NCT00162578", "population_fit": "yes", "reason": "Adult with clinical suspicion of pneumococcal meningitis."}
+{"pair": "sigir-201512__NCT02467309", "population_fit": "no", "reason": "Trial is for children and patient is a 44-year-old adult."}
+{"pair": "sigir-20148__NCT00183092", "population_fit": "yes", "reason": "Patient is an adult with biopsy-confirmed sCJD and typical clinical features."}
+{"pair": "sigir-20141__NCT01407146", "population_fit": "yes", "reason": "Patient presents with symptoms consistent with acute coronary syndrome, matching trial population."}
+{"pair": "sigir-20146__NCT00519935", "population_fit": "no", "reason": "Patient is 64 years old and trial is for youth."}
+{"pair": "sigir-20141__NCT01356992", "population_fit": "borderline", "reason": "EKG shows nonspecific changes and no clear evidence of NSTEMI or unstable angina per trial criteria."}
+{"pair": "sigir-20146__NCT02012478", "population_fit": "yes", "reason": "Adult patient with poorly controlled type 2 diabetes matches trial population."}
+{"pair": "sigir-20141__NCT00337116", "population_fit": "borderline", "reason": "Acute coronary syndrome is suspected but not clearly documented; EKG is nonspecific and ACS diagnosis is not definitive."}
+{"pair": "sigir-20141__NCT01701453", "population_fit": "borderline", "reason": "EKG does not show required ST-segment depression or T-wave inversion for unstable angina per trial definition."}
+{"pair": "sigir-20141__NCT01682096", "population_fit": "borderline", "reason": "Sinus rhythm is not explicitly confirmed; EKG shows nonspecific changes."}
+{"pair": "sigir-201422__NCT02447224", "population_fit": "yes", "reason": "15-year-old girl with acute uncomplicated appendicitis confirmed by ultrasound fits trial population."}
+{"pair": "sigir-201425__NCT01339702", "population_fit": "yes", "reason": "Child with physical trauma, TBI diagnosis, and GCS <9 meets trial population."}
+{"pair": "sigir-20141__NCT01653587", "population_fit": "yes", "reason": "Patient has new ischemic chest pain suspicious for non-ST-segment elevation ACS and is within the target age range."}
+{"pair": "sigir-201425__NCT00282269", "population_fit": "borderline", "reason": "Severe TBI and age fit, but CT scan findings required by trial are unavailable."}
+{"pair": "sigir-20141__NCT01604655", "population_fit": "borderline", "reason": "Troponin result not mentioned; all other population criteria appear met."}
+{"pair": "sigir-201422__NCT01068288", "population_fit": "no", "reason": "No evidence of delayed presentation or confirmed perforated appendicitis on imaging."}
+{"pair": "sigir-201422__NCT00435032", "population_fit": "borderline", "reason": "Chart shows appendicitis but does not confirm rupture."}
+{"pair": "sigir-201422__NCT01925014", "population_fit": "borderline", "reason": "CT has not yet been requested; diagnosis is based on ultrasound."}
+{"pair": "sigir-201422__NCT02137603", "population_fit": "yes", "reason": "15-year-old with appendicitis fits pediatric appendectomy trial population."}
+{"pair": "sigir-20141__NCT02001545", "population_fit": "no", "reason": "Patient's symptoms began two days ago, outside the 24-hour window required by the trial."}
+{"pair": "sigir-201414__NCT00915928", "population_fit": "borderline", "reason": "Chart does not confirm diagnosis of chronic subdural hematoma needing surgical evacuation."}
+{"pair": "sigir-201422__NCT01192620", "population_fit": "yes", "reason": "Patient is a pediatric patient with acute appendicitis."}
+{"pair": "sigir-201425__NCT00222742", "population_fit": "yes", "reason": "Pediatric patient with closed head injury and GCS 6 fits trial population."}
+{"pair": "sigir-201414__NCT01624545", "population_fit": "borderline", "reason": "Chronic subdural hematoma diagnosis and recent neurosurgical evacuation are not documented."}
+{"pair": "sigir-201414__NCT01869855", "population_fit": "borderline", "reason": "Chronic subdural hematoma is not confirmed on CT or MRI in the chart."}
+{"pair": "sigir-201414__NCT02282228", "population_fit": "borderline", "reason": "It is unclear if the patient is admitted for surgery of chronic subdural hematoma."}
+{"pair": "sigir-201422__NCT02467959", "population_fit": "yes", "reason": "Patient is a suspected acute appendicitis case presenting with right lower abdominal pain."}
+{"pair": "sigir-201413__NCT02375919", "population_fit": "yes", "reason": "Patient has acute onset dyspnea and is a candidate for PE exclusion in ED."}
+{"pair": "sigir-201413__NCT01828697", "population_fit": "no", "reason": "Patient is not currently pregnant; she is postpartum."}
+{"pair": "sigir-201414__NCT01470040", "population_fit": "no", "reason": "Head trauma occurred 3 weeks ago, not within 24 hours as required by trial."}
+{"pair": "sigir-201414__NCT02362321", "population_fit": "borderline", "reason": "No evidence of subacute or chronic subdural hematoma on CT or MRI is documented."}
+{"pair": "sigir-201414__NCT02024373", "population_fit": "borderline", "reason": "Chronic subdural hematoma diagnosis is not confirmed in chart."}
+{"pair": "sigir-201413__NCT02355548", "population_fit": "yes", "reason": "Patient has pulmonary embolism and PESI score <86, matching trial population."}
+{"pair": "sigir-201413__NCT02616991", "population_fit": "yes", "reason": "Adult woman within 6 weeks postpartum with suspected PE and no signs of severe PE."}
+{"pair": "sigir-20147__NCT00063362", "population_fit": "borderline", "reason": "Chart confirms bipolar disorder and current depressive episode, but rapid cycling status is not documented."}
+{"pair": "sigir-201414__NCT02568124", "population_fit": "borderline", "reason": "Diagnosis timing and presence of chronic subdural hematoma on CT are not confirmed."}
+{"pair": "sigir-201413__NCT01604538", "population_fit": "yes", "reason": "Patient is an adult with suspected acute pulmonary embolism."}
+{"pair": "sigir-201414__NCT02192320", "population_fit": "borderline", "reason": "Chart does not confirm chronic subdural hematoma or coagulation disorder from antiplatelet/anticoagulant use."}
+{"pair": "sigir-20147__NCT00584961", "population_fit": "yes", "reason": "Patient has a diagnosis of bipolar disorder and is within the target population."}
+{"pair": "sigir-20147__NCT02129790", "population_fit": "no", "reason": "Patient is 26 years old and the trial is for adolescents."}
+{"pair": "sigir-20149__NCT00937690", "population_fit": "yes", "reason": "Adult patient with multiple palpable skin lesions fits trial population."}
+{"pair": "sigir-201413__NCT01318174", "population_fit": "no", "reason": "Patient has no known or suspected COPD or COPD exacerbation."}
+{"pair": "sigir-20149__NCT01339637", "population_fit": "borderline", "reason": "Diabetes risk factor is unclear; skin lesions may not indicate acanthosis nigricans or other listed risk factors."}
+{"pair": "sigir-20149__NCT01014819", "population_fit": "yes", "reason": "Adult patient with diagnosed benign skin lesions fits trial population."}
+{"pair": "sigir-20147__NCT02604277", "population_fit": "yes", "reason": "Patient has a diagnosis of bipolar disorder and current suicidal thoughts."}
+{"pair": "sigir-201412__NCT00360074", "population_fit": "no", "reason": "Patient does not have documented hypopituitarism of at least 3 axes; findings suggest primary thyroid disease."}
+{"pair": "sigir-20149__NCT02432118", "population_fit": "no", "reason": "Patient has neck skin lesions, not abnormal breast tissue."}
+{"pair": "sigir-20147__NCT02491307", "population_fit": "yes", "reason": "Adult patient with bipolar disorder and depression fits the trial's target population of adults with mood disorders."}
+{"pair": "sigir-20149__NCT00132327", "population_fit": "no", "reason": "Lesions are too small and located on the neck, which is excluded from biopsy sites."}
+{"pair": "sigir-201412__NCT01276782", "population_fit": "borderline", "reason": "Pregnancy status and SLE diagnosis are not documented in the chart."}
+{"pair": "sigir-201412__NCT01739972", "population_fit": "borderline", "reason": "It is unclear if the patient has been on levothyroxine for at least 6 months."}
+{"pair": "sigir-20147__NCT00422331", "population_fit": "borderline", "reason": "Chart suggests depressive and anxious symptoms but does not clearly document current manic or mixed episode or hospitalization."}
+{"pair": "sigir-201412__NCT00535561", "population_fit": "borderline", "reason": "Chart suggests possible hypothyroidism but does not confirm iron deficiency anemia or subclinical status."}
+{"pair": "sigir-201415__NCT01826045", "population_fit": "no", "reason": "Patient does not have cervical intraepithelial neoplasia or HPV positivity; presenting with suspected molar pregnancy or fibroid degeneration."}
+{"pair": "sigir-201412__NCT00524238", "population_fit": "yes", "reason": "Patient is a young adult woman with clinical features of hypothyroidism, matching the trial population."}
+{"pair": "sigir-201415__NCT00237965", "population_fit": "yes", "reason": "Patient is female and over 18, matching the trial's target population."}
+{"pair": "sigir-201412__NCT02126683", "population_fit": "yes", "reason": "Young woman with likely Hashimoto's thyroiditis and goiter fits trial population."}
+{"pair": "sigir-201415__NCT00190918", "population_fit": "borderline", "reason": "Diagnosis of gestational trophoblastic disease is suspected but not yet histologically confirmed."}
+{"pair": "sigir-201412__NCT02190214", "population_fit": "yes", "reason": "Patient is a Malaysian adult aged 25, matching trial population."}
+{"pair": "sigir-201415__NCT00166790", "population_fit": "yes", "reason": "Patient is a woman with suspected hydatidiform mole, which is a target population for the trial."}
+{"pair": "sigir-20149__NCT00288938", "population_fit": "borderline", "reason": "Patient is an adult with a current pigmented lesion, but it is unclear if the lesion is clinically suspicious for melanoma."}
+{"pair": "sigir-201423__NCT01248507", "population_fit": "yes", "reason": "Patient is \u226540, has COPD diagnosis, \u226510 pack-years smoking, and acute exacerbation."}
+{"pair": "sigir-201423__NCT02340702", "population_fit": "borderline", "reason": "Heart failure is not documented in the chart."}
+{"pair": "sigir-201424__NCT02232191", "population_fit": "yes", "reason": "Adult trauma patient with splenic injury fits trial population."}
+{"pair": "sigir-201415__NCT00288938", "population_fit": "no", "reason": "Patient does not have \u2265100 melanocytic nevi or a clinically suspicious pigmented lesion; presentation is for uterine mole, not cutaneous nevi or melanoma."}
+{"pair": "sigir-201424__NCT01387828", "population_fit": "no", "reason": "Patient has traumatic splenic rupture, not splenic artery aneurysm."}
+{"pair": "sigir-201424__NCT00778362", "population_fit": "no", "reason": "Patient has acute splenic injury but has not received a splenectomy."}
+{"pair": "sigir-201424__NCT02261584", "population_fit": "no", "reason": "Patient has acute traumatic spleen rupture, not hypersplenism or liver cirrhosis."}
+{"pair": "sigir-201424__NCT01103999", "population_fit": "yes", "reason": "Patient is hospitalized for abdominal trauma with confirmed splenic injury."}
+{"pair": "sigir-201430__NCT01076738", "population_fit": "yes", "reason": "Patient has documented history of myocardial infarction and transient ischemic attack."}
+{"pair": "sigir-201430__NCT02051088", "population_fit": "yes", "reason": "Adult with symptomatic intermittent claudication and infrainguinal arterial disease eligible for endovascular treatment."}
+{"pair": "sigir-20153__NCT01444612", "population_fit": "no", "reason": "Patient had orthopedic (hip) surgery, not cancer-related surgery."}
+{"pair": "sigir-201424__NCT02071290", "population_fit": "borderline", "reason": "Injury occurred a week ago, not within 3 hours as required by trial."}
+{"pair": "sigir-201430__NCT01666093", "population_fit": "no", "reason": "No mention of a non-healing lower limb ulcer; only claudication symptoms are described."}
+{"pair": "sigir-201423__NCT00791505", "population_fit": "borderline", "reason": "Mechanical ventilation requirement is not clearly documented."}
+{"pair": "sigir-201430__NCT02217501", "population_fit": "borderline", "reason": "No documentation of endovascular intervention to lower extremity arteries in chart."}
+{"pair": "sigir-201430__NCT01970332", "population_fit": "yes", "reason": "Patient has chronic, exercise-limiting claudication consistent with trial population."}
+{"pair": "sigir-20153__NCT01164046", "population_fit": "no", "reason": "Patient does not have cancer, which is required for trial population."}
+{"pair": "sigir-20153__NCT02355548", "population_fit": "yes", "reason": "Patient has acute pulmonary embolism following recent surgery, matching trial population."}
+{"pair": "sigir-20152__NCT00002025", "population_fit": "yes", "reason": "Patient is immunocompromised and has cytomegalovirus disease confirmed by BAL."}
+{"pair": "sigir-20153__NCT02334007", "population_fit": "no", "reason": "Patient does not have lung cancer or metastatic lung disease and is not undergoing thoracic surgery."}
+{"pair": "sigir-20152__NCT01646645", "population_fit": "borderline", "reason": "No evidence patient has had allogeneic hematopoietic stem cell transplantation, which is required for trial population."}
+{"pair": "sigir-20155__NCT01782469", "population_fit": "borderline", "reason": "RA diagnosis is not clearly established; only recent joint symptoms are described."}
+{"pair": "sigir-20153__NCT02596555", "population_fit": "yes", "reason": "Adult with acute PE and no clear evidence of hemodynamic collapse or exclusion."}
+{"pair": "sigir-20155__NCT01083563", "population_fit": "no", "reason": "Patient does not have a documented diagnosis of rheumatoid arthritis or prior MTX/TNF therapy."}
+{"pair": "sigir-20155__NCT02111057", "population_fit": "no", "reason": "Patient does not have a diagnosis of RA, OA, SLE, or other inflammatory arthritis and is not undergoing joint replacement surgery."}
+{"pair": "sigir-201517__NCT00458562", "population_fit": "yes", "reason": "Adult female with intact cervix, not pregnant, cytology negative and HPV positive."}
+{"pair": "sigir-201517__NCT01384370", "population_fit": "yes", "reason": "Female patient with cytology negative, HPV positive referral Pap sample matches trial population."}
+{"pair": "sigir-20155__NCT01058161", "population_fit": "yes", "reason": "Patient has current polyarticular arthralgia/arthritis consistent with trial population."}
+{"pair": "sigir-20152__NCT02136797", "population_fit": "borderline", "reason": "Chart confirms CMV pneumonia post-immunosuppression, but no mention of prior allogeneic stem cell transplant, which is required."}
+{"pair": "sigir-20155__NCT00814307", "population_fit": "borderline", "reason": "RA diagnosis per ACR criteria is not confirmed; acute polyarthritis may be another condition."}
+{"pair": "sigir-201517__NCT01131312", "population_fit": "no", "reason": "Patient does not have a diagnosis of ASCUS or LSIL."}
+{"pair": "sigir-201517__NCT02328872", "population_fit": "yes", "reason": "32-year-old woman with a cervix attending routine cervical screening fits trial population."}
+{"pair": "sigir-201517__NCT00443313", "population_fit": "yes", "reason": "32-year-old non-pregnant woman within target age range and screening context."}
+{"pair": "sigir-201517__NCT01231945", "population_fit": "yes", "reason": "Patient is a 32-year-old female with a cervix, not pregnant, and able to undergo cervical cancer screening."}
+{"pair": "sigir-201510__NCT02197936", "population_fit": "yes", "reason": "Premenopausal woman aged 38 with symptoms consistent with adenomyosis."}
+{"pair": "sigir-20152__NCT00817908", "population_fit": "borderline", "reason": "Solid organ transplant status and CMV D+/R- status are not specified in the chart."}
+{"pair": "sigir-201517__NCT00461760", "population_fit": "yes", "reason": "Female patient aged 32 undergoing cervical screening fits trial population."}
+{"pair": "sigir-201510__NCT01601366", "population_fit": "borderline", "reason": "Chart does not mention adenomyosis or relevant ultrasound findings."}
+{"pair": "sigir-201528__NCT00339157", "population_fit": "borderline", "reason": "No clear evidence of systemic-onset juvenile idiopathic arthritis; presentation may be acute monoarthritis (e.g., Lyme disease)."}
+{"pair": "sigir-201510__NCT01840124", "population_fit": "yes", "reason": "Patient is a premenopausal woman over 21 with heavy bleeding and pelvic pain."}
+{"pair": "sigir-201528__NCT00065806", "population_fit": "no", "reason": "Patient does not have a diagnosis of SLE."}
+{"pair": "sigir-201517__NCT02561208", "population_fit": "yes", "reason": "Patient is a woman aged 30 or older, matching the trial population."}
+{"pair": "sigir-201510__NCT01588899", "population_fit": "yes", "reason": "Premenopausal woman aged 38 fits trial's target population."}
+{"pair": "sigir-201510__NCT02400684", "population_fit": "borderline", "reason": "Chart does not confirm stage III/IV endometriosis or deep endometriosis procedures."}
+{"pair": "sigir-201510__NCT01849354", "population_fit": "borderline", "reason": "Chart suggests possible endometriosis but does not confirm diagnosis or mention adnexal finding or sterilization."}
+{"pair": "sigir-201510__NCT02201719", "population_fit": "borderline", "reason": "Hysterectomy is not confirmed as scheduled in chart."}
+{"pair": "sigir-201526__NCT01322958", "population_fit": "yes", "reason": "Patient is a pregnant female in the first trimester with abdominal/pelvic complaint."}
+{"pair": "sigir-201526__NCT01601964", "population_fit": "yes", "reason": "Patient is a female currently admitted for non-ruptured ectopic pregnancy, matching the trial population."}
+{"pair": "sigir-201510__NCT00849173", "population_fit": "yes", "reason": "Premenopausal woman aged 38 with no mention of prior surgical endometriosis diagnosis and attending for gynecologic evaluation."}
+{"pair": "sigir-201526__NCT02152696", "population_fit": "no", "reason": "Patient has a confirmed ectopic pregnancy, not a pregnancy of unknown location."}
+{"pair": "sigir-201519__NCT01636401", "population_fit": "yes", "reason": "Patient has stable moderate COPD and >10 pack-years smoking history."}
+{"pair": "sigir-201526__NCT00194272", "population_fit": "borderline", "reason": "Patient has a history of prior laparoscopy, but it is unclear if laparoscopy was performed for the current ectopic pregnancy episode."}
+{"pair": "sigir-201519__NCT00683722", "population_fit": "yes", "reason": "Patient is 66, has significant smoking history, and moderate/severe COPD per chart."}
+{"pair": "sigir-201526__NCT01860690", "population_fit": "yes", "reason": "Patient is a healthy, hemodynamically stable female with first ectopic pregnancy."}
+{"pair": "sigir-201521__NCT02105714", "population_fit": "yes", "reason": "Adult with persistent diarrhoea fits trial population."}
+{"pair": "sigir-201519__NCT01314807", "population_fit": "yes", "reason": "Patient is 66 years old with COPD and >10 pack-year smoking history, matching trial population."}
+{"pair": "sigir-201526__NCT00260091", "population_fit": "no", "reason": "Current ectopic pregnancy in the open tube is an exclusion per trial criteria."}
+{"pair": "sigir-201526__NCT01261026", "population_fit": "yes", "reason": "Patient is a woman with suspected ectopic pregnancy, positive beta-hCG, and extraovarian adnexal mass."}
+{"pair": "sigir-201519__NCT00757120", "population_fit": "yes", "reason": "Patient is an older adult with >30 pack-year smoking history and probable COPD/emphysema."}
+{"pair": "sigir-201519__NCT01248507", "population_fit": "yes", "reason": "Patient is \u226540 years old, has COPD, significant smoking history, and current acute exacerbation."}
+{"pair": "sigir-201519__NCT02128529", "population_fit": "yes", "reason": "Patient is \u226540 years old with chronic bronchitis and likely COPD."}
+{"pair": "sigir-201521__NCT01521403", "population_fit": "borderline", "reason": "Blastocystis hominis infection is not explicitly confirmed; cysts seen may suggest but are not definitive."}
+{"pair": "sigir-201519__NCT00202176", "population_fit": "borderline", "reason": "Patient likely has more than mild COPD given moderate respiratory distress and exam findings."}
+{"pair": "sigir-201520__NCT00104663", "population_fit": "yes", "reason": "Patient is over 12 and has features compatible with human prion disease."}
+{"pair": "sigir-201520__NCT00183092", "population_fit": "yes", "reason": "Patient is an adult with progressive dementia and myoclonus, consistent with probable sCJD."}
+{"pair": "sigir-201527__NCT02441439", "population_fit": "no", "reason": "Patient is not pregnant; trial is for anemia in pregnancy."}
+{"pair": "sigir-201520__NCT02263235", "population_fit": "no", "reason": "Patient is 89 years old, exceeding the trial's upper age limit of 85."}
+{"pair": "sigir-201527__NCT02631668", "population_fit": "no", "reason": "Trial is for adults; patient is a 15-year-old adolescent."}
+{"pair": "sigir-201520__NCT01438060", "population_fit": "no", "reason": "Patient is unable to walk independently or with assistive device, failing locomotion criterion."}
+{"pair": "sigir-201518__NCT00523757", "population_fit": "borderline", "reason": "Echocardiographic criteria and recent HF admission status are not documented."}
+{"pair": "sigir-201520__NCT00880347", "population_fit": "yes", "reason": "Patient is an adult male with clinical diagnosis of dementia (likely FTD), age \u226540, matching a trial population group."}
+{"pair": "sigir-201527__NCT01991314", "population_fit": "yes", "reason": "15-year-old with proven iron deficiency anaemia fits trial population."}
+{"pair": "sigir-201527__NCT01221844", "population_fit": "no", "reason": "Patient is not pregnant; trial is for pregnant women with iron deficiency anemia."}
+{"pair": "sigir-201527__NCT02341300", "population_fit": "no", "reason": "Patient is not pregnant."}
+{"pair": "sigir-201518__NCT01529463", "population_fit": "yes", "reason": "Adult patient with clinical findings of acute decompensated heart failure."}
+{"pair": "sigir-201518__NCT02347722", "population_fit": "yes", "reason": "Patient has symptomatic heart failure with multiple major Framingham criteria within 2 years."}
+{"pair": "sigir-201518__NCT02620384", "population_fit": "yes", "reason": "Patient is an adult hospitalized with decompensated chronic heart failure and signs of volume overload."}
+{"pair": "sigir-201511__NCT00111735", "population_fit": "borderline", "reason": "Chart suggests hypothyroidism but does not confirm primary etiology or duration."}
+{"pair": "sigir-201518__NCT00530426", "population_fit": "yes", "reason": "Patient has clinical findings consistent with decompensated heart failure and meets inclusion criteria."}
+{"pair": "sigir-201511__NCT01197183", "population_fit": "borderline", "reason": "Chart describes symptoms of hypothyroidism but does not confirm a recent diagnosis."}
+{"pair": "sigir-201518__NCT00664339", "population_fit": "yes", "reason": "Patient is >21 years old with severe NYHA III/IV heart failure and meets at least two required findings."}
+{"pair": "sigir-201511__NCT00535561", "population_fit": "borderline", "reason": "Chart suggests hypothyroidism but does not confirm iron deficiency anemia or subclinical hypothyroidism diagnosis."}
+{"pair": "sigir-201518__NCT01671995", "population_fit": "borderline", "reason": "Heart failure diagnosis is suggested but NYHA class and ejection fraction are not documented."}
+{"pair": "sigir-201511__NCT00524238", "population_fit": "borderline", "reason": "Chart suggests hypothyroidism but does not confirm new diagnosis, TSH >40, or autoimmune etiology."}
+{"pair": "sigir-201518__NCT01138683", "population_fit": "borderline", "reason": "Chart does not confirm ejection fraction <40% or NYHA class III/IV."}
+{"pair": "sigir-201511__NCT02190214", "population_fit": "no", "reason": "Patient is not a Malaysian citizen."}
+{"pair": "sigir-201516__NCT01748162", "population_fit": "no", "reason": "Patient has no history of recurrent croup episodes; only wheezing is reported."}
+{"pair": "sigir-201511__NCT01280292", "population_fit": "borderline", "reason": "Chart shows hypothyroid symptoms but lacks evidence of pituitary surgery/radiotherapy or lab documentation of central hypothyroidism."}
+{"pair": "sigir-201511__NCT01848171", "population_fit": "yes", "reason": "Patient is 56 years old and has clinical features consistent with hypothyroidism."}
+{"pair": "sigir-201516__NCT01978288", "population_fit": "no", "reason": "Patient is 4 years old and not in the first week of life."}
+{"pair": "sigir-201516__NCT00747981", "population_fit": "yes", "reason": "Patient is 4 years old with suspicion of foreign body aspiration."}
+{"pair": "sigir-201529__NCT00162032", "population_fit": "yes", "reason": "Patient is a 4-year-old girl meeting epidemiological definition of Kawasaki Disease."}
+{"pair": "sigir-201529__NCT01596335", "population_fit": "borderline", "reason": "IVIG-refractory status is not documented in the chart."}
+{"pair": "sigir-201529__NCT01917721", "population_fit": "borderline", "reason": "KD is suspected but coronary artery status is not provided."}
+{"pair": "sigir-201516__NCT00851487", "population_fit": "borderline", "reason": "The child is in the age range but may not have WHO-defined non-severe pneumonia; presentation suggests possible foreign body aspiration."}
+{"pair": "sigir-201529__NCT02359643", "population_fit": "yes", "reason": "Patient is a child with clinical features consistent with Kawasaki Disease."}
+{"pair": "sigir-201529__NCT00000520", "population_fit": "yes", "reason": "4-year-old girl with clinical features consistent with Kawasaki Syndrome within the first 10 days of illness."}
+{"pair": "sigir-201516__NCT01242150", "population_fit": "no", "reason": "Patient does not have hypoxemia or evidence of pulmonary infection."}
+{"pair": "sigir-201516__NCT01414322", "population_fit": "yes", "reason": "Pediatric ER patient with SOB and wheeze, age 4, fits trial population."}
+{"pair": "sigir-201529__NCT02317913", "population_fit": "yes", "reason": "Patient is a child with at least five classic Kawasaki disease manifestations."}
+{"pair": "sigir-201529__NCT02439996", "population_fit": "yes", "reason": "4-year-old girl with clinical features consistent with Kawasaki Disease and within the trial age range."}
