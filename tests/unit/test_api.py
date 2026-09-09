@@ -45,7 +45,7 @@ def test_satir_does_not_eagerly_import_heavy_backends():
 # ---------------------------------------------------------------- verdict
 def test_verdict_lists_its_variants():
     s = verdict.systems()
-    assert "verdict" in s and "trialgpt" in s
+    assert "verdict" in s and "lm-only" in s
     assert all(isinstance(v, str) and v for v in s.values())
 
 
@@ -82,10 +82,10 @@ def test_verdict_match_and_explain_agree(pair_data_available):
 
 
 # ---------------------------------------------------------------- registry
-def test_the_papers_six_matchers_are_registered_in_order():
+def test_the_papers_matchers_are_registered_in_order():
     """Adding a registry must not change which systems ship, or their order."""
     assert list(verdict.systems()) == [
-        "verdict", "smt-only", "atoms", "lm-only", "hybrid", "trialgpt"]
+        "verdict", "smt-only", "atoms", "lm-only", "hybrid"]
 
 
 def test_third_party_matcher_can_be_registered():
@@ -111,15 +111,15 @@ def test_registering_over_a_builtin_is_refused_by_default():
 
 def test_override_is_allowed_when_explicit():
     from matchers.schema import Decision
-    original = verdict.systems()["trialgpt"]
+    original = verdict.systems()["hybrid"]
     try:
-        verdict.register("trialgpt", lambda p: Decision(p, "x", "eligible", "", []),
+        verdict.register("hybrid", lambda p: Decision(p, "x", "eligible", "", []),
                          description="replaced", override=True)
-        assert verdict.systems()["trialgpt"] == "replaced"
+        assert verdict.systems()["hybrid"] == "replaced"
     finally:
-        verdict.unregister("trialgpt")
+        verdict.unregister("hybrid")
         verdict.systems()                      # re-registers the built-in
-        assert verdict.systems()["trialgpt"] == original
+        assert verdict.systems()["hybrid"] == original
 
 
 def test_cli_and_api_share_one_system_list():

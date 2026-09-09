@@ -36,8 +36,6 @@ BUILTINS = (
      "single LLM call over chart + criteria"),
     ("hybrid",   "hybrid_strict",
      "accept-if-either + LM-evidence arbiter (max F1)"),
-    ("trialgpt", "trialgpt",
-     "TrialGPT baseline (Yang et al. 2023)"),
 )
 
 

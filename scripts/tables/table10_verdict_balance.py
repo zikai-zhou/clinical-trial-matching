@@ -15,10 +15,13 @@ lm_only_V5_TWO_STEP.jsonl, and reproduced none of the paper's numbers.)
 
 ZSPM is close but not exact (54.1% vs the paper's 54.0%): shahlab/rationales
 covers 538 of the 552 pairs, so the paper's figure likely comes from a
-fuller run. TrialGPT does not match at all -- every TrialGPT artifact here
-gives 13.2% eligible against the paper's 44.4%, so the paper's TrialGPT
-column comes from a run not present in this repository. Both are flagged in
-the output rather than silently reported.
+fuller run, and it is flagged in the output rather than silently reported.
+
+The paper's TrialGPT row is not reproduced here. No artifact in this
+repository matched it (13.2% eligible against the paper's 44.4%), and the
+TrialGPT-derived code and artifacts have since been removed altogether --
+see docs/MATCHERS.md, "Why the TrialGPT baseline is not shipped". Cite
+TrialGPT from its own repository, not from this table.
 
 Usage:
     python scripts/tables/table10_verdict_balance.py
@@ -35,7 +38,6 @@ SYSTEMS = [
     ('ourLLM',   'matchers/systems/single_shot_llm/v5_freeform.jsonl',            35.0, 1195, 'exact'),
     ('CoT LLM',  'matchers/systems/single_shot_llm/v5_verbose_v2_freeform.jsonl', 36.1,  592, 'exact'),
     ('ZSPM',     'matchers/systems/shahlab/rationales.jsonl',                     54.0, 1342, 'near'),
-    ('TrialGPT', 'matchers/systems/trialgpt/rationales.jsonl',                    44.4,  594, 'MISMATCH'),
 ]
 
 RATIONALE_KEYS = ('verbalized_rationale', 'rationale', 'text',

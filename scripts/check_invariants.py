@@ -56,7 +56,7 @@ def want(hay: str, *needles):
 def _():
     rc, out = sh('verdict_cli.py', 'systems')
     assert rc == 0, out
-    want(out, 'smt_lm_evidence_arbiter', 'trialgpt', 'hybrid_strict')
+    want(out, 'smt_lm_evidence_arbiter', 'hybrid_strict')
 
 
 @check('cli:list', needs=PAIR_DATA)
@@ -329,8 +329,11 @@ def _():
         assert row.count(elig) >= 2, f'{label}: elig% != paper: {row.strip()}'
         assert row.count(med) >= 2, f'{label}: median != paper: {row.strip()}'
         assert row.rstrip().endswith('ok'), f'{label} no longer exact: {row.strip()}'
-    # TrialGPT is known-unreproducible; the script must keep saying so
-    want(out, 'DOES NOT MATCH', 'Do not cite this row')
+    # The TrialGPT row was removed with the rest of the TrialGPT-derived
+    # material (docs/MATCHERS.md). Assert it stays gone, so it cannot creep
+    # back in without the licensing and reproducibility questions being
+    # answered again.
+    assert 'TrialGPT' not in out, 'TrialGPT row is back in table 10'
 
 
 @check('zspm:92pct-silence',
@@ -486,12 +489,16 @@ def _():
     # tracked debt, not silent ignores -- shrink this set, never grow it.
     # Verified 2026-09-03 by a full scan; file lists are exact.
     KNOWN_BROKEN = {
+        'trialgpt_judge':
+            'TrialGPT-derived source was removed from the repository (see '
+            'docs/MATCHERS.md) -- breaks the five evaluation/explainability '
+            'scripts that imported it. Run TrialGPT from its own repo.',
         'overnight':
             'no such module anywhere -- breaks aegis/apply_soft_aux_solve.py, '
             'aegis/apply_strict_inc_to_4o.py',
         'run_better_nl_full':
             'no such module anywhere -- breaks aegis/run_verbalize.py, '
-            'single_shot_llm/run.py, trialgpt/run.py, '
+            'single_shot_llm/run.py, '
             'verbalizer/run_aegis_verbalize.py',
         'repro_headline':
             'lives in experiments/accuracy/scripts (excluded from the release) '

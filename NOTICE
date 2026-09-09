@@ -16,22 +16,11 @@ Evaluation corpora are third-party and carry their own terms; see DATA.md.
 Third-party material
 --------------------------------------------------------------------------
 
-This product contains code derived from TrialGPT, developed at the National
-Center for Biotechnology Information (NCBI), National Library of Medicine.
-TrialGPT is a United States Government Work, released under the NCBI Public
-Domain Notice: it is not copyrighted and the NLM and U.S. Government place no
-restriction on its use or reproduction. The NLM and the U.S. Government
-disclaim all warranties and do not warrant the performance or results obtained
-from this software.
+None. This repository contains no third-party source.
 
-As that notice requests, we cite the authors:
+TrialGPT (NCBI/NLM) was previously vendored here as a comparison baseline and
+has been removed; see docs/MATCHERS.md, "Why the TrialGPT baseline is not
+shipped". It is still cited as prior work in prose, which requires no notice.
 
-    Qiao Jin, Zifeng Wang, Charalampos S. Floudas, Fangyuan Chen,
-    Changlin Gong, Dara Bracken-Clarke, Elisabetta Xue, Yifan Yang,
-    Jimeng Sun, Zhiyong Lu.
-    Matching Patients to Clinical Trials with Large Language Models.
-
-Derived portions include the TrialGPT-style per-criterion prompting in
-verdict/engine/ (functions prefixed `_trialgpt_`) and the TrialGPT baseline
-under matchers/systems/trialgpt/. Everything else in this repository is
-original work licensed under Apache-2.0 as stated above.
+Evaluation corpora remain third-party and carry their own terms; see
+docs/DATA.md.

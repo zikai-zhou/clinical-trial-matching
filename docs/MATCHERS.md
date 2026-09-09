@@ -130,3 +130,39 @@ published runs used.
 IR, symtab, linkmap, canon) and the patient corpora. `verdict run` needs a
 build tree and an LLM endpoint; it reports which is missing rather than
 failing obscurely.
+
+## Why the TrialGPT baseline is not shipped
+
+TrialGPT (Jin et al., NCBI/NLM) was used during development as an external
+comparison. Its criterion-matching prompt and the code around it were carried
+into this codebase — verbatim prompt text in the matcher, plus a
+`matchers/systems/trialgpt/` runner. Both have been removed.
+
+**Why.** TrialGPT is a United States Government Work under the NCBI Public
+Domain Notice. That is maximally permissive — no restriction on use or
+reproduction — so this was never a licensing *bar*. It was removed because
+carrying another group's system inside ours costs more than it returns:
+
+1. **It made the provenance story harder to state.** This repository ships one
+   matcher. A second, third-party judge sitting dormant in the same file
+   invited exactly the confusion this project has already paid for once, when
+   a reimplementation was mistaken for the published system.
+2. **It could not be cited honestly from here.** Our stored TrialGPT artifacts
+   score 13.2% where the paper reports 44.4%. The row was already marked
+   "do not cite". Shipping a baseline we cannot reproduce is worse than
+   shipping no baseline.
+3. **It was dormant.** The judge was opt-in (`--trialgpt-judge`) and no
+   shipped entry point ever enabled it, so nothing in the tool lost a feature.
+
+**What this is not.** Not a claim about TrialGPT's quality, and not a
+licensing dispute. Anyone wanting the comparison should run TrialGPT from its
+own repository, against its own maintained prompts, and cite it directly:
+
+    Qiao Jin, Zifeng Wang, Charalampos S. Floudas, Fangyuan Chen,
+    Changlin Gong, Dara Bracken-Clarke, Elisabetta Xue, Yifan Yang,
+    Jimeng Sun, Zhiyong Lu.
+    Matching Patients to Clinical Trials with Large Language Models.
+
+Citing TrialGPT as prior work in prose and reporting its published numbers is
+unaffected; only the vendored code and artifacts are gone. The removed files
+are preserved outside the repository, under `_backups/`.
