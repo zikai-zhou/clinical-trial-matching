@@ -349,6 +349,25 @@ def _():
     assert (len(g), e, len(g) - e) == (552, 278, 274), (len(g), e)
 
 
+@check('engine:vendored-data-is-tracked')
+def _():
+    """Every file the vendored matcher loads must be committed.
+
+    .gitignore carries a broad `*_out/` rule for run artifacts, which also
+    matches the matcher's prompt_out/ INPUT directory. That silently produced
+    a clone whose matcher had no prompts -- green locally, broken in CI.
+    """
+    import subprocess as _sp
+    pkg = ROOT / 'verdict' / 'engine'
+    on_disk = {str(f.relative_to(ROOT)) for f in pkg.rglob('*.prompt')}
+    assert on_disk, 'no vendored prompts on disk'
+    out = _sp.run(['git', 'ls-files', 'verdict/engine'], cwd=ROOT,
+                  capture_output=True, text=True)
+    tracked = set(out.stdout.split())
+    missing = sorted(on_disk - tracked)
+    assert not missing, 'vendored files not tracked by git: ' + ', '.join(missing)
+
+
 @check('gold:no-stale-paths')
 def _():
     """No file may still point at the gold set's pre-move location.

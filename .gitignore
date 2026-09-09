@@ -28,6 +28,11 @@ out_compose_*/
 retrieved_mappings*/
 trialgptref/
 *_out/
+# ...but the vendored matcher's prompts are INPUT, not output. The rule above
+# is for run artifacts (cmsrc_out/, match_out/); without this negation the
+# prompt snapshot the matcher loads is silently absent from a clone.
+!verdict/engine/prompts/prompt_out/
+!verdict/engine/prompts/prompt_out/**
 .ipynb_checkpoints/
 
 # === Large directories (artifacts that don't belong in the GitHub repo) ===
