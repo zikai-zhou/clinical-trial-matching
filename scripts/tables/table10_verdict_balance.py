@@ -27,7 +27,7 @@ from __future__ import annotations
 import json, pathlib, statistics
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-GOLD = ROOT / 'experiments/accuracy/data/gold_5sys_freeform_balanced.json'
+GOLD = ROOT / 'data/gold/gold_5sys_freeform_balanced.json'
 
 # label -> (file, paper eligible-%, paper median chars, status)
 SYSTEMS = [

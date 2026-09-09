@@ -1,55 +1,42 @@
 # Experiments
 
-One folder per finding reported in the paper. Each folder is self-contained:
+Research code for the paper. **Self-contained and independent of the tool**:
+nothing here is imported by `verdict`, `satir`, `pipeline`, or either CLI, and
+nothing here is needed to install or run them.
 
-```
-NN_experiment_name/
-├── README.md       # hypothesis, method, how to run
-├── run.py          # entrypoint (some experiments have multiple runners)
-├── analyze.py      # regenerates paper tables/numbers from `data/`
-├── prompts/        # .prompt files used
-├── data/           # saved result JSONs
-└── out/            # regenerated tables/figures (ephemeral; produced by analyze.py)
-```
-
-| # | Experiment | Paper section | Primary finding |
-|---|---|---|---|
-| 01 | Retrieval F2 | §4.2 | AEGIS 0.627 > LLM-d 0.556 > TG 0.188 |
-| 02 | Pairwise preference | §4.2.1 | AEGIS ~83% wins under GPT-5 clinician judge |
-| 03 | Judge rubric + verbalizer×judge | §4.2.2 | AEGIS wins all 12 verbalizer×judge cells |
-| 04 | k=10 self-consistency AFR | §4.3 | AEGIS 0.047 lowest run-to-run disagreement |
-| 05 | CF self-faithfulness (diagonal) | §4.4.2 | AEGIS 72%, TG 75%, LLM-d 55% |
-| 06 | CF cross-system 3×3 matrix | §4.4.2 | **TG criterion-anchoring, p<10⁻⁷** |
-| 07 | CF dose-response | §4.4.3 | LLM-d dose-insensitive |
-| 08 | CF noise injection | §4.4.4 | Systems 83–88% stable to irrelevant noise |
-| 09 | CF explanation consistency | §4.4.5 | LLM-d grounded when flips (4.85/5), disengaged when not (2.67/5) |
-| 10 | Parser progression | Appendix C | v0 62% → v2 72% → v3 (Z3 MaxSAT) 85% |
-| 11 | Case studies | §6 | 3 pairs showing reasoning-pattern differences |
-
-## Regenerating paper tables
+Run these directly, from the repository root:
 
 ```bash
-# From repo root
-for d in experiments/*/; do
-  if [ -f "$d/analyze.py" ]; then
-    python "$d/analyze.py"
-  fi
-done
+python experiments/accuracy/scripts/<script>.py
+bash   experiments/counterfactual/05_self_faithfulness/ablation_full_corpus/launch_all.sh
 ```
 
-Or via `paper/reproduce/make_all.py` which points into these same scripts.
+## What is here
 
-## Pair pools used
+| | |
+|---|---|
+| `accuracy/` | accuracy, F1, and inspection over the 552-pair set |
+| `counterfactual/` | self-faithfulness: modifier, validator, reverse-CF, ablations |
+| `clinician_validation/` | audit instrument, sampling frames, re-review |
+| `03_judge_rubric/`, `02_pairwise_preference/` | judge prompts and preference runs |
+| `typed_policy/`, `12_policy_invariance/` | policy alignment and invariance |
+| numbered SatIR dirs | retrieval-side experiments |
 
-- **235 pairs**: full SIGIR 2016 evaluation set (used by 01, 02, 03, 04).
-- **60 pairs**: subset where all 3 systems agreed "ineligible" at the time of the main inference pass (used by 05–10).
+## Inputs these expect
 
-Pair lists are at `/tmp/cf_candidates_60.json` (ineligible pool) and `/tmp/cf_eligible_candidates_60.json` (eligible pool, used for experiments that required eligible originals — not reported in final paper).
+Most read large artifacts that are **not** in the repository — mined pair
+outputs, judge outputs, caches. Those live outside git (see
+[../docs/DATA.md](../docs/DATA.md)) and several scripts take a `--root` or read
+`$VERDICT_ROOT`. A script that cannot find its inputs will say so.
 
-## Dependencies
+## Two cautions
 
-All experiments share:
-- SatIR pipeline (`smt_matcher/` package)
-- GPT-4.1 via Azure (env: `OPENAI_ENDPOINT`, `OPENAI_API_KEY`)
-- Python 3.11.9 + `z3-solver==4.12.2.0`, `statsmodels`, `dspy-ai`
-- Dataset: SIGIR 2016 clinical trials track (`/tmp/satir_full_dataset/`)
+**Some scripts write in place.** Before running one against artifacts you care
+about, copy the tree — at least one script in this family writes its output
+over its own stored record. Prefer a scratch copy.
+
+**These are research scripts, not library code.** They are kept for the record,
+including dead ends. They are not held to the standards applied to the tool:
+no tests, no stability guarantee, and some reference paths from the machines
+they were written on. The scripts that produced numbers in the paper are
+listed in [../docs/REPRODUCE_TABLES.md](../docs/REPRODUCE_TABLES.md).

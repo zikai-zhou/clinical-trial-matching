@@ -5,14 +5,14 @@
 │                                                                 │
 │   matchers/systems/         canonical eligibility matchers      │
 │   ────────────────                                              │
-│     aegis/             Z3 + atom mining                         │
+│     aegis/             VERDICT: Z3 + atom mining                │
 │     shahlab/           Koopman per-criterion ternary verdict    │
-│     single_shot_llm/   single-prompt LM                      │
+│     single_shot_llm/   LLM-only: single-prompt LM               │
 │     trialgpt/          TrialGPT per-criterion                   │
 │                                                                 │
 │   matchers/configs/         (matcher × prompt × backbone) recipes│
 │   ─────────────────                                             │
-│     aegis.default.yaml                                          │
+│     aegis.default.yaml            VERDICT, default              │
 │     single_shot_llm.v5.yaml         V5_PROMPT,             4.1  │
 │     single_shot_llm.v5_gpt5.yaml    V5_PROMPT,             5    │
 │     single_shot_llm.v5_blockers.yaml  V5_TWO_STEP_BLOCKERS,4.1  │

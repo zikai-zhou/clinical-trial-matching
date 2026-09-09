@@ -515,6 +515,7 @@ Tune any system by editing its `prompts/<name>.prompt` and re-running `run.py`.
 - 5-system gold (n=532), bootstrap CIs, Pareto controllability, sharpness ratings, fliprate
 - `inspection/mbench/` — 539-pair drillable mbench with per-atom mining outcomes
 - `inspection/v5_beats_aegis/` — 52 cases where LLM-only beats VERDICT on the gold
+  (directory names keep the historical spelling; see [docs/MATCHERS.md](docs/MATCHERS.md))
 
 **`experiments/typed_policy/`** — policy alignment
 - 3-policy benchmark: VERDICT 100% compliance vs LLM 52-72%
@@ -529,7 +530,7 @@ export OPENAI_ENDPOINT=...
 export OPENAI_API_KEY=...
 export OPENAI_ENDPOINT_GPT5=...   # for gold derivation only
 
-# Re-mine + re-solve VERDICT
+# Re-mine + re-solve VERDICT (its code lives under the historical `aegis/` path)
 python matchers/systems/aegis/run.py
 python matchers/systems/aegis/run_verbalize.py
 

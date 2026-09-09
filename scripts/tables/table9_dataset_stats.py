@@ -29,7 +29,7 @@ def main():
     rows.append(('SIGIR raw',       count_lines(sigir_q), count_lines(sigir_c), '—'))
 
     # SIGIR gold (5-system judge panel)
-    gold_fp = ROOT / 'experiments/accuracy/data/gold_5sys_freeform_balanced.json'
+    gold_fp = ROOT / 'data/gold/gold_5sys_freeform_balanced.json'
     if gold_fp.exists():
         gold = json.loads(gold_fp.read_text())
         # Two schemas seen in the wild: list of {pair, ...} OR {gold: {pair: label}}.

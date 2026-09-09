@@ -343,7 +343,7 @@ def _():
 
 @check('gold:278-eligible-274-ineligible')
 def _():
-    fp = ROOT / 'experiments/accuracy/data/gold_5sys_freeform_balanced.json'
+    fp = ROOT / 'data/gold/gold_5sys_freeform_balanced.json'
     g = json.loads(fp.read_text())['gold']
     e = sum(1 for v in g.values() if v is True)
     assert (len(g), e, len(g) - e) == (552, 278, 274), (len(g), e)
@@ -819,9 +819,41 @@ def _():
             # the mapping note in MATCHERS.md is allowed to name them
             if 'historical name' in line or 'legacy name' in line:
                 continue
-            if _re.search(r'\bAEGIS\b|\bV5\b', line):
+            # display names only. Paths and filenames keep the historical
+            # spelling on purpose (matchers/systems/aegis/, v5_beats_aegis/),
+            # so ignore any occurrence adjacent to a path or identifier char.
+            if _re.search(r'(?<![\w/])(AEGIS|V5)(?![\w/])', line):
                 bad.append(f'{rel}:{i}')
     assert not bad, ('legacy names in user-facing text: ' + ', '.join(bad[:8]))
+
+
+@check('selfcontained:tool-does-not-need-experiments')
+def _():
+    """The installable tool must not read anything under experiments/.
+
+    experiments/ is research code kept for the record; the tool has to install
+    and run without it. Only two documented fallbacks may name it, so an old
+    checkout keeps working, and both prefer data/ when it exists.
+    """
+    TOOL = ['verdict', 'satir', 'pipeline.py', 'verdict_cli.py', 'satir_cli.py',
+            'examples']
+    ALLOWED_FALLBACK = {'verdict/data.py', 'matchers/data.py'}
+    needle_a = chr(34) + 'experiments/'
+    needle_b = chr(39) + 'experiments/'
+    bad = []
+    for rel in TOOL:
+        base = ROOT / rel
+        files = [base] if base.is_file() else [f for f in base.rglob('*.py')]
+        for f in files:
+            r = str(f.relative_to(ROOT))
+            if r in ALLOWED_FALLBACK:
+                continue
+            for i, line in enumerate(f.read_text(errors='ignore').splitlines(), 1):
+                if line.lstrip().startswith('#'):
+                    continue
+                if needle_a in line or needle_b in line:
+                    bad.append(r + ':' + str(i))
+    assert not bad, ('tool code reading experiments/: ' + ', '.join(bad[:8]))
 
 
 # ---------------------------------------------------------------- hygiene

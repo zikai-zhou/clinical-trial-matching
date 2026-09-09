@@ -13,8 +13,16 @@ from typing import Any, Dict, List, Optional
 # checkout can point at pair data held outside the working tree.
 ROOT = pathlib.Path(os.environ.get("VERDICT_ROOT",
                                    pathlib.Path(__file__).resolve().parents[1]))
-EXP53 = pathlib.Path(os.environ.get("VERDICT_PAIR_DATA",
-                                   ROOT / "experiments" / "53_v2_full"))
+def _pair_root() -> pathlib.Path:
+    """data/pairs if present, else the historical experiments/53_v2_full."""
+    if os.environ.get("VERDICT_PAIR_DATA"):
+        return pathlib.Path(os.environ["VERDICT_PAIR_DATA"])
+    preferred = ROOT / "data" / "pairs"
+    return preferred if (preferred / "cmsrc_out").exists() else \
+        ROOT / "experiments" / "53_v2_full"
+
+
+EXP53 = _pair_root()
 
 
 def load_pair_data(pair_id: str) -> Optional[Dict[str, Any]]:

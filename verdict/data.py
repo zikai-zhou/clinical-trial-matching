@@ -13,12 +13,23 @@ from typing import Iterator
 def pair_root() -> pathlib.Path:
     """Directory of per-pair stage-1 artifacts.
 
-    $VERDICT_PAIR_DATA overrides; otherwise <repo>/experiments/53_v2_full.
+    Resolution order:
+      1. $VERDICT_PAIR_DATA
+      2. <repo>/data/pairs           the tool's own location
+      3. <repo>/experiments/53_v2_full   historical, kept so existing
+                                          checkouts keep working
+
+    The tool does not otherwise read anything under experiments/; that tree is
+    self-contained research code with its own entry points.
     """
+    if os.environ.get("VERDICT_PAIR_DATA"):
+        return pathlib.Path(os.environ["VERDICT_PAIR_DATA"])
     root = pathlib.Path(os.environ.get(
         "VERDICT_ROOT", pathlib.Path(__file__).resolve().parents[1]))
-    return pathlib.Path(os.environ.get("VERDICT_PAIR_DATA",
-                                       root / "experiments" / "53_v2_full"))
+    preferred = root / "data" / "pairs"
+    if (preferred / "cmsrc_out").exists():
+        return preferred
+    return root / "experiments" / "53_v2_full"
 
 
 def iter_pairs() -> Iterator[str]:
