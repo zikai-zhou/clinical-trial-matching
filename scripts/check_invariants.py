@@ -349,6 +349,25 @@ def _():
     assert (len(g), e, len(g) - e) == (552, 278, 274), (len(g), e)
 
 
+@check('gold:no-stale-paths')
+def _():
+    """No file may still point at the gold set's pre-move location.
+
+    The gold set moved to data/gold/ so the tool no longer reaches into
+    experiments/. A leftover reference is a silently broken script.
+    """
+    stale = []
+    for f in ROOT.rglob('*'):
+        if not f.is_file() or '.git' in f.parts: continue
+        if f.resolve() == pathlib.Path(__file__).resolve(): continue  # this check names the path
+        if f.suffix not in ('.py', '.md', '.sh', '.yaml', '.yml'): continue
+        try: body = f.read_text()
+        except (UnicodeDecodeError, OSError): continue
+        if 'accuracy/data/gold_5sys_freeform_balanced' in body:
+            stale.append(str(f.relative_to(ROOT)))
+    assert not stale, 'stale gold path in: ' + ', '.join(stale)
+
+
 @check('deps:declared-match-imports')
 def _():
     """Every third-party import in shipped code must be a declared dependency.

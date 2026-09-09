@@ -26,7 +26,12 @@ def main():
     # SIGIR raw corpus + queries
     sigir_q = ROOT / 'dataset/clinical_trial/sigir/queries.jsonl'
     sigir_c = ROOT / 'dataset/clinical_trial/sigir/corpus.jsonl'
-    rows.append(('SIGIR raw',       count_lines(sigir_q), count_lines(sigir_c), '—'))
+    if sigir_q.exists() or sigir_c.exists():
+        rows.append(('SIGIR raw',   count_lines(sigir_q), count_lines(sigir_c), '—'))
+    else:
+        # Local-only corpus (see docs/DATA.md). Say so rather than printing 0,
+        # which reads like a finding.
+        rows.append(('SIGIR raw',   'n/a', 'n/a', 'corpus not present'))
 
     # SIGIR gold (5-system judge panel)
     gold_fp = ROOT / 'data/gold/gold_5sys_freeform_balanced.json'

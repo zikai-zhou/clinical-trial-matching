@@ -25,7 +25,7 @@ def load_verd(p):
     return out
 aegis_v = load_verd(ROOT/'matchers/systems/aegis/verdicts.jsonl')
 shah_v  = load_verd(ROOT/'matchers/systems/shahlab/verdicts.jsonl')
-gold = json.load((ROOT/'experiments/accuracy/data/gold_5sys_freeform_balanced.json').open())['gold']
+gold = json.load((ROOT/'data/gold/gold_5sys_freeform_balanced.json').open())['gold']
 
 cands = []
 for pair, gv in gold.items():

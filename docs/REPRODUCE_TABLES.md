@@ -10,7 +10,7 @@ reproduction script yet (gap to close).
 
 | # | Table caption | Script / command | Data file | Status |
 |---|---|---|---|---|
-| 1 | Patient-level eligibility on SIGIR (5-system gold, n=539, F1/P/R) | `python experiments/clinician_validation/processing/report.py` (calls `accuracy_adjusted_f1.py`) | `matchers/systems/*/verdicts.jsonl` + `experiments/accuracy/data/gold_5sys_freeform_balanced.json` | ✓ |
+| 1 | Patient-level eligibility on SIGIR (5-system gold, n=539, F1/P/R) | `python experiments/clinician_validation/processing/report.py` (calls `accuracy_adjusted_f1.py`) | `matchers/systems/*/verdicts.jsonl` + `data/gold/gold_5sys_freeform_balanced.json` | ✓ |
 | 2 | F1 on 363 TREC 2021 pairs (5 backbones × 2 pipelines) | `python scripts/tables/table2_trec2021_f1.py` | `$SVPO_RL/data/test_clean_tagged.jsonl` + `eval_runs/*/rollouts.jsonl` | ✓ (GPT-5-mini + Qwen rows) |
 | 3 | Clinician preference over rationales (W-T-L, corpus-reweighted) | `python experiments/clinician_validation/processing/report.py` (Table 24 in results) | `$EVALUATIONS_RESULTS` (or `~/chart_silence_review/submissions.jsonl` on yelpbot3) + `merge/clinician_review_merged.json` | ✓ |
 | 4 | Mean clinician ratings (1–5 axes) | `python experiments/clinician_validation/processing/report.py` → per-axis section | same as Table 3 | ✓ |
@@ -24,7 +24,7 @@ reproduction script yet (gap to close).
 | 12 | 15-pair audit outcome distribution | `python experiments/clinician_validation/instrument/score_clinician_responses.py --stratum audit15` | `evaluations_results.json` filtered to `audit15` topics | △ |
 | 13 | 15-pair re-review outcomes | Same as Table 12 with `--rereview` flag | same | △ |
 | 14 | Clinician–reference agreement after re-review (kappa) | `python experiments/clinician_validation/processing/kappa.py` (in `report.py`) | evaluations file | ✓ |
-| 15 | Reference eligibility vs SIGIR referral relevance | `python experiments/accuracy/scripts/table15_ref_vs_relevance.py` (**NEW**) | `experiments/accuracy/data/gold_5sys_freeform_balanced.json` + SIGIR qrels | ✗ |
+| 15 | Reference eligibility vs SIGIR referral relevance | `python experiments/accuracy/scripts/table15_ref_vs_relevance.py` (**NEW**) | `data/gold/gold_5sys_freeform_balanced.json` + SIGIR qrels | ✗ |
 | 16 | Clinician-adjusted accuracy under two conventions | `python experiments/clinician_validation/processing/report.py` → §accuracy-adjusted block | evaluations file | ✓ |
 | 17 | CF self-faithfulness under alternative CF-generation settings (cell 1/2/3 sweep) | `for CELL in 1 2 3; do CELL=$CELL bash experiments/counterfactual/05_self_faithfulness/ablation_full_corpus/launch_all.sh 1 16; done` + `python experiments/counterfactual/05_self_faithfulness/ablation_full_corpus/summarize_3cell.py` | `mbench_3cell/cell{1,2,3}_*/` | ✓ |
 | 18 | CF pipeline under GPT-5 modifier + GPT-5 validator (cell 3 headline) | `CELL=3 bash launch_all.sh 3 16` + `summarize_3cell.py --cell 3` | `mbench_3cell/cell3_5m_v3v_filt/` | ✓ |
