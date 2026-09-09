@@ -60,7 +60,11 @@ stage() {
 stage 1 "SMT atom mining via cmsrc batch driver"
 if [ "$FROM_STAGE" -le 1 ] && [ "$THROUGH_STAGE" -ge 1 ]; then
   if [ ! -d "$CMSRC_DIR" ]; then
-    echo "ERROR: CMSRC_DIR=$CMSRC_DIR not found. Set CMSRC_DIR env var to your cmsrc checkout."
+    echo "ERROR: CMSRC_DIR=$CMSRC_DIR not found."
+    echo "Stage 1 re-mines the whole corpus with the BATCH driver, which is not"
+    echo "vendored. The single-pair matcher itself is vendored at verdict/engine/"
+    echo "-- use 'verdict run TRIAL PATIENT' for one pair without this checkout."
+    echo "To re-mine the corpus, set CMSRC_DIR to your cmsrc checkout."
     exit 1
   fi
   ( cd "$CMSRC_DIR" && "$PY" batch_match_from_eval_union.py \

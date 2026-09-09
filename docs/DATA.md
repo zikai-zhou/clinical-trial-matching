@@ -43,7 +43,7 @@ Not all results are reproducible from this checkout alone.
 
 | Artifact | Location | Needed for |
 |---|---|---|
-| `cmsrc` (stage-1 atom mining) | sibling `TrialGPT-SMT/cmsrc` checkout; set `$CMSRC_DIR` | `scripts/reproduce_all.sh` stage 1 |
+| the matcher itself | **vendored** at `verdict/engine/`; nothing to fetch | `verdict run`, `scripts/reproduce_all.sh` stage 1 |
 | TREC 2021 eval (`svpo-rl`) | separate repo; set `$SVPO_RL` | Table 2 — see `REPRODUCE_TABLES.md` |
 | SatIR compilation pipeline | `github.com/zikai-zhou/SatIR` | upstream SMT program compilation |
 
