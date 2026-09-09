@@ -395,11 +395,20 @@ they refuse an unknown pair rather than returning an answer.
 `verdict` works on pairs that have already been processed — it reads
 per-pair files from `$VERDICT_PAIR_DATA` (default `experiments/53_v2_full`).
 
-**You cannot yet hand it a raw chart and a trial and get an answer.** That
-first processing step lives in a separate codebase (`cmsrc`; set `$CMSRC_DIR`,
-see [docs/DATA.md](docs/DATA.md)). Connecting it so that
-`verdict match --chart chart.txt --trial NCT...` works end to end is the main
-gap between this repository and something you could point at a new patient.
+**`verdict run` exists but has never been run end to end by us.** The matcher
+itself now ships here, and
+
+    verdict run NCT02509286 P001 --patient-file note.json
+
+is the intended path for a new patient. It needs an LLM endpoint and a
+compiled trial program under `$VERDICT_BUILD`, and it reports clearly which
+one is missing. What we have verified is that it installs, imports, resolves
+its prompts, and refuses cleanly without credentials — **not** that it returns
+a correct decision, because we had no endpoint or working solver on hand to
+try it. Treat that path as untested and please report what you find.
+
+Compiling a trial from raw text is a separate step (`trial_compiler`), not yet
+wired into a single command.
 
 To reproduce the numbers in the paper, see
 [docs/REPRODUCE_TABLES.md](docs/REPRODUCE_TABLES.md). For where the data comes
@@ -422,8 +431,9 @@ Documented so you do not have to rediscover them.
 
 | | |
 |---|---|
-| **No end-to-end run from a raw chart** | `verdict` decides pairs that stage-1 mining already processed. That step lives in the separate `cmsrc` codebase. See [What this does not do yet](#what-this-does-not-do-yet). |
-| **TrialGPT's verdict-balance row does not reproduce** | Every TrialGPT artifact here gives 13.2% eligible against the paper's 44.4%; that run is not in this repository. The script prints `DOES NOT MATCH` on the row. See [docs/REPRODUCE_TABLES.md](docs/REPRODUCE_TABLES.md). |
+| **`verdict run` is untested** | The matcher ships here, but we have never completed a live match: no LLM endpoint and no working solver on this machine. Import, prompt resolution and the failure paths are tested; a correct decision is not. See [What this does not do yet](#what-this-does-not-do-yet). |
+| **No single command from raw text** | Compiling a trial (`trial_compiler`) and matching (`verdict run`) are still two steps. |
+| **No TrialGPT baseline** | TrialGPT-derived code was removed; our artifacts gave 13.2% against the paper's 44.4% and could not be cited honestly. Run TrialGPT from its own repository. See [docs/MATCHERS.md](docs/MATCHERS.md). |
 | **Claude Haiku, ZSPM and Xu rows of the TREC table** | Separate API runs whose outputs were not retained. GPT-5-mini and Qwen rows do reproduce exactly. |
 | **Batch drivers under `matchers/systems/`** | Several depend on internal modules that were not released. They raise a clear error saying so. The supported entry points are the `verdict` command and the `verdict` package. |
 | **Test coverage is uneven** | `smt_core.maxsmt` is at 92% and the APIs are covered; `trial_compiler`, `patient_compiler`, `db_indexer` and `sql_retrieval` have no unit tests yet. |
