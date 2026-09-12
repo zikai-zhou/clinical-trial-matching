@@ -25,6 +25,10 @@ local = [                      # running an open-weight model on your own GPU
     "transformers>=4.44",
     "sentence-transformers>=3.0",
 ]
+compile = [                    # the trial compile chain (verdict compile)
+    "ucumvert>=0.1",           # UCUM unit parsing in normalize_units
+    "pint>=0.23",              # unit conversion
+]
 search = ["elasticsearch>=8.13"]
 analysis = ["pandas>=2.2", "tqdm>=4.66", "psutil>=5.9", "numpy>=1.26", "scipy>=1.12"]
 viz = ["matplotlib>=3.8", "openpyxl>=3.1"]     # SatIR retrieval figures / workbooks

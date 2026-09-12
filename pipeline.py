@@ -150,8 +150,14 @@ def compile_trial_program(trial_id: str, *, stages=COMPILE_STAGES,
 
     if "normalize" in stages:
         _say("[2/4] normalize")
-        _load(scripts / "normalize_units.py").run(
-            in_dir=build / "ir", out_dir=build / "ir_normalized")
+        try:
+            _load(scripts / "normalize_units.py").run(
+                in_dir=build / "ir", out_dir=build / "ir_normalized")
+        except (ImportError, RuntimeError) as exc:
+            # unit handling lives behind an extra, not the base install
+            raise SystemExit(
+                "the compile chain needs the compile extra: "
+                "pip install '.[compile]'\n(" + str(exc) + ")")
 
     if "slice" in stages:
         _say("[3/4] slice")

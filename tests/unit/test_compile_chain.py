@@ -95,4 +95,8 @@ def test_empty_build_tree_is_not_reported_as_success(tmp_path):
         [sys.executable, "verdict_cli.py", "compile", "NCT1", "--stages", "normalize"],
         cwd=REPO, capture_output=True, text=True, env=env)
     assert out.returncode != 0, out.stdout
-    assert "produced no program" in (out.stdout + out.stderr)
+    # the point is that nothing is reported as produced -- whether the chain
+    # stopped for a missing extra or ran and yielded nothing
+    assert "done ->" not in out.stdout, out.stdout
+    blob = out.stdout + out.stderr
+    assert ("produced no program" in blob) or ("compile extra" in blob), blob
