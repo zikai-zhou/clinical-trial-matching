@@ -1,25 +1,39 @@
 # Authors
 
-This release was squashed from a working repository, so its git history shows
-only the person who assembled it. That history is not the record of who wrote
-this software. The list below is, and it is drawn from the development
-repository's actual commit log.
+This release was assembled from a working repository, so its git history is
+shorter than the development record. Commits below are authored by whoever led
+that component. Contribution is described here rather than inferred from commit
+counts, which measure activity and not much else.
 
-| | Contribution | Development-repo commits |
-|---|---|---|
-| **Zikai (Cyrus) Zhou** | System design, the SMT matcher, MaxSMT accountability artifacts, evaluation | ~903 (Apr 2025 – May 2026) |
-| **Yilin (Clark) Xu** | Entity reports, the patient compiler, the trial-side constraint categorizer | 291 (Sep 2025 – Feb 2026) |
-| **Yufei Jin** | mbench, patient-procedure build passes, the review frontend | ~190 (Sep – Nov 2025) |
-| **Daniel Wu** | Contributions to the development repository | 5 |
+## Software
 
-Components in this release that came substantially from that work include
-`patient_compiler/` (96 files), `trial_compiler/constraint_categorizer/`, and
-the mbench instrumentation inside `verdict/engine/`.
+**Zikai (Cyrus) Zhou** — student lead and primary implementer. Detailed system
+design, system development, database logic, and experimental execution.
 
-Commit counts measure activity, not importance, and are given only to show
-that every person above is a substantial contributor rather than an
-acknowledgement. Identities were normalised across the several
-name/email pairs each person committed under.
+**Yufei Jin** — led development and evaluation of the patient-side semantic
+parser. Contributed to the trial-side semantic parser, co-leading SMT
+programming and leading qualifier extraction. Conducted patient-side
+experiments, co-drove the subsumption component, contributed to database logic
+and to evaluation design and problem framing.
+
+**Yilin Xu** — contributed to semantic parser development, co-driving the
+retrieval-objective and trial-intent components. Finalized the preprocessing
+and canonicalization modules, developed the cohort-splitting logic, co-led
+whole-fact salience and missingness handling, ran extensive fine-grained and
+baseline evaluations, and developed experimental utilities.
+
+For the VERDICT implementation specifically, contribution is Zikai Zhou >
+Yufei Jin > Yilin Xu.
+
+## Direction and clinical validation
+
+**Monica S. Lam** — proposed the research direction, originated and refined the
+core ideas, guided the system design, and supervised the project.
+
+**Dr. Chieh-Ju Chao** — primary clinical expertise, clinician validation, and
+advice throughout.
+
+**Dr. Yu-Chiang Wang** — clinical expertise and clinician validation.
 
 Developed at the Stanford Open Virtual Assistant Lab (OVAL) in collaboration
 with Mayo Clinic. See `NOTICE`.
