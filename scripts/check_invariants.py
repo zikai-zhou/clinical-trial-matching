@@ -37,6 +37,10 @@ def check(name, needs=None):
 
 
 PAIR_DATA = 'experiments/53_v2_full/cmsrc_out'
+#: evaluation corpus; absent from the tool-only build
+GOLD = 'data/gold/gold_5sys_freeform_balanced.json'
+HEADLINE_DATA = 'data/headline/v6'
+VERBALIZER_PROMPT = 'verbalizer/prompts/_freeform_rationale_v13_maxsmt.prompt'
 
 
 def sh(*args, timeout=600):
@@ -280,7 +284,7 @@ print('MAXSMT_OK')
     want(out, 'MAXSMT_OK')
 
 
-@check('maxsmt:verbalizer-prompt-forbids-witnesses')
+@check('maxsmt:verbalizer-prompt-forbids-witnesses', needs=VERBALIZER_PROMPT)
 def _():
     """The v13 prompt must carry the requirement-not-witness rule."""
     p = ROOT / 'verbalizer/prompts/_freeform_rationale_v13_maxsmt.prompt'
@@ -308,14 +312,14 @@ def _():
         assert f1 in row, f'{label}: expected F1 {f1}, got: {row.strip()}'
 
 
-@check('table9:sigir-552-pairs')
+@check('table9:sigir-552-pairs', needs=GOLD)
 def _():
     rc, out = sh('scripts/tables/table9_dataset_stats.py')
     assert rc == 0, out
     want(out, '552')
 
 
-@check('table10:verdict-balance-matches-paper')
+@check('table10:verdict-balance-matches-paper', needs=GOLD)
 def _():
     rc, out = sh('scripts/tables/table10_verdict_balance.py')
     assert rc == 0, out
@@ -344,7 +348,7 @@ def _():
     want(out, '92% of grounds are chart-silence')
 
 
-@check('gold:278-eligible-274-ineligible')
+@check('gold:278-eligible-274-ineligible', needs=GOLD)
 def _():
     fp = ROOT / 'data/gold/gold_5sys_freeform_balanced.json'
     g = json.loads(fp.read_text())['gold']

@@ -156,7 +156,25 @@ def solve(prog_lines, av, bool_pop):
 # Data loading
 # ============================================================================
 
+def require_data():
+    """Fail with guidance when the evaluation corpus is not in this build.
+
+    The tool-only distribution ships the matcher without the paper's
+    artifacts, so `verdict headline` cannot run there. Say where to get it
+    rather than surfacing a FileNotFoundError from deep in the loader.
+    """
+    if (DATA / 'v6').is_dir():
+        return
+    raise SystemExit(
+        "verdict headline reproduces the paper's table and needs the "
+        "evaluation corpus, which is not part of this build.\n"
+        f"Expected: {DATA / 'v6'}\n"
+        "Point $VERDICT_ROOT at a checkout that has data/headline/, or use "
+        "the full repository. See docs/DATA.md.")
+
+
 def load_v6():
+    require_data()
     v6 = defaultdict(dict)
     for pdir in (DATA/'v6').iterdir():
         if not pdir.is_dir() or pdir.name.startswith('_'): continue
