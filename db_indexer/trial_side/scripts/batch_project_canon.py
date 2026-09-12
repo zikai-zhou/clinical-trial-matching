@@ -26,7 +26,13 @@ except Exception:
 sys.setrecursionlimit(10000)
 
 # ───────── paths ─────────
-ROOT      = Path("../../../TrialGPT-SMT")
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+_sys.path.insert(0, str(Path(__file__).resolve().parent))  # sibling stage modules
+from smt_core.buildroot import build_root as _build_root
+
+ROOT = _build_root().parent
+
 SMT_DIR   = ROOT / "build" / "slice_ir_linked"
 CANON_DIR = ROOT / "build" / "minified_canon"
 OUT_DIR   = ROOT / "build" / "canon_projection"

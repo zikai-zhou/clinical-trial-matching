@@ -6,7 +6,13 @@ from typing import Any, Dict, Iterable, List, Sequence, Optional
 import json
 
 # --- Config (edit if needed) ---
-ROOT = Path("../../../TrialGPT-SMT")
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+_sys.path.insert(0, str(Path(__file__).resolve().parent))  # sibling stage modules
+from smt_core.buildroot import build_root as _build_root
+
+ROOT = _build_root().parent
+
 IN_DIR = ROOT / "build" / "canon_expanded"
 OUT_DIR = ROOT / "build" / "minified_canon"
 GLOB = "*.json"

@@ -242,6 +242,9 @@ _PKG = pathlib.Path(__file__).resolve().parent
 _REPO = _PKG.parents[1]
 
 
+from smt_core.buildroot import build_root as _shared_build_root
+
+
 def _root(env: str, default: pathlib.Path) -> pathlib.Path:
     v = os.getenv(env)
     return pathlib.Path(v).expanduser() if v else default
@@ -250,7 +253,7 @@ def _root(env: str, default: pathlib.Path) -> pathlib.Path:
 @dataclass
 class Config:
     data_root: pathlib.Path = _root("TRIAL_DATA", _REPO / "data" / "clinical_trial")
-    build_root: pathlib.Path = _root("VERDICT_BUILD", _REPO / "build")
+    build_root: pathlib.Path = field(default_factory=_shared_build_root)
     project_root: pathlib.Path = _REPO
     prompt_root: pathlib.Path = _PKG / "prompts"
     prompt_map_json: pathlib.Path | None = None

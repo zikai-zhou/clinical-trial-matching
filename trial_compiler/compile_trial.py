@@ -175,6 +175,9 @@ REQUIRED_PROMPTS: Dict[str, str] = {
 # ------------------------------------------------------------------------
 
 
+from smt_core.buildroot import build_root as _shared_build_root
+
+
 @dataclass
 class ProfileEvent:
     run_id: str
@@ -289,7 +292,7 @@ class Config:
     azure_api_key: str = os.getenv("OPENAI_API_KEY", "")
     model_name = MODEL_NAME
 
-    build_root: pathlib.Path = pathlib.Path(os.getenv("SATIR_BUILD", "build"))  # override via SATIR_BUILD env var
+    build_root: pathlib.Path = field(default_factory=_shared_build_root)  # $VERDICT_BUILD
     ir_dir: pathlib.Path = field(init=False)
     symtab_dir: pathlib.Path = field(init=False)
     canon_dir: pathlib.Path = field(init=False)

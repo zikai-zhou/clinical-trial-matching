@@ -95,3 +95,83 @@ def screen(patient_id: str, *, db: Optional[str] = None,
                 pass                                     # artifacts are optional
         results.append(r)
     return results
+
+
+# --------------------------------------------------------------- compile chain
+#: The trial-side stages, in order, between raw trial text and the program the
+#: matcher reads. Each reads the previous stage's output under the one build
+#: root that smt_core.buildroot resolves.
+COMPILE_STAGES = ("compile", "normalize", "slice", "link")
+
+
+def compile_trial_program(trial_id: str, *, stages=COMPILE_STAGES,
+                          verbose: bool = True) -> "pathlib.Path":
+    """Compile one trial into the SMT program `verdict run` consumes.
+
+    Returns the path to the linked IR for `trial_id`.
+
+    The four stages were previously separate scripts a user had to know the
+    order of, two of which pointed at a hard-coded directory outside the
+    repository. Running them as one chain is what makes an end-to-end match
+    possible from a clone.
+
+    Needs an LLM endpoint: the compile stage calls a model.
+    """
+    import importlib.util
+    import pathlib
+    import subprocess
+    import sys
+
+    from smt_core.buildroot import build_root, describe
+
+    root = pathlib.Path(__file__).resolve().parent
+    scripts = root / "db_indexer" / "trial_side" / "scripts"
+    build = build_root()
+
+    def _say(msg):
+        if verbose:
+            print(msg, flush=True)
+
+    def _load(path):
+        spec = importlib.util.spec_from_file_location(path.stem, path)
+        mod = importlib.util.module_from_spec(spec)
+        sys.modules.setdefault(path.stem, mod)
+        spec.loader.exec_module(mod)
+        return mod
+
+    _say(f"build root: {describe()}")
+
+    if "compile" in stages:
+        _say(f"[1/4] compile   {trial_id}")
+        rc = subprocess.call([sys.executable, "-m", "trial_compiler.cli", trial_id],
+                             cwd=root)
+        if rc != 0:
+            raise SystemExit(f"trial_compiler failed for {trial_id} (exit {rc})")
+
+    if "normalize" in stages:
+        _say("[2/4] normalize")
+        _load(scripts / "normalize_units.py").run(
+            in_dir=build / "ir", out_dir=build / "ir_normalized")
+
+    if "slice" in stages:
+        _say("[3/4] slice")
+        _load(scripts / "batch_slice_ir.py").main()
+
+    if "link" in stages:
+        _say("[4/4] link")
+        _load(scripts / "batch_link_qualifiers.py").main()
+
+    linked = build / "noslice_ir_linked"
+    out = linked / f"{trial_id}.smt2"
+    if not out.exists():
+        cand = sorted(linked.glob(f"{trial_id}*"))
+        out = cand[0] if cand else None
+    if out is None:
+        # Never report a path that was not produced -- an empty build tree
+        # would otherwise read as success.
+        raise SystemExit(
+            f"compile chain produced no program for {trial_id} under {linked}.\n"
+            "Ran stages: " + ", ".join(stages) + ".\n"
+            "If you skipped the 'compile' stage, there was no IR to normalize.")
+    _say(f"done -> {out}")
+    return out

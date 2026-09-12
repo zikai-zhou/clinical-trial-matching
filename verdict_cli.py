@@ -3,8 +3,10 @@
 
 Two ways to get a decision.
 
-  On a NEW patient -- runs the matcher, needs an LLM endpoint:
-    verdict run NCT02509286 P001 --patient-file note.json
+  On a NEW patient -- needs an LLM endpoint. Compile the trial once,
+  then match any number of patients against it:
+    verdict compile NCT02509286
+    verdict run     NCT02509286 P001 --patient-file note.json
 
   On a STORED pair -- reads precomputed artifacts, no endpoint needed:
     verdict list                      show available patient--trial pairs
@@ -102,6 +104,24 @@ def cmd_systems(a):
         print(f'{k:<10s}{getattr(fn, "__name__", "?"):<26s}{desc}')
 
 
+def cmd_compile(a):
+    """Compile a trial into the program `verdict run` reads."""
+    import os
+    if not (os.getenv("OPENAI_ENDPOINT") or os.getenv("OPENAI_MODEL")):
+        raise SystemExit(
+            "verdict compile needs an LLM endpoint. Set OPENAI_ENDPOINT (and "
+            "OPENAI_API_KEY); see docs/DATA.md.")
+    import pipeline
+    stages = tuple(a.stages.split(',')) if a.stages else pipeline.COMPILE_STAGES
+    unknown = [s for s in stages if s not in pipeline.COMPILE_STAGES]
+    if unknown:
+        raise SystemExit("unknown stage(s): " + ', '.join(unknown)
+                         + "; choose from " + ', '.join(pipeline.COMPILE_STAGES))
+    out = pipeline.compile_trial_program(a.trial_id, stages=stages)
+    print(out)
+    return 0
+
+
 def cmd_run(a):
     """Decide a NEW patient against a trial, compiling on the fly.
 
@@ -176,6 +196,15 @@ def main():
     p = sub.add_parser('headline',
                        help="reproduce the paper's headline table")
     p.set_defaults(func=cmd_headline)
+
+    p = sub.add_parser('compile',
+                       help='compile a trial into the program `run` reads '
+                            '(needs an LLM endpoint)')
+    p.add_argument('trial_id', help='NCT id, e.g. NCT02509286')
+    p.add_argument('--stages', default=None,
+                   help='comma-separated subset of: compile,normalize,slice,link '
+                        '(default: all four, in order)')
+    p.set_defaults(func=cmd_compile)
 
     p = sub.add_parser('run',
                        help='decide a NEW patient against a trial (needs an LLM endpoint)')
