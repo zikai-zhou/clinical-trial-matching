@@ -371,6 +371,43 @@ def _():
     assert not missing, 'vendored files not tracked by git: ' + ', '.join(missing)
 
 
+@check('artifacts:no-raw-witness-surfaced')
+def _():
+    """No shipped code may hand a caller rho's raw solver witnesses.
+
+    Under MAXSMT a witness is an arbitrary point in the satisfying region.
+    Surfacing `crcl = 60.0` as if it were a finding would invent a lab
+    result, so consumers must go through assumptions_report() /
+    for_verbalizer(), which report the requirement instead.
+    """
+    import ast as _ast
+    SHIPPED = ['verdict', 'satir', 'pipeline.py', 'verbalizer',
+               'verdict_cli.py', 'examples']
+    OK = {'smt_core/maxsmt.py'}
+    bad = []
+    for rel in SHIPPED:
+        base = ROOT / rel
+        if not base.exists():
+            continue
+        files = [base] if base.is_file() else list(base.rglob('*.py'))
+        for f in files:
+            r = str(f.relative_to(ROOT))
+            if r in OK:
+                continue
+            try:
+                tree = _ast.parse(f.read_text(errors='ignore'))
+            except SyntaxError:
+                continue
+            for n in _ast.walk(tree):
+                # `<something>.assumptions` read straight off an Artifacts
+                if (isinstance(n, _ast.Attribute) and n.attr == 'assumptions'
+                        and isinstance(n.value, _ast.Name)
+                        and n.value.id in ('a', 'art', 'artifacts')):
+                    bad.append(f'{r}:{n.lineno}')
+    assert not bad, ('raw rho surfaced without the requirement view: '
+                     + ', '.join(bad[:6]))
+
+
 @check('gold:no-stale-paths')
 def _():
     """No file may still point at the gold set's pre-move location.

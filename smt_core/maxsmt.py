@@ -155,6 +155,66 @@ class Artifacts:
             lines.append(f"  {sym:<8s} ({d[sym]['step']:<7s}) {d[sym]['value']}")
         return "\n".join(lines)
 
+    def assumptions_report(self, phi_lines: Sequence[str], *,
+                           labels: Optional[Dict[str, str]] = None
+                           ) -> List[Dict[str, Any]]:
+        """rho as statements a person can act on, one per assumption.
+
+        Each record says what was taken for granted, that the chart did not
+        supply it, whether it decided the outcome, and what to check. The
+        numeric `witness` is carried but never phrased as a finding: under
+        MAXSMT it is an arbitrary point in the satisfying region, so
+        "creatinine clearance 60" would invent a lab result.
+
+            >>> r = a.assumptions_report(phi)[0]
+            >>> r["statement"]
+            'Assumed: crcl is at least 60.'
+            >>> r["basis"]
+            'Not found in the chart.'
+        """
+        labels = labels or {}
+        out: List[Dict[str, Any]] = []
+        for name, witness in self.assumptions.items():
+            req = requirement_for(name, phi_lines)
+            # RESIDUAL already stores the requirement as the value
+            if req is None and isinstance(witness, str) and witness[:1] in "<>=":
+                req = witness
+                witness = None
+            label = labels.get(name) or humanize(name)
+            pivotal = name in self.pivotal
+            rec = {
+                "condition": name,
+                "label": label,
+                "requirement": req,
+                "statement": "Assumed: " + _sentence(label, req, witness) + ".",
+                "basis": "Not found in the chart.",
+                "pivotal": pivotal,
+                "action": ("Verify before acting -- this assumption decided the "
+                           f"outcome: {label}."
+                           if pivotal else f"Confirm {label} when convenient."),
+            }
+            if witness is not None and req is not None:
+                #: solver witness, retained for audit; not a finding
+                rec["witness"] = witness
+            elif witness is not None:
+                rec["value"] = witness       # boolean: the witness IS the fact
+            out.append(rec)
+        return out
+
+    def render_assumptions(self, phi_lines: Sequence[str], *,
+                           labels: Optional[Dict[str, str]] = None) -> str:
+        """The report as plain text, pivotal assumptions first."""
+        recs = self.assumptions_report(phi_lines, labels=labels)
+        if not recs:
+            return "No assumptions: every condition was resolved from the chart."
+        recs.sort(key=lambda r: (not r["pivotal"], r["label"]))
+        lines = []
+        for r in recs:
+            mark = "!" if r["pivotal"] else "-"
+            lines.append(f"{mark} {r['statement']} {r['basis']}")
+            lines.append(f"    {r['action']}")
+        return "\n".join(lines)
+
     def for_verbalizer(self, phi_lines: Sequence[str]) -> Dict[str, Any]:
         """Step 7 view: numeric conditions reported as requirements, not witnesses.
 
@@ -176,6 +236,59 @@ class Artifacts:
                         for c in self.pivotal],
         }
 
+
+# --------------------------------------------------------------------------
+# Making an assumption useful to a person
+#
+# `rho` is an SMT fact: `crcl = 60.0`, or at best `crcl >= 60`. Neither tells
+# a clinician what was taken for granted, whether it came from the chart, or
+# what to check before acting. These helpers turn one into a sentence that
+# does, using only the program text -- no model call, so the rendering cannot
+# introduce a claim the solver did not make.
+
+#: comparator -> how a person says it
+_PHRASING = {">=": "at least", "<=": "at most", ">": "greater than",
+             "<": "less than", "=": "equal to"}
+
+#: name fragments that carry no meaning for a reader
+_NOISE = ("patient_", "_value_recorded_now", "_recorded_now", "_inthehistory",
+          "_in_years", "has_finding_of_", "_flag", "_status")
+
+
+def humanize(name: str) -> str:
+    """A readable label for an SMT variable name.
+
+        >>> humanize("patient_age_value_recorded_now_in_years")
+        'age'
+        >>> humanize("__THRESH__::patient_crcl::gt::60")
+        'crcl'
+    """
+    if name.startswith("__THRESH__::"):
+        parts = name.split("::")
+        name = parts[1] if len(parts) > 1 else name
+    for frag in _NOISE:
+        name = name.replace(frag, " ")
+    return " ".join(name.replace("_", " ").split()) or name
+
+
+def _sentence(label: str, requirement: Optional[str],
+              witness: Any = None) -> str:
+    """'crcl', '>= 60' -> 'crcl is at least 60'.
+
+    For a boolean the witness carries the polarity, and getting it backwards
+    would state the opposite of what was assumed: a program asserting
+    `(not on_warfarin)` has witness False, i.e. the patient was assumed NOT
+    to be on warfarin. With no witness (RESIDUAL stores none) the polarity is
+    genuinely unknown, so say that rather than guess.
+    """
+    if requirement:
+        op, _, val = requirement.partition(" ")
+        return f"{label} is {_PHRASING.get(op, op)} {val}".rstrip()
+    if witness is True:
+        return f"{label} is present"
+    if witness is False:
+        return f"{label} is absent"
+    return f"{label} is not established by the chart"
 
 _CMP = r"(>=|<=|>|<|=)"
 

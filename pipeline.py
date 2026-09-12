@@ -38,8 +38,24 @@ class ScreenResult:
     retrieval_label: str
     decision: Optional[str] = None      # None == VERDICT had no data for it
     reasoning: str = ""
-    assumptions: Dict[str, Any] = field(default_factory=dict)
+    #: rho as actionable statements -- see Artifacts.assumptions_report().
+    #: Never the raw solver witnesses: under MAXSMT those are arbitrary points
+    #: in the satisfying region, and surfacing one would invent a finding.
+    assumptions: List[Dict[str, Any]] = field(default_factory=list)
     pivotal: List[str] = field(default_factory=list)
+
+    def assumptions_text(self) -> str:
+        """The assumptions as plain text, pivotal ones first."""
+        if not self.assumptions:
+            return "No assumptions: every condition was resolved from the chart."
+        recs = sorted(self.assumptions,
+                      key=lambda r: (not r.get("pivotal"), r.get("label", "")))
+        out = []
+        for r in recs:
+            out.append(("!" if r.get("pivotal") else "-") + " "
+                       + r.get("statement", "") + " " + r.get("basis", ""))
+            out.append("    " + r.get("action", ""))
+        return "\n".join(out)
 
     @property
     def eligible(self) -> Optional[bool]:
@@ -90,12 +106,32 @@ def screen(patient_id: str, *, db: Optional[str] = None,
                 from verdict.artifacts import artifacts_for
                 a = artifacts_for(pair)
                 if a is not None:
-                    r.assumptions, r.pivotal = a.assumptions, a.pivotal
+                    phi = getattr(a, "phi_lines", None) or _phi_for(pair)
+                    r.assumptions = a.assumptions_report(phi)
+                    r.pivotal = a.pivotal
             except Exception:
                 pass                                     # artifacts are optional
         results.append(r)
     return results
 
+
+
+def _phi_for(pair: str) -> List[str]:
+    """The trial program for a pair, for rendering requirements. [] if absent."""
+    try:
+        from verdict.artifacts import conditions_from_pair  # noqa: F401
+        from verdict import data as _d
+        import json
+        base = _d.pair_root() / "cmsrc_out"
+        lines: List[str] = []
+        for f in sorted((base / pair.split("__")[0]).glob(f"*{pair.split('__')[-1]}*full.json")):
+            raw = json.loads(f.read_text())
+            for side in ("inclusion", "exclusion"):
+                r = (raw.get(side) or {}).get("raw") or {}
+                lines += r.get("smt_program_lines") or []
+        return lines
+    except Exception:
+        return []
 
 # --------------------------------------------------------------- compile chain
 #: The trial-side stages, in order, between raw trial text and the program the
